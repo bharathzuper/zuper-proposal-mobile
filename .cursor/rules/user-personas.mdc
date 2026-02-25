@@ -1,0 +1,41 @@
+---
+description: Zuper user personas with emotional context — apply to every UI decision, flow design, and feature proposal
+alwaysApply: true
+---
+
+# Zuper User Personas — Emotional Context
+
+Every design decision should be evaluated against the persona most likely to encounter it.
+
+## Field Technician (Mobile-Primary)
+
+- **Physical state**: Often hot, dirty, rushed, gloved
+- **Mental state**: Focused on the job not the app
+- **Connectivity**: Spotty 4G, sometimes offline
+- **Goal**: Complete the task and move on in under 30 seconds
+- **Biggest fear**: Losing data they already entered
+- **Design implication**: Large tap targets, auto-save always, minimal required fields, camera-first not form-first
+
+## Dispatcher / Scheduler (Web, High Frequency)
+
+- **Physical state**: Desk-bound, multiple screens
+- **Mental state**: Managing chaos, context-switching constantly
+- **Goal**: See everything at a glance, act without navigating away
+- **Biggest fear**: Missing something critical in a busy day
+- **Design implication**: Dense information, keyboard shortcuts, bulk actions, zero confirmation dialogs for reversible actions
+
+## Admin / Business Owner (Web, Low Frequency)
+
+- **Physical state**: Office or home, relaxed
+- **Mental state**: Strategic, wants to see the big picture
+- **Goal**: Understand business health, configure settings
+- **Biggest fear**: Making a change that breaks something
+- **Design implication**: Confirmation for destructive actions, clear previews, undo capability, dashboard-first
+
+## Customer (Portal, Occasional)
+
+- **Physical state**: Anywhere, any device
+- **Mental state**: Anxious about the service, wants reassurance
+- **Goal**: Know what's happening and when
+- **Biggest fear**: Being surprised or overcharged
+- **Design implication**: Plain language, status clarity, no jargon, proactive communication

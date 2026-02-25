@@ -1,0 +1,50 @@
+---
+description: Zuper-specific interaction pattern library — always reach for these patterns when designing or implementing UI
+alwaysApply: true
+---
+
+# Interaction Patterns — Always Use These
+
+## Selection and Bulk Actions
+
+- Single tap selects, long press enters bulk mode (mobile)
+- Floating action bar appears when items are selected
+- Always show count: "3 items selected"
+- Bulk actions: only show what's valid for ALL selected items
+
+## Destructive Actions
+
+- Require two-step confirmation only if irreversible
+- Prefer "Undo" toast (5 second window) over confirm dialogs
+- Never use red buttons as primary CTAs
+- Label buttons with the action: "Delete Job" not just "Delete"
+
+## Loading States
+
+- Skeleton screens over spinners for list/page loads
+- Inline loaders for button actions (button becomes loading state)
+- Optimistic UI for simple toggles — update immediately, revert on error
+
+## Empty States (required for every list view)
+
+- Icon + headline + subtext + primary action
+- Subtext explains WHY it's empty, not just THAT it's empty
+- Primary action is the fastest path to adding content
+
+## Error States
+
+- Inline errors on form fields (not just top-of-form banners)
+- Tell user: what went wrong + why + what to do
+- Preserve user input on error — never wipe a form
+
+## Navigation (Mobile)
+
+- Bottom sheet for contextual actions (not full-screen modals)
+- Swipe to go back always works
+- Sticky CTAs at bottom, never buried below fold
+- Back button always visible and functional
+
+## Status Indicators
+
+- Color + icon + text label (never color alone)
+- Consistent palette: green=complete, yellow=pending, red=urgent/error, blue=in-progress, grey=inactive

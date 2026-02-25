@@ -1,0 +1,40 @@
+---
+description: UX anti-patterns to never propose — hard guardrails for every UI decision
+alwaysApply: true
+---
+
+# UX Anti-Patterns — Never Propose These
+
+## Forms
+
+- Never use placeholder text as a label replacement
+- Never require fields that could be optional or inferred
+- Never reset a form on validation error
+- Never use dropdowns for fewer than 4 options (use radio/chips instead)
+
+## Mobile
+
+- Never use hover states as the only affordance
+- Never put primary actions only at the top of a long page
+- Never use full-screen modals for simple confirmations
+- Never show empty disabled states — hide or explain them
+
+## Feedback
+
+- Never use generic errors ("Something went wrong")
+- Never auto-dismiss success toasts in under 3 seconds
+- Never show a spinner with no timeout/fallback
+- Never leave users on the same screen after a destructive action
+
+## Information Architecture
+
+- Never nest navigation more than 3 levels deep
+- Never use jargon in user-facing labels
+- Never show more than one primary action per screen
+- Never mix action types in a single button group (save + delete together)
+
+## Trust and Safety
+
+- Never permanently delete without a recovery window
+- Never auto-submit a form
+- Never change a user's data silently without a visible indicator

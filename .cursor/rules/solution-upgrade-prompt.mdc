@@ -1,0 +1,18 @@
+---
+description: Automatically elevate flat solutions — require real-world references, micro-interactions, and delight details
+alwaysApply: true
+---
+
+# Solution Upgrade Requirements
+
+When proposing any UI solution, you must:
+
+1. **Name a real product** that solves a similar problem well and explain what makes their pattern worth borrowing
+
+2. **Describe the micro-interactions** — what happens on tap, hover, swipe, error, success, and empty state
+
+3. **Propose at least one "delightful detail"** — something small that makes the experience feel considered, not just functional
+
+4. **Call out the highest-friction moment** in the current flow and explain specifically how your solution removes it
+
+5. **If the solution involves mobile**, apply the "3am field tech" test explicitly and note any compromises made

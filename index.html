@@ -749,47 +749,20 @@ img { display: block; }
   box-shadow: 0 0 0 1px rgba(28,59,84,0.06), 0 1px 3px rgba(28,59,84,0.08);
   overflow: hidden;
 }
-.layout-section-hint {
-  padding: 8px 16px 0;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--ink-lighter);
-  line-height: 1.4;
-}
-.row-customize-tag {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--blue-normal);
-  background: var(--blue-light);
-  padding: 2px 8px;
-  border-radius: 10px;
-  letter-spacing: 0.2px;
-  white-space: nowrap;
-}
-.layout-card-header {
-  padding: 20px 16px 8px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--ink-lighter);
-}
 
 .layout-row {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  gap: var(--sp-12);
+  padding: 14px 12px 14px 8px;
+  gap: 10px;
   background: var(--surface-light);
   transition: opacity 0.2s, box-shadow 0.25s ease, background 0.15s, transform 0.2s;
   position: relative;
+  min-height: 60px;
 }
 .layout-row + .layout-row { border-top: 1px solid var(--cloud-normal); }
-.layout-row.configurable { cursor: pointer; }
-.layout-row.configurable:active { background: var(--cloud-light); }
-.reorder-mode .layout-row.configurable { cursor: default; }
-.reorder-mode .layout-row.configurable:active { background: var(--surface-light); }
 .layout-row.dragging {
+
   box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
   z-index: 10;
   background: var(--surface-light);
@@ -798,9 +771,9 @@ img { display: block; }
 }
 
 .layout-row-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -813,20 +786,18 @@ img { display: block; }
 .layout-row-text { flex: 1; min-width: 0; }
 .layout-row-text .row-name {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--ink-normal);
-  line-height: 1.35;
-  letter-spacing: -0.1px;
+  line-height: 1.3;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 .layout-row-text .row-status {
   font-size: 12px;
   font-weight: 400;
   color: var(--ink-lighter);
-  line-height: 1.4;
-  letter-spacing: 0.1px;
+  line-height: 1.3;
   margin-top: 2px;
   display: flex;
   align-items: center;
@@ -842,24 +813,37 @@ img { display: block; }
 .status-dot.inactive { background: var(--cloud-dark); }
 
 .drag-handle {
-  display: none;
+  display: flex;
   flex-shrink: 0;
   cursor: grab;
-  padding: 4px;
-  color: var(--ink-lighter);
+  padding: 4px 2px;
+  color: var(--cloud-dark);
   touch-action: none;
   transition: opacity 0.2s;
 }
-.reorder-mode .drag-handle { display: flex; }
-.drag-handle.locked { opacity: 0.2; cursor: default; pointer-events: none; }
-.chevron-right {
+.drag-handle.locked { opacity: 0.25; cursor: default; pointer-events: none; }
+
+.row-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
-  color: var(--cloud-dark);
-  transition: transform 0.15s;
 }
-.layout-row.configurable:active .chevron-right { transform: translateX(2px); }
-.reorder-mode .chevron-right { display: none; }
-.reorder-mode .row-customize-tag { display: none; }
+
+.row-edit-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--blue-normal);
+  background: var(--blue-light);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.row-edit-btn:active { background: var(--blue-light-hover); transform: scale(0.93); }
 
 /* Lock indicator */
 .lock-icon {
@@ -917,8 +901,7 @@ img { display: block; }
   pointer-events: none;
 }
 
-.reorder-mode .toggle-in-row { display: flex; }
-.toggle-in-row { display: none; flex-shrink: 0; }
+.toggle-in-row { display: flex; align-items: center; flex-shrink: 0; }
 
 
 /* ============================================================
@@ -1770,14 +1753,11 @@ img { display: block; }
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <span class="nav-title">Edit Proposal Layout</span>
-        <div class="nav-right" style="display:flex;align-items:center;gap:4px;">
-          <button class="nav-action-btn" id="previewNavBtn" onclick="goToPreview()" title="Preview" style="padding:6px;">
+        <div class="nav-right" style="display:flex;align-items:center;gap:6px;">
+          <button class="nav-action-btn" onclick="goToPreview()" title="Preview" style="padding:6px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
-          <button class="nav-action-btn" id="reorderBtn" onclick="toggleReorderMode()">
-            <span id="reorderBtnIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
-            <span id="reorderBtnLabel" style="display:none;">Done</span>
-          </button>
+          <button class="nav-action-btn" onclick="doneEditing()" style="font-size:15px;font-weight:600;color:var(--blue-normal);">Done</button>
         </div>
       </div>
 
@@ -1929,7 +1909,6 @@ img { display: block; }
    ================================================================ */
 const state = {
   currentScreen: 'A',
-  reorderMode: false,
   layoutPages: [
     { id: 'cover',      name: 'Cover Page',          active: true,  locked: true },
     { id: 'scope',      name: 'Scope of Work',       active: true,  locked: false },
@@ -1995,14 +1974,14 @@ function goToScreenB() {
 }
 function goBackToA() {
   state.currentScreen = 'A';
-  if (state.reorderMode) {
-    state.reorderMode = false;
-    document.getElementById('reorderBtnIcon').style.display = '';
-    document.getElementById('reorderBtnLabel').style.display = 'none';
-    document.getElementById('previewNavBtn').style.display = '';
-    renderLayoutRows();
-  }
   setScreenClasses('active', 'right', 'right');
+}
+function doneEditing() {
+  showToast('toastB', 'Layout saved successfully');
+  setTimeout(() => {
+    state.currentScreen = 'A';
+    setScreenClasses('active', 'right', 'right');
+  }, 600);
 }
 function goToScreenC() {
   state.currentScreen = 'C';
@@ -2037,7 +2016,7 @@ function renderLayoutRows() {
   wrapper.innerHTML = '';
 
   const card = document.createElement('div');
-  card.className = 'layout-card' + (state.reorderMode ? ' reorder-mode' : '');
+  card.className = 'layout-card';
   card.id = 'layoutReorderCard';
 
   state.layoutPages.forEach((page, idx) => {
@@ -2045,24 +2024,15 @@ function renderLayoutRows() {
   });
 
   wrapper.appendChild(card);
-
-  if (!state.reorderMode) {
-    const hint = document.createElement('div');
-    hint.className = 'layout-section-hint';
-    hint.textContent = 'Tap a page with the customize tag to edit its settings. Use the gear icon to reorder or toggle pages.';
-    wrapper.appendChild(hint);
-  }
-
-  applyReorderUI();
 }
 
 function buildRow(page, idx, isConfigurable) {
   const row = document.createElement('div');
-  row.className = 'layout-row' + (isConfigurable ? ' configurable' : '');
+  row.className = 'layout-row';
   row.dataset.index = idx;
   row.dataset.id = page.id;
 
-  const dragSvg = '<svg width="16" height="24" viewBox="0 0 16 24" fill="none"><circle cx="5" cy="4" r="1.5" fill="currentColor"/><circle cx="11" cy="4" r="1.5" fill="currentColor"/><circle cx="5" cy="10" r="1.5" fill="currentColor"/><circle cx="11" cy="10" r="1.5" fill="currentColor"/><circle cx="5" cy="16" r="1.5" fill="currentColor"/><circle cx="11" cy="16" r="1.5" fill="currentColor"/><circle cx="5" cy="22" r="1.5" fill="currentColor"/><circle cx="11" cy="22" r="1.5" fill="currentColor"/></svg>';
+  const dragSvg = '<svg width="12" height="18" viewBox="0 0 12 18" fill="none"><circle cx="3.5" cy="3" r="1.5" fill="currentColor"/><circle cx="8.5" cy="3" r="1.5" fill="currentColor"/><circle cx="3.5" cy="9" r="1.5" fill="currentColor"/><circle cx="8.5" cy="9" r="1.5" fill="currentColor"/><circle cx="3.5" cy="15" r="1.5" fill="currentColor"/><circle cx="8.5" cy="15" r="1.5" fill="currentColor"/></svg>';
 
   const isCover = page.id === 'cover';
   const lockIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
@@ -2074,8 +2044,8 @@ function buildRow(page, idx, isConfigurable) {
     ? `<div class="row-status">${statusParts.join(' · ')}</div>`
     : '';
 
-  const rightSide = isConfigurable
-    ? '<span class="row-customize-tag">Customize</span><div class="chevron-right"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cloud-dark)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>'
+  const editBtnHtml = isConfigurable
+    ? '<div class="row-edit-btn" data-edit="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
     : '';
 
   row.innerHTML = `
@@ -2085,16 +2055,18 @@ function buildRow(page, idx, isConfigurable) {
       <div class="row-name">${page.name}${page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : ''}</div>
       ${statusHtml}
     </div>
-    <div class="toggle-in-row">
-      <input type="checkbox" class="ios-switch${page.locked ? ' toggle-locked' : ''}" data-toggle="${idx}" ${page.active ? 'checked' : ''}>
+    <div class="row-right-actions">
+      ${editBtnHtml}
+      <div class="toggle-in-row">
+        <input type="checkbox" class="ios-switch${page.locked ? ' toggle-locked' : ''}" data-toggle="${idx}" ${page.active ? 'checked' : ''}>
+      </div>
     </div>
-    ${rightSide}
   `;
 
-  if (isConfigurable) {
-    row.addEventListener('click', (e) => {
-      if (state.reorderMode) return;
-      if (e.target.closest('.ios-switch') || e.target.closest('.drag-handle')) return;
+  const editBtn = row.querySelector('[data-edit]');
+  if (editBtn) {
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       goToScreenC();
     });
   }
@@ -2105,7 +2077,6 @@ function buildRow(page, idx, isConfigurable) {
       e.stopPropagation();
       page.active = toggleEl.checked;
       renderLayoutRows();
-      applyReorderUI();
     });
     toggleEl.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2124,47 +2095,6 @@ function buildRow(page, idx, isConfigurable) {
   return row;
 }
 
-function applyReorderUI() {
-  document.querySelectorAll('.layout-card').forEach(card => {
-    if (state.reorderMode) {
-      card.classList.add('reorder-mode');
-    } else {
-      card.classList.remove('reorder-mode');
-    }
-  });
-}
-
-function toggleReorderMode() {
-  const icon = document.getElementById('reorderBtnIcon');
-  const label = document.getElementById('reorderBtnLabel');
-  const eyeBtn = document.getElementById('previewNavBtn');
-  if (state.reorderMode) {
-    state.reorderMode = false;
-    icon.style.display = '';
-    label.style.display = 'none';
-    eyeBtn.style.display = '';
-    renderLayoutRows();
-    showToast('toastB', 'Layout saved successfully');
-  } else {
-    state.reorderMode = true;
-    icon.style.display = 'none';
-    label.style.display = '';
-    label.textContent = 'Done';
-    eyeBtn.style.display = 'none';
-    renderLayoutRows();
-  }
-}
-
-function saveLayout() {
-  if (state.reorderMode) {
-    state.reorderMode = false;
-    document.getElementById('reorderBtnIcon').style.display = '';
-    document.getElementById('reorderBtnLabel').style.display = 'none';
-    document.getElementById('previewNavBtn').style.display = '';
-    renderLayoutRows();
-  }
-  showToast('toastB', 'Layout saved successfully');
-}
 
 /* ================================================================
    DRAG & DROP
@@ -2172,7 +2102,6 @@ function saveLayout() {
 let dragState = null;
 
 function onDragStart(e, idx) {
-  if (!state.reorderMode) return;
   if (state.layoutPages[idx].id === 'cover') return;
   e.preventDefault();
   const rows = document.querySelectorAll('.layout-row');

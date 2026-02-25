@@ -1,0 +1,16 @@
+---
+description: Always pull Figma design context before implementing UI — pixel-perfect, never approximate
+alwaysApply: true
+---
+
+# Figma-First Implementation
+
+Before implementing any UI component, always:
+
+1. **Check if a Figma reference has been provided** — look for Figma URLs in the conversation or project context
+
+2. **If yes, use get_design_context** to extract exact spacing, colors, typography, and component structure
+
+3. **Never approximate** — pixel-perfect to the Figma spec. Extract actual values, do not guess or round
+
+4. **Flag any Figma decisions that seem like UX anti-patterns** and propose an alternative with reasoning
