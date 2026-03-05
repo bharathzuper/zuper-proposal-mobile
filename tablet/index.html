@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Layout Editor – Tablet Views</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #E8E8ED;
+  min-height: 100vh;
+  padding: 32px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #252A31;
+  letter-spacing: -0.3px;
+}
+.page-header p {
+  font-size: 14px;
+  color: #697D95;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.frames-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.frame-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.frame-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #697D95;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.frame-container {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+/* Landscape iframe */
+.landscape-frame {
+  width: 820px;
+  height: 608px;
+  border: none;
+}
+
+/* Portrait iframe */
+.portrait-frame {
+  width: 590px;
+  height: 814px;
+  border: none;
+}
+
+.frame-dims {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+  margin-top: 10px;
+  letter-spacing: 0.2px;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Proposal Layout Editor — Tablet</h1>
+  <p>Split-pane master-detail layout for iPad. Tap the edit icon on "Job Image Gallery" to see the configuration panel.</p>
+</div>
+
+<div class="frames-row">
+
+  <div class="frame-wrapper">
+    <div class="frame-label">Landscape</div>
+    <div class="frame-container">
+      <iframe src="landscape.html" class="landscape-frame" scrolling="no"></iframe>
+    </div>
+    <div class="frame-dims">1024 &times; 760 &mdash; scaled 0.8&times;</div>
+  </div>
+
+  <div class="frame-wrapper">
+    <div class="frame-label">Portrait</div>
+    <div class="frame-container">
+      <iframe src="portrait.html" class="portrait-frame" scrolling="no"></iframe>
+    </div>
+    <div class="frame-dims">820 &times; 1130 &mdash; scaled 0.72&times;</div>
+  </div>
+
+</div>
+
+</body>
+</html>

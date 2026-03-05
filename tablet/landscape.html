@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Layout Editor – Tablet Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-normal: #252A31;
+  --ink-light: #4F5E71;
+  --ink-lighter: #697D95;
+  --product-normal: #E44A19;
+  --product-light: #FBE9E7;
+  --blue-normal: #0172CB;
+  --blue-dark: #005AA3;
+  --blue-light: #E8F4FD;
+  --blue-light-hover: #D0E9FB;
+  --orange-dark: #AE5700;
+  --orange-light: #FDF0E3;
+  --orange-light-hover: #FAE2C7;
+  --green-normal: #0A8754;
+  --green-light: #E7F5EE;
+  --red-normal: #E53935;
+  --cloud-dark: #E8EDF1;
+  --cloud-normal: #EFF2F5;
+  --cloud-light: #F5F7F9;
+  --surface-light: #FFFFFF;
+  --content-bg: #FCFCFC;
+  --radius-card: 6px;
+  --radius-button: 6px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; border: none; cursor: pointer; background: none; }
+img { display: block; }
+
+/* ============================================================
+   TABLET FRAME
+   ============================================================ */
+.tablet-frame {
+  width: 1024px;
+  height: 760px;
+  border-radius: 20px;
+  background: #1A1A1E;
+  padding: 8px;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+  transform-origin: top left;
+  transform: scale(0.8);
+}
+.tablet-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: var(--cloud-light);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+.status-bar {
+  height: 24px;
+  padding: 4px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--cloud-light);
+}
+.status-bar-time { font-size: 13px; font-weight: 600; color: var(--ink-normal); letter-spacing: -0.3px; }
+.status-bar-icons { display: flex; align-items: center; gap: 5px; }
+.status-bar-icons svg { display: block; }
+
+/* ============================================================
+   NAV BAR
+   ============================================================ */
+.nav-bar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  flex-shrink: 0;
+  background: var(--cloud-light);
+  border-bottom: 1px solid var(--cloud-dark);
+  z-index: 2;
+}
+.nav-title-area { flex: 1; display: flex; align-items: center; }
+.nav-title { font-size: 18px; font-weight: 600; color: var(--ink-normal); line-height: 1.2; }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.nav-action-btn {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 15px; font-weight: 600; color: var(--blue-normal);
+  padding: 7px 12px; border-radius: 8px;
+  transition: background 0.15s, transform 0.1s;
+}
+.nav-action-btn:active { background: var(--blue-light); transform: scale(0.96); }
+.nav-action-btn svg { flex-shrink: 0; }
+
+/* ============================================================
+   SPLIT PANE LAYOUT
+   ============================================================ */
+.split-pane {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* LEFT: Master list */
+.master-pane {
+  width: 340px;
+  flex-shrink: 0;
+  background: var(--surface-light);
+  border-right: 1px solid var(--cloud-dark);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.master-header {
+  padding: 16px 16px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-lighter);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.master-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px 16px;
+}
+.master-scroll::-webkit-scrollbar { display: none; }
+
+/* RIGHT: Detail panel */
+.detail-pane {
+  flex: 1;
+  background: var(--content-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Detail header bar */
+.detail-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: var(--surface-light);
+  border-bottom: 1px solid var(--cloud-dark);
+  flex-shrink: 0;
+}
+.detail-header-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-normal);
+}
+.detail-header-actions { display: flex; align-items: center; gap: 8px; }
+
+.detail-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.detail-scroll::-webkit-scrollbar { display: none; }
+
+/* Empty state for detail pane */
+.detail-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--ink-lighter);
+  padding: 40px;
+}
+.detail-empty-icon { opacity: 0.3; }
+.detail-empty-title { font-size: 16px; font-weight: 600; color: var(--ink-light); }
+.detail-empty-desc { font-size: 13px; color: var(--ink-lighter); text-align: center; line-height: 1.5; max-width: 260px; }
+
+/* ============================================================
+   HOME INDICATOR
+   ============================================================ */
+.home-indicator { height: 20px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; flex-shrink: 0; background: var(--cloud-light); }
+.home-indicator-bar { width: 134px; height: 5px; background: #000; border-radius: 100px; }
+
+/* ============================================================
+   LAYOUT ROWS (Master pane)
+   ============================================================ */
+.layout-card {
+  background: var(--surface-light);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(28,59,84,0.06), 0 1px 3px rgba(28,59,84,0.08);
+  overflow: hidden;
+}
+
+.layout-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 12px 14px 8px;
+  gap: 10px;
+  background: var(--surface-light);
+  transition: background 0.15s, box-shadow 0.25s ease, transform 0.2s;
+  position: relative;
+  min-height: 60px;
+  cursor: default;
+}
+.layout-row + .layout-row { border-top: 1px solid var(--cloud-normal); }
+.layout-row.selected-row {
+  background: var(--blue-light);
+}
+.layout-row.dragging {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+  z-index: 10; background: var(--surface-light); border-radius: 10px; transform: scale(1.02);
+}
+
+.layout-row-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; background: var(--cloud-light); color: var(--ink-lighter);
+}
+.layout-row.selected-row .layout-row-icon { background: var(--blue-light-hover); color: var(--blue-normal); }
+.layout-row-icon svg { stroke: currentColor; }
+.layout-row-text { flex: 1; min-width: 0; }
+.layout-row-text .row-name {
+  font-size: 15px; font-weight: 500; color: var(--ink-normal); line-height: 1.3;
+  display: flex; align-items: center; gap: 5px;
+}
+.layout-row-text .row-status {
+  font-size: 12px; font-weight: 400; color: var(--ink-lighter); line-height: 1.3; margin-top: 2px;
+  display: flex; align-items: center; gap: 6px;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.status-dot.active { background: var(--green-normal); }
+.status-dot.inactive { background: var(--cloud-dark); }
+
+.drag-handle {
+  display: flex; flex-shrink: 0; cursor: grab; padding: 4px 2px;
+  color: var(--cloud-dark); touch-action: none; transition: opacity 0.2s;
+}
+.drag-handle.locked { opacity: 0.25; cursor: default; pointer-events: none; }
+
+.row-right-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.row-edit-btn {
+  width: 30px; height: 30px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--blue-normal); background: var(--blue-light);
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+}
+.layout-row.selected-row .row-edit-btn { background: var(--blue-light-hover); }
+.row-edit-btn:active { background: var(--blue-light-hover); transform: scale(0.93); }
+
+.lock-icon { display: inline-flex; align-items: center; color: var(--ink-lighter); opacity: 0.6; }
+.lock-icon svg { width: 12px; height: 12px; }
+
+/* Toggle Switch */
+.ios-switch {
+  -webkit-appearance: none; appearance: none;
+  width: 46px; height: 28px; border-radius: 14px; background: #E9E9EA;
+  position: relative; flex-shrink: 0; cursor: pointer; outline: none; border: none;
+  transition: background 0.25s ease;
+}
+.ios-switch:checked { background: #1A237E; }
+.ios-switch::after {
+  content: ''; position: absolute; width: 24px; height: 24px; border-radius: 50%;
+  background: #FFFFFF; top: 2px; left: 2px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 1px rgba(0,0,0,0.06), 0 3px 8px rgba(0,0,0,0.15), 0 0 0 0.5px rgba(0,0,0,0.04);
+}
+.ios-switch:checked::after { transform: translateX(18px); }
+.ios-switch:active::after { width: 28px; }
+.ios-switch:checked:active::after { transform: translateX(14px); }
+.ios-switch.toggle-locked { opacity: 0.35; cursor: default; pointer-events: none; }
+.toggle-in-row { display: flex; align-items: center; flex-shrink: 0; }
+
+/* ============================================================
+   DETAIL: GALLERY CONFIGURATION
+   ============================================================ */
+.detail-pad { padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+
+.sc-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.sc-section-header svg { flex-shrink: 0; color: var(--ink-lighter); }
+.sc-section-title { font-size: 15px; font-weight: 600; color: var(--ink-normal); letter-spacing: -0.1px; }
+.sc-section-hint { font-size: 12px; color: var(--ink-lighter); letter-spacing: 0.1px; margin-bottom: 10px; line-height: 1.4; }
+
+.sc-setting-row {
+  display: flex; align-items: center; padding: 14px 16px;
+  background: var(--surface-light); border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(28,59,84,0.06), 0 1px 3px rgba(28,59,84,0.06);
+  gap: 12px;
+}
+.sc-setting-label { flex: 1; font-size: 15px; font-weight: 500; color: var(--ink-normal); line-height: 1.4; }
+.sc-separator { height: 1px; background: var(--cloud-normal); }
+
+.sc-style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sc-style-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--surface-light); border-radius: 10px;
+  border: 1.5px solid var(--cloud-dark); cursor: pointer;
+  transition: border-color 0.2s, background 0.15s, box-shadow 0.2s;
+}
+.sc-style-card:active { background: var(--cloud-light); }
+.sc-style-card.selected { border-color: var(--blue-normal); box-shadow: 0 0 0 1px var(--blue-normal); background: var(--blue-light); }
+.sc-style-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--ink-lighter); }
+.sc-style-card.selected .sc-style-icon { color: var(--blue-normal); }
+.sc-style-info { flex: 1; min-width: 0; }
+.sc-style-name { font-size: 14px; font-weight: 600; color: var(--ink-normal); line-height: 1.3; }
+.sc-style-desc { font-size: 11px; color: var(--ink-lighter); line-height: 1.4; margin-top: 1px; }
+
+.sc-photos-row {
+  display: flex; align-items: center; padding: 14px 16px;
+  background: var(--surface-light); border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(28,59,84,0.06), 0 1px 3px rgba(28,59,84,0.06);
+  gap: 12px; cursor: pointer; transition: background 0.15s;
+}
+.sc-photos-row:active { background: var(--cloud-light); }
+.sc-photos-label { flex: 1; font-size: 15px; font-weight: 500; color: var(--ink-normal); }
+.sc-photos-action { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: var(--blue-normal); }
+.sc-count-badge { font-size: 12px; font-weight: 500; color: var(--ink-lighter); }
+
+.sc-images-strip { padding: 10px 0 0; display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sc-images-strip::-webkit-scrollbar { display: none; }
+.sc-images-strip img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+
+/* Side-by-Side pairs */
+.sbs-pair-card {
+  background: var(--surface-light); border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(28,59,84,0.06), 0 1px 3px rgba(28,59,84,0.06);
+  padding: 12px; margin-bottom: 10px; position: relative;
+}
+.sbs-pair-label { font-size: 11px; font-weight: 600; color: var(--ink-lighter); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.sbs-pair-slots { display: flex; gap: 10px; }
+.sbs-slot {
+  flex: 1; aspect-ratio: 1.3; border: 1.5px dashed var(--cloud-dark); border-radius: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; cursor: pointer; transition: border-color 0.2s, background 0.15s;
+  overflow: hidden; position: relative;
+}
+.sbs-slot:active { background: var(--cloud-light); }
+.sbs-slot.filled { border-style: solid; border-color: var(--cloud-dark); padding: 0; }
+.sbs-slot.filled img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sbs-slot-icon { color: var(--ink-lighter); opacity: 0.5; }
+.sbs-slot-text { font-size: 11px; font-weight: 500; color: var(--ink-lighter); }
+.sbs-slot-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; padding: 3px 0; }
+.sbs-slot-tag.before { color: var(--green-normal); }
+.sbs-slot-tag.after { color: var(--product-normal); }
+.sbs-slot.filled .sbs-slot-tag { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); padding: 4px 0; }
+.sbs-add-pair {
+  width: 100%; padding: 10px; border: 1.5px dashed var(--cloud-dark); border-radius: 10px;
+  font-size: 13px; font-weight: 500; color: var(--blue-normal);
+  display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+}
+.sbs-add-pair:active { background: var(--cloud-light); }
+.sbs-remove-pair {
+  position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--ink-lighter); color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;
+}
+
+/* Footer */
+.detail-footer {
+  padding: 12px 24px 8px;
+  background: var(--surface-light);
+  border-top: 1px solid var(--cloud-dark);
+  flex-shrink: 0;
+}
+.btn-primary {
+  display: flex; align-items: center; justify-content: center;
+  height: 44px; background: var(--product-normal); border-radius: var(--radius-button);
+  color: #fff; font-size: 15px; font-weight: 500; letter-spacing: 0.2px; width: 100%;
+}
+.btn-primary:active { opacity: 0.9; }
+
+/* ============================================================
+   IMAGE PICKER (slides up inside detail pane)
+   ============================================================ */
+.picker-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 60;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.picker-overlay.visible { opacity: 1; pointer-events: auto; }
+.image-picker-panel {
+  position: absolute; inset: 48px 0 0 0;
+  background: var(--surface-light); z-index: 61;
+  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex; flex-direction: column; overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+.image-picker-panel.visible { transform: translateY(0); }
+.picker-header {
+  display: flex; align-items: center; padding: 12px 16px; gap: 12px;
+  border-bottom: 1px solid var(--cloud-dark); flex-shrink: 0;
+}
+.picker-header .picker-title { flex: 1; font-size: 17px; font-weight: 600; color: var(--ink-normal); }
+.picker-done-btn { font-size: 16px; font-weight: 600; color: var(--product-normal); padding: 4px 8px; }
+.image-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding: 3px;
+  flex: 1; overflow-y: auto; align-content: start;
+}
+.image-grid-item { position: relative; aspect-ratio: 1; cursor: pointer; overflow: hidden; }
+.image-grid-item img { width: 100%; height: 100%; object-fit: cover; }
+.image-grid-item.selected::after { content: ''; position: absolute; inset: 0; border: 3px solid var(--product-normal); pointer-events: none; }
+.image-grid-item .check-overlay {
+  position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--product-normal); display: none; align-items: center; justify-content: center;
+}
+.image-grid-item.selected .check-overlay { display: flex; }
+.image-grid-item.used { opacity: 0.3; cursor: default; }
+
+/* ============================================================
+   PREVIEW OVERLAY (full-screen over split pane)
+   ============================================================ */
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  background: var(--surface-light);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+}
+.preview-overlay.visible { transform: translateY(0); }
+.preview-nav {
+  height: 48px; display: flex; align-items: center; padding: 0 20px; gap: 12px;
+  background: var(--surface-light); border-bottom: 1px solid var(--cloud-dark); flex-shrink: 0;
+}
+.preview-nav-title { flex: 1; font-size: 17px; font-weight: 600; color: var(--ink-normal); }
+.preview-nav-back {
+  display: flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500;
+  color: var(--blue-normal); padding: 4px 0;
+}
+.preview-scroll {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: #EAECEF; padding: 24px 40px; display: flex; flex-direction: column; gap: 16px; align-items: center;
+}
+.preview-scroll::-webkit-scrollbar { display: none; }
+.preview-page {
+  background: var(--surface-light); border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1), 0 0 0 0.5px rgba(0,0,0,0.06);
+  padding: 32px 28px; min-height: 160px; width: 100%; max-width: 640px;
+}
+.preview-page-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ink-lighter); margin-bottom: 14px; }
+.pv-cover { text-align: center; padding: 36px 20px; }
+.pv-cover-logo { width: 48px; height: 48px; border-radius: 8px; background: var(--cloud-normal); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+.pv-cover h2 { font-size: 18px; font-weight: 600; color: var(--ink-normal); line-height: 1.3; }
+.pv-cover p { font-size: 12px; color: var(--ink-light); line-height: 1.5; margin-top: 4px; }
+.pv-cover .pv-divider { width: 36px; height: 2px; background: var(--product-normal); margin: 14px auto; border-radius: 1px; }
+.pv-cover .pv-customer { font-size: 13px; font-weight: 500; color: var(--ink-normal); margin-top: 8px; }
+.pv-scope h3 { font-size: 14px; font-weight: 600; color: var(--ink-normal); margin-bottom: 8px; }
+.pv-scope p { font-size: 11px; color: var(--ink-light); line-height: 1.7; }
+.pv-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.pv-table th { text-align: left; font-weight: 600; color: var(--ink-light); padding: 7px 5px; border-bottom: 1px solid var(--cloud-dark); font-size: 9px; text-transform: uppercase; letter-spacing: 0.3px; }
+.pv-table th:last-child, .pv-table td:last-child { text-align: right; }
+.pv-table td { padding: 7px 5px; color: var(--ink-normal); border-bottom: 1px solid var(--cloud-light); }
+.pv-table .total-row td { border-bottom: none; border-top: 1.5px solid var(--ink-normal); font-weight: 600; padding-top: 9px; }
+.pv-gallery-grid { display: grid; gap: 5px; margin-top: 6px; }
+.pv-gallery-grid.style-standard { grid-template-columns: repeat(4, 1fr); }
+.pv-gallery-grid.style-wide { grid-template-columns: repeat(3, 1fr); }
+.pv-gallery-grid.style-sidebyside { grid-template-columns: 1fr 1fr; }
+.pv-gallery-grid.style-fullwidth { grid-template-columns: 1fr; }
+.pv-gallery-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 3px; display: block; }
+.pv-gallery-grid.style-wide img { aspect-ratio: 16/10; }
+.pv-gallery-grid.style-fullwidth img { aspect-ratio: 16/9; }
+.pv-gallery-empty { text-align: center; padding: 18px 0; font-size: 11px; color: var(--ink-lighter); }
+.pv-terms h3 { font-size: 14px; font-weight: 600; color: var(--ink-normal); margin-bottom: 8px; }
+.pv-terms p { font-size: 10px; color: var(--ink-lighter); line-height: 1.8; }
+.pv-sig-block { margin-top: 8px; }
+.pv-sig-line { border-bottom: 1px solid var(--ink-normal); height: 40px; margin-bottom: 4px; }
+.pv-sig-label { font-size: 9px; color: var(--ink-lighter); letter-spacing: 0.2px; }
+.pv-sig-row { display: flex; gap: 16px; margin-top: 16px; }
+.pv-sig-row > div { flex: 1; }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--ink-normal); color: #fff; font-size: 14px; font-weight: 500;
+  padding: 12px 20px; border-radius: var(--radius-card); text-align: center;
+  z-index: 100; opacity: 0; transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none; white-space: nowrap;
+}
+.toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.icon-btn { padding: 4px; display: flex; align-items: center; justify-content: center; }
+
+.device-label {
+  text-align: center; margin-top: 12px;
+  font-family: var(--font); font-size: 12px; font-weight: 500; color: #999; letter-spacing: 0.3px;
+}
+</style>
+</head>
+<body>
+
+<div class="tablet-frame">
+  <div class="tablet-screen" id="tabletScreen">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-bar-time">9:41</span>
+      <div class="status-bar-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="3" width="3" height="8" rx="1" fill="#252A31"/><rect x="4.5" y="2" width="3" height="9" rx="1" fill="#252A31"/><rect x="9" y="1" width="3" height="10" rx="1" fill="#252A31"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#252A31"/></svg>
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M7.5 3.2C9.5 3.2 11.3 4 12.6 5.3L14.1 3.8C12.4 2.1 10.1 1 7.5 1C4.9 1 2.6 2.1.9 3.8L2.4 5.3C3.7 4 5.5 3.2 7.5 3.2Z" fill="#252A31"/><path d="M7.5 6.5C8.7 6.5 9.8 7 10.6 7.8L12.1 6.3C10.9 5.2 9.3 4.5 7.5 4.5C5.7 4.5 4.1 5.2 2.9 6.3L4.4 7.8C5.2 7 6.3 6.5 7.5 6.5Z" fill="#252A31"/><circle cx="7.5" cy="10.5" r="1.5" fill="#252A31"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#252A31" stroke-opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#252A31"/><path d="M23 4.5V7.5C23.8 7.2 24 6.5 24 6C24 5.5 23.8 4.8 23 4.5Z" fill="#252A31" fill-opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <div class="nav-bar">
+      <div class="nav-title-area">
+        <span class="nav-title">Edit Proposal Layout</span>
+      </div>
+      <div class="nav-right">
+        <button class="nav-action-btn" onclick="openPreview()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Preview
+        </button>
+        <button class="nav-action-btn" onclick="doneEditing()" style="color:var(--blue-normal);font-weight:700;">Done</button>
+      </div>
+    </div>
+
+    <!-- Split Pane -->
+    <div class="split-pane">
+
+      <!-- LEFT: Master list -->
+      <div class="master-pane">
+        <div class="master-header">Proposal Sections</div>
+        <div style="margin:0 12px 10px;padding:8px 12px;background:#E8F4FD;border-radius:8px;font-size:12px;color:#0172CB;line-height:1.4;flex-shrink:0;display:flex;align-items:flex-start;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0172CB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>Only <strong>Job Image Gallery</strong> can be configured right now</span></div>
+        <div class="master-scroll" id="layoutList">
+          <div id="layoutSections"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Detail panel -->
+      <div class="detail-pane" id="detailPane">
+
+        <!-- Empty state (shown when nothing selected) -->
+        <div class="detail-empty" id="detailEmpty">
+          <div class="detail-empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="detail-empty-title">Configure a section</div>
+          <div class="detail-empty-desc">Tap the edit icon on a section to configure its settings here</div>
+        </div>
+
+        <!-- Gallery config (shown when gallery edit is tapped) -->
+        <div id="galleryConfig" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+          <div class="detail-header">
+            <span class="detail-header-title">Job Image Gallery</span>
+          </div>
+          <div class="detail-scroll">
+            <div class="detail-pad">
+
+              <div class="sc-setting-row">
+                <span class="sc-setting-label">Mandatory Images</span>
+                <input type="checkbox" class="ios-switch" id="mandatoryToggle" onchange="toggleMandatory()">
+              </div>
+
+              <div class="sc-separator"></div>
+
+              <div>
+                <div class="sc-section-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                  <span class="sc-section-title">Layout Style</span>
+                </div>
+                <div class="sc-section-hint">Choose how your gallery images are displayed</div>
+                <div class="sc-style-grid" id="layoutStyleCards"></div>
+              </div>
+
+              <div class="sc-separator"></div>
+
+              <div id="imagesSection">
+                <div class="sc-section-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span class="sc-section-title">Images</span>
+                </div>
+
+                <div id="standardImagePicker">
+                  <div class="sc-photos-row" onclick="openImagePicker()">
+                    <span class="sc-photos-label">Job Photos</span>
+                    <span class="sc-count-badge" id="photoCountBadge"></span>
+                    <span class="sc-photos-action">
+                      Select
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </span>
+                  </div>
+                  <div id="selectedStripWrap" style="display:none;">
+                    <div id="selectedStrip" class="sc-images-strip"></div>
+                  </div>
+                </div>
+
+                <div id="pairedImagePicker" style="display:none;">
+                  <div class="sc-section-hint">Select a before and after image for each comparison pair</div>
+                  <div id="pairsContainer"></div>
+                  <button class="sbs-add-pair" onclick="addPair()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Pair
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-footer">
+            <button class="btn-primary" onclick="saveGallery()">Save Changes</button>
+          </div>
+        </div>
+
+        <!-- Image picker (inside detail pane) -->
+        <div class="picker-overlay" id="imagePickerOverlay" onclick="closeImagePicker()"></div>
+        <div class="image-picker-panel" id="imagePickerPanel">
+          <div class="picker-header">
+            <button class="icon-btn" onclick="closeImagePicker()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <span class="picker-title" id="pickerTitle">Select Photos</span>
+            <button class="picker-done-btn" id="pickerDoneBtn" onclick="confirmImageSelection()">Done</button>
+          </div>
+          <div class="image-grid" id="imageGrid"></div>
+        </div>
+
+        <div class="toast" id="toastDetail">Changes saved successfully</div>
+      </div>
+    </div>
+
+    <!-- Home Indicator -->
+    <div class="home-indicator"><div class="home-indicator-bar"></div></div>
+
+    <!-- Preview Overlay (full screen) -->
+    <div class="preview-overlay" id="previewOverlay">
+      <div class="preview-nav">
+        <button class="preview-nav-back" onclick="closePreview()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Layout
+        </button>
+        <span class="preview-nav-title">Preview</span>
+        <div style="width:60px;"></div>
+      </div>
+      <div class="preview-scroll" id="previewScroll"></div>
+    </div>
+
+    <!-- Global toast -->
+    <div class="toast" id="toastGlobal" style="z-index:110;">Layout saved successfully</div>
+  </div>
+</div>
+
+<script>
+var state = {
+  currentScreen: 'B',
+  activeDetail: null,
+  layoutPages: [
+    { id: 'cover',      name: 'Cover Page',          active: true,  locked: true },
+    { id: 'scope',      name: 'Scope of Work',       active: true,  locked: false },
+    { id: 'lineItems',  name: 'Line Items',          active: true,  locked: false },
+    { id: 'gallery',    name: 'Job Image Gallery',   active: true,  locked: false },
+    { id: 'terms',      name: 'Terms & Conditions',  active: true,  locked: false },
+    { id: 'signature',  name: 'Signature',           active: true,  locked: true },
+  ],
+  layoutStyles: ['Standard Grid', 'Wide Format', 'Side-by-Side', 'Full Width'],
+  selectedLayoutStyle: 'Standard Grid',
+  mandatoryImages: false,
+  selectedImages: new Set(),
+  imagePairs: [{ before: null, after: null }],
+  slotPickerTarget: null,
+  jobImages: [
+    'https://picsum.photos/seed/roof1/400/400',
+    'https://picsum.photos/seed/roof2/400/400',
+    'https://picsum.photos/seed/roof3/400/400',
+    'https://picsum.photos/seed/build4/400/400',
+    'https://picsum.photos/seed/build5/400/400',
+    'https://picsum.photos/seed/site6/400/400',
+    'https://picsum.photos/seed/site7/400/400',
+    'https://picsum.photos/seed/work8/400/400',
+    'https://picsum.photos/seed/work9/400/400',
+  ],
+};
+
+var pageIcons = {
+  cover: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 8h20"/></svg>',
+  scope: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>',
+  lineItems: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  gallery: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+  terms: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  signature: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>',
+};
+
+var configurablePages = new Set();
+
+function showDetail(pageId) {
+  state.activeDetail = pageId;
+  document.getElementById('detailEmpty').style.display = 'none';
+  if (pageId === 'gallery') {
+    var gc = document.getElementById('galleryConfig');
+    gc.style.display = 'flex';
+    renderLayoutStyleOptions();
+    updateSelectedStrip();
+    updatePhotoButton();
+    updateImageSectionMode();
+  }
+  renderLayoutRows();
+}
+
+function hideDetail() {
+  state.activeDetail = null;
+  document.getElementById('detailEmpty').style.display = '';
+  document.getElementById('galleryConfig').style.display = 'none';
+  renderLayoutRows();
+}
+
+function doneEditing() { showToast('toastGlobal', 'Layout saved successfully'); }
+
+/* LAYOUT ROWS */
+function renderLayoutRows() {
+  var wrapper = document.getElementById('layoutSections');
+  wrapper.innerHTML = '';
+  var card = document.createElement('div');
+  card.className = 'layout-card';
+  card.id = 'layoutReorderCard';
+  state.layoutPages.forEach(function(page, idx) {
+    card.appendChild(buildRow(page, idx, configurablePages.has(page.id)));
+  });
+  wrapper.appendChild(card);
+}
+
+function buildRow(page, idx, isConfigurable) {
+  var row = document.createElement('div');
+  row.className = 'layout-row' + (state.activeDetail === page.id ? ' selected-row' : '');
+  row.dataset.index = idx;
+  row.dataset.id = page.id;
+
+  var dragSvg = '<svg width="12" height="18" viewBox="0 0 12 18" fill="none"><circle cx="3.5" cy="3" r="1.5" fill="currentColor"/><circle cx="8.5" cy="3" r="1.5" fill="currentColor"/><circle cx="3.5" cy="9" r="1.5" fill="currentColor"/><circle cx="8.5" cy="9" r="1.5" fill="currentColor"/><circle cx="3.5" cy="15" r="1.5" fill="currentColor"/><circle cx="8.5" cy="15" r="1.5" fill="currentColor"/></svg>';
+  var isCover = page.id === 'cover';
+  var lockIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
+
+  var statusParts = [];
+  if (!page.active) statusParts.push('<span class="status-dot inactive"></span>Inactive');
+  if (page.locked) statusParts.push('Locked');
+  var statusHtml = statusParts.length > 0 ? '<div class="row-status">' + statusParts.join(' &middot; ') + '</div>' : '';
+
+  var editBtnHtml = isConfigurable
+    ? '<div class="row-edit-btn" data-edit="' + page.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
+    : '';
+
+  row.innerHTML =
+    '<div class="drag-handle' + (isCover ? ' locked' : '') + '" data-drag="' + idx + '">' + dragSvg + '</div>' +
+    '<div class="layout-row-icon">' + pageIcons[page.id] + '</div>' +
+    '<div class="layout-row-text">' +
+      '<div class="row-name">' + page.name + (page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : '') + '</div>' +
+      statusHtml +
+    '</div>' +
+    '<div class="row-right-actions">' +
+      editBtnHtml +
+      '<div class="toggle-in-row">' +
+        '<input type="checkbox" class="ios-switch' + (page.locked ? ' toggle-locked' : '') + '" data-toggle="' + idx + '" ' + (page.active ? 'checked' : '') + '>' +
+      '</div>' +
+    '</div>';
+
+  var editBtn = row.querySelector('[data-edit]');
+  if (editBtn) editBtn.addEventListener('click', function(e) { e.stopPropagation(); showDetail(page.id); });
+
+  var toggleEl = row.querySelector('[data-toggle="' + idx + '"]');
+  if (toggleEl) {
+    toggleEl.addEventListener('change', function(e) { e.stopPropagation(); page.active = toggleEl.checked; renderLayoutRows(); });
+    toggleEl.addEventListener('click', function(e) { e.stopPropagation(); if (page.locked) { e.preventDefault(); showToast('toastGlobal', page.name + ' is locked'); } });
+  }
+
+  var dragHandle = row.querySelector('[data-drag="' + idx + '"]');
+  if (dragHandle) dragHandle.addEventListener('pointerdown', function(e) { onDragStart(e, idx); });
+
+  return row;
+}
+
+/* DRAG & DROP */
+var dragState = null;
+function onDragStart(e, idx) {
+  if (state.layoutPages[idx].id === 'cover') return;
+  e.preventDefault();
+  var rows = document.querySelectorAll('.layout-row');
+  var row = rows[idx];
+  var rect = row.getBoundingClientRect();
+  var containerRect = document.getElementById('layoutReorderCard').getBoundingClientRect();
+  dragState = { idx: idx, startY: e.clientY, offsetY: e.clientY - rect.top, rowHeight: rect.height, containerTop: containerRect.top };
+  row.classList.add('dragging'); row.style.position = 'relative'; row.style.zIndex = '10';
+  document.addEventListener('pointermove', onDragMove);
+  document.addEventListener('pointerup', onDragEnd);
+}
+function onDragMove(e) {
+  if (!dragState) return;
+  var rows = document.querySelectorAll('.layout-row');
+  var row = rows[dragState.idx];
+  row.style.transform = 'translateY(' + (e.clientY - dragState.startY) + 'px)';
+  var currentCenter = e.clientY - dragState.containerTop + document.getElementById('layoutList').scrollTop;
+  var newIdx = Math.round(currentCenter / dragState.rowHeight);
+  var clampedIdx = Math.max(1, Math.min(state.layoutPages.length - 1, newIdx));
+  if (clampedIdx !== dragState.idx) {
+    var moved = state.layoutPages.splice(dragState.idx, 1)[0];
+    state.layoutPages.splice(clampedIdx, 0, moved);
+    dragState.idx = clampedIdx; dragState.startY = e.clientY;
+    renderLayoutRows();
+    var newRows = document.querySelectorAll('.layout-row');
+    newRows[clampedIdx].classList.add('dragging'); newRows[clampedIdx].style.position = 'relative'; newRows[clampedIdx].style.zIndex = '10';
+  }
+}
+function onDragEnd() {
+  if (!dragState) return;
+  document.querySelectorAll('.layout-row').forEach(function(r) { r.classList.remove('dragging'); r.style.transform = ''; r.style.position = ''; r.style.zIndex = ''; });
+  dragState = null;
+  document.removeEventListener('pointermove', onDragMove);
+  document.removeEventListener('pointerup', onDragEnd);
+}
+
+/* GALLERY CONFIG */
+function toggleMandatory() { state.mandatoryImages = document.getElementById('mandatoryToggle').checked; }
+function updatePhotoButton() {
+  var sw = document.getElementById('selectedStripWrap');
+  var b = document.getElementById('photoCountBadge');
+  if (state.selectedImages.size > 0) { sw.style.display = 'block'; b.textContent = state.selectedImages.size + ' selected'; }
+  else { sw.style.display = 'none'; b.textContent = ''; }
+}
+
+var styleDetails = {
+  'Standard Grid':  { desc: 'Classic 3-column grid', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
+  'Wide Format':    { desc: '2-column, larger previews', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>' },
+  'Side-by-Side':   { desc: 'Before/after comparison', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>' },
+  'Full Width':     { desc: 'Single column, full-width', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>' },
+};
+
+function renderLayoutStyleOptions() {
+  var c = document.getElementById('layoutStyleCards'); c.innerHTML = '';
+  state.layoutStyles.forEach(function(style) {
+    var d = styleDetails[style], card = document.createElement('div');
+    card.className = 'sc-style-card' + (state.selectedLayoutStyle === style ? ' selected' : '');
+    card.innerHTML = '<div class="sc-style-icon">' + d.icon + '</div><div class="sc-style-info"><div class="sc-style-name">' + style + '</div><div class="sc-style-desc">' + d.desc + '</div></div>';
+    card.addEventListener('click', function() { state.selectedLayoutStyle = style; renderLayoutStyleOptions(); updateImageSectionMode(); });
+    c.appendChild(card);
+  });
+}
+
+function updateImageSectionMode() {
+  var sbs = state.selectedLayoutStyle === 'Side-by-Side';
+  document.getElementById('standardImagePicker').style.display = sbs ? 'none' : '';
+  document.getElementById('pairedImagePicker').style.display = sbs ? '' : 'none';
+  if (sbs) renderPairs();
+}
+
+function renderPairs() {
+  var c = document.getElementById('pairsContainer'); c.innerHTML = '';
+  state.imagePairs.forEach(function(pair, idx) {
+    var card = document.createElement('div'); card.className = 'sbs-pair-card';
+    var cam = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>';
+    var bc = pair.before !== null ? '<img src="' + state.jobImages[pair.before] + '">' : '<div class="sbs-slot-icon">' + cam + '</div><div class="sbs-slot-text">Add Before</div>';
+    var ac = pair.after !== null ? '<img src="' + state.jobImages[pair.after] + '">' : '<div class="sbs-slot-icon">' + cam + '</div><div class="sbs-slot-text">Add After</div>';
+    card.innerHTML =
+      (state.imagePairs.length > 1 ? '<div class="sbs-remove-pair" data-rm="' + idx + '"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' : '') +
+      '<div class="sbs-pair-label">Pair ' + (idx+1) + '</div><div class="sbs-pair-slots">' +
+      '<div class="sbs-slot' + (pair.before !== null ? ' filled' : '') + '" data-p="' + idx + '" data-s="before">' + bc + '<div class="sbs-slot-tag before">Before</div></div>' +
+      '<div class="sbs-slot' + (pair.after !== null ? ' filled' : '') + '" data-p="' + idx + '" data-s="after">' + ac + '<div class="sbs-slot-tag after">After</div></div></div>';
+    card.querySelectorAll('.sbs-slot').forEach(function(s) {
+      s.addEventListener('click', function() { state.slotPickerTarget = { pairIdx: parseInt(s.dataset.p), side: s.dataset.s }; openSlotPicker(); });
+    });
+    var rm = card.querySelector('[data-rm]');
+    if (rm) rm.addEventListener('click', function(e) { e.stopPropagation(); state.imagePairs.splice(idx, 1); renderPairs(); });
+    c.appendChild(card);
+  });
+}
+function addPair() { state.imagePairs.push({ before: null, after: null }); renderPairs(); }
+
+function openSlotPicker() {
+  document.getElementById('pickerTitle').textContent = 'Choose Photo';
+  document.getElementById('pickerDoneBtn').style.display = 'none';
+  renderSlotGrid();
+  document.getElementById('imagePickerOverlay').classList.add('visible');
+  document.getElementById('imagePickerPanel').classList.add('visible');
+}
+function renderSlotGrid() {
+  var g = document.getElementById('imageGrid'); g.innerHTML = '';
+  var used = new Set();
+  state.imagePairs.forEach(function(p) { if (p.before !== null) used.add(p.before); if (p.after !== null) used.add(p.after); });
+  state.jobImages.forEach(function(src, idx) {
+    var it = document.createElement('div'), iu = used.has(idx), t = state.slotPickerTarget, ic = t && state.imagePairs[t.pairIdx][t.side] === idx;
+    it.className = 'image-grid-item' + (ic ? ' selected' : '') + (iu && !ic ? ' used' : '');
+    it.innerHTML = '<img src="' + src + '" loading="lazy"><div class="check-overlay"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+    it.addEventListener('click', function() {
+      if (iu && !ic) return; var tt = state.slotPickerTarget; if (!tt) return;
+      if (ic) state.imagePairs[tt.pairIdx][tt.side] = null; else state.imagePairs[tt.pairIdx][tt.side] = idx;
+      closeImagePicker(); state.slotPickerTarget = null; renderPairs();
+    });
+    g.appendChild(it);
+  });
+}
+
+function openImagePicker() {
+  state.slotPickerTarget = null;
+  document.getElementById('pickerTitle').textContent = 'Select Photos';
+  document.getElementById('pickerDoneBtn').style.display = '';
+  renderImageGrid();
+  document.getElementById('imagePickerOverlay').classList.add('visible');
+  document.getElementById('imagePickerPanel').classList.add('visible');
+}
+function closeImagePicker() {
+  document.getElementById('imagePickerOverlay').classList.remove('visible');
+  document.getElementById('imagePickerPanel').classList.remove('visible');
+}
+function renderImageGrid() {
+  var g = document.getElementById('imageGrid'); g.innerHTML = '';
+  state.jobImages.forEach(function(src, idx) {
+    var it = document.createElement('div');
+    it.className = 'image-grid-item' + (state.selectedImages.has(idx) ? ' selected' : '');
+    it.innerHTML = '<img src="' + src + '" loading="lazy"><div class="check-overlay"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+    it.addEventListener('click', function() { if (state.selectedImages.has(idx)) state.selectedImages.delete(idx); else state.selectedImages.add(idx); renderImageGrid(); });
+    g.appendChild(it);
+  });
+}
+function confirmImageSelection() { closeImagePicker(); updateSelectedStrip(); }
+function updateSelectedStrip() {
+  var s = document.getElementById('selectedStrip'), w = document.getElementById('selectedStripWrap'), b = document.getElementById('photoCountBadge');
+  if (state.selectedImages.size === 0) { w.style.display = 'none'; s.innerHTML = ''; b.textContent = ''; return; }
+  w.style.display = 'block'; b.textContent = state.selectedImages.size + ' selected'; s.innerHTML = '';
+  state.selectedImages.forEach(function(idx) { var img = document.createElement('img'); img.src = state.jobImages[idx]; s.appendChild(img); });
+}
+function saveGallery() { showToast('toastDetail', 'Changes saved successfully'); }
+
+/* PREVIEW */
+function openPreview() { renderPreview(); document.getElementById('previewOverlay').classList.add('visible'); }
+function closePreview() { document.getElementById('previewOverlay').classList.remove('visible'); }
+
+function renderPreview() {
+  var c = document.getElementById('previewScroll'); c.innerHTML = '';
+  var ap = state.layoutPages.filter(function(p) { return p.active; });
+  if (ap.length === 0) { c.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-lighter);font-size:13px;">No active sections to preview.</div>'; return; }
+  ap.forEach(function(page) { var el = document.createElement('div'); el.className = 'preview-page'; el.innerHTML = buildPageContent(page.id); c.appendChild(el); });
+}
+function buildPageContent(id) {
+  var L = '<div class="preview-page-label">';
+  switch (id) {
+    case 'cover': return L+'Cover Page</div><div class="pv-cover"><div class="pv-cover-logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697D95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><h2>Proposal #2024-0847</h2><p>Residential Roof Replacement</p><div class="pv-divider"></div><div class="pv-customer">Prepared for: David Peterson</div><p style="margin-top:4px;font-size:10px;color:var(--ink-lighter);">Date: February 18, 2026</p></div>';
+    case 'scope': return L+'Scope of Work</div><div class="pv-scope"><h3>Scope of Work</h3><p>Remove and dispose of existing 3-tab shingles, underlayment, and damaged decking across all roof sections (approx. 24 squares). Inspect and replace rotted sheathing. Install GAF FeltBuster synthetic underlayment. Apply ice &amp; water shield at eaves, valleys, sidewalls, and penetrations.</p></div>';
+    case 'lineItems': return L+'Line Items</div><table class="pv-table"><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody><tr><td>Tear-off &amp; disposal</td><td>24 sq</td><td>$95</td><td>$2,280</td></tr><tr><td>GAF Timberline HDZ</td><td>24 sq</td><td>$185</td><td>$4,440</td></tr><tr><td>Synthetic underlayment</td><td>24 sq</td><td>$18</td><td>$432</td></tr><tr><td>Ice &amp; water shield</td><td>6 rolls</td><td>$68</td><td>$408</td></tr><tr><td>Ridge vent &amp; cap</td><td>48 lf</td><td>$8</td><td>$384</td></tr><tr><td>Drip edge &amp; flashing</td><td>1 lot</td><td>$206</td><td>$206</td></tr><tr class="total-row"><td colspan="3">Total</td><td>$8,150</td></tr></tbody></table>';
+    case 'gallery': return renderGalleryPage();
+    case 'terms': return L+'Terms &amp; Conditions</div><div class="pv-terms"><h3>Terms &amp; Conditions</h3><p>1. 50% deposit required before work begins. 2. Workmanship warranted 10 years. 3. Damaged decking replaced at $85/sheet. 4. Proposal valid 30 days.</p></div>';
+    case 'signature': return L+'Signature</div><div><div class="pv-sig-block"><div class="pv-sig-line"></div><div class="pv-sig-label">Customer Signature</div></div><div class="pv-sig-row"><div><div class="pv-sig-line" style="height:30px;"></div><div class="pv-sig-label">Printed Name</div></div><div><div class="pv-sig-line" style="height:30px;"></div><div class="pv-sig-label">Date</div></div></div></div>';
+    default: return '<p style="font-size:11px;color:var(--ink-lighter);">Content placeholder</p>';
+  }
+}
+function renderGalleryPage() {
+  var sk = state.selectedLayoutStyle.toLowerCase().replace(/\s+/g, '');
+  var sm = { standardgrid:'standard', wideformat:'wide', 'side-by-side':'sidebyside', sidebyside:'sidebyside', fullwidth:'fullwidth' };
+  var cls = sm[sk] || 'standard';
+  var h = '<div class="preview-page-label">Job Image Gallery</div>';
+  if (cls === 'sidebyside') {
+    var vp = state.imagePairs.filter(function(p) { return p.before !== null || p.after !== null; });
+    if (!vp.length) { h += '<div class="pv-gallery-empty">No before/after pairs configured.</div>'; return h; }
+    vp.forEach(function(pair, i) {
+      h += '<div style="margin-bottom:8px;"><div style="font-size:8px;font-weight:600;color:var(--ink-lighter);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Pair '+(i+1)+'</div><div style="display:flex;gap:5px;">';
+      if (pair.before !== null) h += '<div style="flex:1;text-align:center;"><img src="'+state.jobImages[pair.before]+'" style="width:100%;border-radius:3px;aspect-ratio:1;object-fit:cover;" loading="lazy"><div style="font-size:7px;font-weight:600;color:var(--green-normal);margin-top:2px;">BEFORE</div></div>';
+      if (pair.after !== null) h += '<div style="flex:1;text-align:center;"><img src="'+state.jobImages[pair.after]+'" style="width:100%;border-radius:3px;aspect-ratio:1;object-fit:cover;" loading="lazy"><div style="font-size:7px;font-weight:600;color:var(--product-normal);margin-top:2px;">AFTER</div></div>';
+      h += '</div></div>';
+    }); return h;
+  }
+  var sa = Array.from(state.selectedImages);
+  if (!sa.length) { h += '<div class="pv-gallery-empty">No images selected for this gallery.</div>'; return h; }
+  h += '<div class="pv-gallery-grid style-'+cls+'">';
+  sa.forEach(function(idx) { h += '<img src="'+state.jobImages[idx]+'" loading="lazy">'; });
+  h += '</div>'; return h;
+}
+
+/* TOAST */
+function showToast(id, msg) { var el = document.getElementById(id); el.textContent = msg; el.classList.add('visible'); setTimeout(function() { el.classList.remove('visible'); }, 2200); }
+
+/* INIT */
+renderLayoutRows();
+showDetail('gallery');
+</script>
+</body>
+</html>
