@@ -134,13 +134,11 @@ img { display: block; }
   overflow: hidden;
 }
 .master-header {
-  padding: 16px 16px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-lighter);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 14px 16px 10px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .master-scroll {
   flex: 1;
@@ -275,7 +273,7 @@ img { display: block; }
 .lock-icon { display: inline-flex; align-items: center; color: var(--ink-lighter); opacity: 0.6; }
 .lock-icon svg { width: 12px; height: 12px; }
 
-/* Toggle Switch */
+/* iOS Switch (for mandatory toggle in detail pane) */
 .ios-switch {
   -webkit-appearance: none; appearance: none;
   width: 46px; height: 28px; border-radius: 14px; background: #E9E9EA;
@@ -290,10 +288,43 @@ img { display: block; }
   box-shadow: 0 3px 1px rgba(0,0,0,0.06), 0 3px 8px rgba(0,0,0,0.15), 0 0 0 0.5px rgba(0,0,0,0.04);
 }
 .ios-switch:checked::after { transform: translateX(18px); }
-.ios-switch:active::after { width: 28px; }
-.ios-switch:checked:active::after { transform: translateX(14px); }
 .ios-switch.toggle-locked { opacity: 0.35; cursor: default; pointer-events: none; }
-.toggle-in-row { display: flex; align-items: center; flex-shrink: 0; }
+
+/* Eye Icon Button */
+.eye-btn {
+  width: 30px; height: 30px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+  transition: color 0.15s, opacity 0.15s, transform 0.1s;
+}
+.eye-btn:active { transform: scale(0.9); }
+.eye-btn.eye-active { color: var(--ink-normal); }
+.eye-btn.eye-inactive { color: var(--cloud-dark); }
+.eye-btn.eye-locked { opacity: 0.35; cursor: default; pointer-events: none; }
+
+.layout-row.hidden-row { opacity: 0.5; }
+.layout-row.hidden-row .layout-row-icon { background: var(--cloud-normal); color: var(--cloud-dark); }
+
+.row-status-badge {
+  font-size: 11px; font-weight: 500; color: var(--ink-lighter);
+  background: var(--cloud-normal); padding: 2px 8px; border-radius: 4px;
+}
+
+/* Master header with edit controls */
+.master-header { display: flex; align-items: center; }
+.master-header-title { flex: 1; font-size: 13px; font-weight: 600; color: var(--ink-lighter); text-transform: uppercase; letter-spacing: 0.5px; }
+.master-header-btn {
+  font-size: 14px; font-weight: 600; color: var(--blue-normal);
+  padding: 4px 8px; border-radius: 6px; transition: background 0.15s;
+}
+.master-header-btn:active { background: var(--blue-light); }
+.master-header-btn.save-btn { font-weight: 700; }
+.master-header-btn.cancel-btn { font-weight: 500; color: var(--ink-light); }
+
+.edit-mode-enter .drag-handle { animation: slideInLeft 0.2s ease-out; }
+.edit-mode-enter .eye-btn { animation: fadeIn 0.2s ease-out; }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
 /* ============================================================
    DETAIL: GALLERY CONFIGURATION
@@ -548,7 +579,10 @@ img { display: block; }
 
       <!-- LEFT: Master list -->
       <div class="master-pane">
-        <div class="master-header">Proposal Sections</div>
+        <div class="master-header" id="masterHeader">
+          <span class="master-header-title">Proposal Sections</span>
+          <button class="master-header-btn" id="masterEditBtn" onclick="enterEditMode()">Edit</button>
+        </div>
         <div style="margin:0 12px 10px;padding:8px 12px;background:#E8F4FD;border-radius:8px;font-size:12px;color:#0172CB;line-height:1.4;flex-shrink:0;display:flex;align-items:flex-start;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0172CB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>Only <strong>Job Image Gallery</strong> can be configured right now</span></div>
         <div class="master-scroll" id="layoutList">
           <div id="layoutSections"></div>
@@ -670,6 +704,8 @@ img { display: block; }
 <script>
 var state = {
   currentScreen: 'B',
+  editMode: false,
+  snapshot: null,
   activeDetail: null,
   layoutPages: [
     { id: 'cover',      name: 'Cover Page',          active: true,  locked: true },
@@ -732,6 +768,44 @@ function hideDetail() {
 
 function doneEditing() { showToast('toastGlobal', 'Layout saved successfully'); }
 
+var eyeOpenSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+var eyeOffSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+function enterEditMode() {
+  state.snapshot = JSON.parse(JSON.stringify(state.layoutPages));
+  state.editMode = true;
+  renderLayoutRows();
+  updateMasterHeader();
+  var card = document.getElementById('layoutReorderCard');
+  if (card) card.classList.add('edit-mode-enter');
+  setTimeout(function() { if (card) card.classList.remove('edit-mode-enter'); }, 300);
+}
+function cancelEditMode() {
+  if (state.snapshot) state.layoutPages = state.snapshot;
+  state.snapshot = null;
+  state.editMode = false;
+  renderLayoutRows();
+  updateMasterHeader();
+}
+function saveEditMode() {
+  state.snapshot = null;
+  state.editMode = false;
+  renderLayoutRows();
+  updateMasterHeader();
+  showToast('toastGlobal', 'Layout saved successfully');
+}
+function updateMasterHeader() {
+  var h = document.getElementById('masterHeader');
+  if (state.editMode) {
+    h.innerHTML = '<button class="master-header-btn cancel-btn" onclick="cancelEditMode()">Cancel</button>' +
+      '<span class="master-header-title" style="text-align:center;">Editing</span>' +
+      '<button class="master-header-btn save-btn" onclick="saveEditMode()">Save</button>';
+  } else {
+    h.innerHTML = '<span class="master-header-title">Proposal Sections</span>' +
+      '<button class="master-header-btn" onclick="enterEditMode()">Edit</button>';
+  }
+}
+
 /* LAYOUT ROWS */
 function renderLayoutRows() {
   var wrapper = document.getElementById('layoutSections');
@@ -747,7 +821,7 @@ function renderLayoutRows() {
 
 function buildRow(page, idx, isConfigurable) {
   var row = document.createElement('div');
-  row.className = 'layout-row' + (state.activeDetail === page.id ? ' selected-row' : '');
+  row.className = 'layout-row' + (state.activeDetail === page.id ? ' selected-row' : '') + (!page.active && state.editMode ? ' hidden-row' : '');
   row.dataset.index = idx;
   row.dataset.id = page.id;
 
@@ -755,40 +829,45 @@ function buildRow(page, idx, isConfigurable) {
   var isCover = page.id === 'cover';
   var lockIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
 
-  var statusParts = [];
-  if (!page.active) statusParts.push('<span class="status-dot inactive"></span>Inactive');
-  if (page.locked) statusParts.push('Locked');
-  var statusHtml = statusParts.length > 0 ? '<div class="row-status">' + statusParts.join(' &middot; ') + '</div>' : '';
+  if (state.editMode) {
+    var eyeClass = page.locked ? ' eye-locked' : (page.active ? ' eye-active' : ' eye-inactive');
+    row.innerHTML =
+      '<div class="drag-handle' + (isCover ? ' locked' : '') + '" data-drag="' + idx + '">' + dragSvg + '</div>' +
+      '<div class="layout-row-icon">' + pageIcons[page.id] + '</div>' +
+      '<div class="layout-row-text"><div class="row-name">' + page.name + (page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : '') + '</div></div>' +
+      '<div class="row-right-actions"><div class="eye-btn' + eyeClass + '" data-eye="' + idx + '">' + (page.active ? eyeOpenSvg : eyeOffSvg) + '</div></div>';
 
-  var editBtnHtml = isConfigurable
-    ? '<div class="row-edit-btn" data-edit="' + page.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
-    : '';
+    var eyeBtn = row.querySelector('[data-eye="' + idx + '"]');
+    if (eyeBtn) eyeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (page.locked) { showToast('toastGlobal', page.name + ' is locked'); return; }
+      page.active = !page.active;
+      renderLayoutRows();
+    });
 
-  row.innerHTML =
-    '<div class="drag-handle' + (isCover ? ' locked' : '') + '" data-drag="' + idx + '">' + dragSvg + '</div>' +
-    '<div class="layout-row-icon">' + pageIcons[page.id] + '</div>' +
-    '<div class="layout-row-text">' +
-      '<div class="row-name">' + page.name + (page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : '') + '</div>' +
-      statusHtml +
-    '</div>' +
-    '<div class="row-right-actions">' +
-      editBtnHtml +
-      '<div class="toggle-in-row">' +
-        '<input type="checkbox" class="ios-switch' + (page.locked ? ' toggle-locked' : '') + '" data-toggle="' + idx + '" ' + (page.active ? 'checked' : '') + '>' +
+    var dragHandle = row.querySelector('[data-drag="' + idx + '"]');
+    if (dragHandle) dragHandle.addEventListener('pointerdown', function(e) { onDragStart(e, idx); });
+  } else {
+    var statusParts = [];
+    if (!page.active) statusParts.push('<span class="row-status-badge">Hidden</span>');
+    if (page.locked) statusParts.push('Locked');
+    var statusHtml = statusParts.length > 0 ? '<div class="row-status">' + statusParts.join(' &middot; ') + '</div>' : '';
+
+    var editBtnHtml = isConfigurable
+      ? '<div class="row-edit-btn" data-edit="' + page.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
+      : '';
+
+    row.innerHTML =
+      '<div class="layout-row-icon">' + pageIcons[page.id] + '</div>' +
+      '<div class="layout-row-text">' +
+        '<div class="row-name">' + page.name + (page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : '') + '</div>' +
+        statusHtml +
       '</div>' +
-    '</div>';
+      '<div class="row-right-actions">' + editBtnHtml + '</div>';
 
-  var editBtn = row.querySelector('[data-edit]');
-  if (editBtn) editBtn.addEventListener('click', function(e) { e.stopPropagation(); showDetail(page.id); });
-
-  var toggleEl = row.querySelector('[data-toggle="' + idx + '"]');
-  if (toggleEl) {
-    toggleEl.addEventListener('change', function(e) { e.stopPropagation(); page.active = toggleEl.checked; renderLayoutRows(); });
-    toggleEl.addEventListener('click', function(e) { e.stopPropagation(); if (page.locked) { e.preventDefault(); showToast('toastGlobal', page.name + ' is locked'); } });
+    var editBtn = row.querySelector('[data-edit]');
+    if (editBtn) editBtn.addEventListener('click', function(e) { e.stopPropagation(); showDetail(page.id); });
   }
-
-  var dragHandle = row.querySelector('[data-drag="' + idx + '"]');
-  if (dragHandle) dragHandle.addEventListener('pointerdown', function(e) { onDragStart(e, idx); });
 
   return row;
 }

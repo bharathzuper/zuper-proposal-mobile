@@ -859,7 +859,7 @@ img { display: block; }
   pointer-events: none;
 }
 
-/* Toggle Switch — native iOS style */
+/* Toggle Switch — for Screen C mandatory toggle */
 .ios-switch {
   -webkit-appearance: none;
   appearance: none;
@@ -894,14 +894,51 @@ img { display: block; }
 .ios-switch:active::after { width: 28px; }
 .ios-switch:checked:active::after { transform: translateX(14px); }
 
-/* Locked state */
-.ios-switch.toggle-locked {
-  opacity: 0.35;
-  cursor: default;
-  pointer-events: none;
+/* Eye Icon Button */
+.eye-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ink-lighter);
+  cursor: pointer;
+  transition: color 0.15s, opacity 0.15s, transform 0.1s;
+}
+.eye-btn:active { transform: scale(0.9); }
+.eye-btn.eye-active { color: var(--ink-normal); }
+.eye-btn.eye-inactive { color: var(--cloud-dark); }
+.eye-btn.eye-locked { opacity: 0.35; cursor: default; pointer-events: none; }
+
+.layout-row.hidden-row { opacity: 0.5; }
+.layout-row.hidden-row .layout-row-icon { background: var(--cloud-normal); color: var(--cloud-dark); }
+
+/* Read mode status badge */
+.row-status-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-lighter);
+  background: var(--cloud-normal);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.1px;
 }
 
-.toggle-in-row { display: flex; align-items: center; flex-shrink: 0; }
+/* Edit mode transitions */
+.drag-handle { transition: opacity 0.2s, width 0.2s, margin 0.2s; }
+.edit-mode-enter .drag-handle { animation: slideInLeft 0.2s ease-out; }
+.edit-mode-enter .eye-btn { animation: fadeIn 0.2s ease-out; }
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 
 /* ============================================================
@@ -1748,16 +1785,16 @@ img { display: block; }
           <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#252A31" stroke-opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#252A31"/><path d="M23 4.5V7.5C23.8 7.2 24 6.5 24 6C24 5.5 23.8 4.8 23 4.5Z" fill="#252A31" fill-opacity="0.4"/></svg>
         </div>
       </div>
-      <div class="nav-bar">
-        <button class="nav-back" onclick="goBackToA()">
+      <div class="nav-bar" id="navBarB">
+        <button class="nav-back" id="navBackB" onclick="goBackToA()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <span class="nav-title">Edit Proposal Layout</span>
-        <div class="nav-right" style="display:flex;align-items:center;gap:6px;">
+        <div class="nav-right" id="navRightB" style="display:flex;align-items:center;gap:6px;">
           <button class="nav-action-btn" onclick="goToPreview()" title="Preview" style="padding:6px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
-          <button class="nav-action-btn" onclick="doneEditing()" style="font-size:15px;font-weight:600;color:var(--blue-normal);">Done</button>
+          <button class="nav-action-btn" id="editModeBtn" onclick="enterEditMode()" style="font-size:15px;font-weight:600;color:var(--blue-normal);">Edit</button>
         </div>
       </div>
 
@@ -1909,6 +1946,8 @@ img { display: block; }
    ================================================================ */
 const state = {
   currentScreen: 'A',
+  editMode: false,
+  snapshot: null,
   layoutPages: [
     { id: 'cover',      name: 'Cover Page',          active: true,  locked: true },
     { id: 'scope',      name: 'Scope of Work',       active: true,  locked: false },
@@ -1968,20 +2007,66 @@ function goToScreenB() {
   closeMoreSheet();
   setTimeout(() => {
     state.currentScreen = 'B';
+    state.editMode = false;
+    state.snapshot = null;
     renderLayoutRows();
+    updateNavForMode();
     setScreenClasses('left', 'active', 'right');
   }, 200);
 }
 function goBackToA() {
+  if (state.editMode) {
+    cancelEditMode();
+  }
   state.currentScreen = 'A';
   setScreenClasses('active', 'right', 'right');
 }
-function doneEditing() {
+
+function enterEditMode() {
+  state.snapshot = JSON.parse(JSON.stringify(state.layoutPages));
+  state.editMode = true;
+  renderLayoutRows();
+  updateNavForMode();
+  const card = document.getElementById('layoutReorderCard');
+  if (card) card.classList.add('edit-mode-enter');
+  setTimeout(() => { if (card) card.classList.remove('edit-mode-enter'); }, 300);
+}
+function cancelEditMode() {
+  if (state.snapshot) {
+    state.layoutPages = state.snapshot;
+  }
+  state.snapshot = null;
+  state.editMode = false;
+  renderLayoutRows();
+  updateNavForMode();
+}
+function saveEditMode() {
+  state.snapshot = null;
+  state.editMode = false;
+  renderLayoutRows();
+  updateNavForMode();
   showToast('toastB', 'Layout saved successfully');
-  setTimeout(() => {
-    state.currentScreen = 'A';
-    setScreenClasses('active', 'right', 'right');
-  }, 600);
+}
+function updateNavForMode() {
+  const navRight = document.getElementById('navRightB');
+  const navBack = document.getElementById('navBackB');
+  if (state.editMode) {
+    navBack.innerHTML = '';
+    navBack.textContent = 'Cancel';
+    navBack.style.cssText = 'font-size:15px;font-weight:500;color:var(--blue-normal);padding:4px 8px;';
+    navBack.onclick = cancelEditMode;
+    navRight.innerHTML = '<button class="nav-action-btn" onclick="saveEditMode()" style="font-size:15px;font-weight:700;color:var(--blue-normal);">Save</button>';
+  } else {
+    navBack.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    navBack.style.cssText = '';
+    navBack.onclick = goBackToA;
+    navRight.innerHTML = `
+      <button class="nav-action-btn" onclick="goToPreview()" title="Preview" style="padding:6px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+      <button class="nav-action-btn" onclick="enterEditMode()" style="font-size:15px;font-weight:600;color:var(--blue-normal);">Edit</button>
+    `;
+  }
 }
 function goToScreenC() {
   state.currentScreen = 'C';
@@ -2026,9 +2111,12 @@ function renderLayoutRows() {
   wrapper.appendChild(card);
 }
 
+const eyeOpenSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+const eyeOffSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
 function buildRow(page, idx, isConfigurable) {
   const row = document.createElement('div');
-  row.className = 'layout-row';
+  row.className = 'layout-row' + (!page.active && state.editMode ? ' hidden-row' : '');
   row.dataset.index = idx;
   row.dataset.id = page.id;
 
@@ -2037,59 +2125,66 @@ function buildRow(page, idx, isConfigurable) {
   const isCover = page.id === 'cover';
   const lockIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
 
-  const statusParts = [];
-  if (!page.active) statusParts.push('<span class="status-dot inactive"></span>Inactive');
-  if (page.locked) statusParts.push('Locked');
-  const statusHtml = statusParts.length > 0
-    ? `<div class="row-status">${statusParts.join(' · ')}</div>`
-    : '';
-
-  const editBtnHtml = isConfigurable
-    ? '<div class="row-edit-btn" data-edit="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
-    : '';
-
-  row.innerHTML = `
-    <div class="drag-handle${isCover ? ' locked' : ''}" data-drag="${idx}">${dragSvg}</div>
-    <div class="layout-row-icon">${pageIcons[page.id]}</div>
-    <div class="layout-row-text">
-      <div class="row-name">${page.name}${page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : ''}</div>
-      ${statusHtml}
-    </div>
-    <div class="row-right-actions">
-      ${editBtnHtml}
-      <div class="toggle-in-row">
-        <input type="checkbox" class="ios-switch${page.locked ? ' toggle-locked' : ''}" data-toggle="${idx}" ${page.active ? 'checked' : ''}>
+  if (state.editMode) {
+    const eyeClass = page.locked ? ' eye-locked' : (page.active ? ' eye-active' : ' eye-inactive');
+    row.innerHTML = `
+      <div class="drag-handle${isCover ? ' locked' : ''}" data-drag="${idx}">${dragSvg}</div>
+      <div class="layout-row-icon">${pageIcons[page.id]}</div>
+      <div class="layout-row-text">
+        <div class="row-name">${page.name}${page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : ''}</div>
       </div>
-    </div>
-  `;
+      <div class="row-right-actions">
+        <div class="eye-btn${eyeClass}" data-eye="${idx}">${page.active ? eyeOpenSvg : eyeOffSvg}</div>
+      </div>
+    `;
 
-  const editBtn = row.querySelector('[data-edit]');
-  if (editBtn) {
-    editBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      goToScreenC();
-    });
-  }
+    const eyeBtn = row.querySelector(`[data-eye="${idx}"]`);
+    if (eyeBtn) {
+      eyeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (page.locked) {
+          showToast('toastB', page.name + ' is locked');
+          return;
+        }
+        page.active = !page.active;
+        renderLayoutRows();
+      });
+    }
 
-  const toggleEl = row.querySelector(`[data-toggle="${idx}"]`);
-  if (toggleEl) {
-    toggleEl.addEventListener('change', (e) => {
-      e.stopPropagation();
-      page.active = toggleEl.checked;
-      renderLayoutRows();
-    });
-    toggleEl.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (page.locked) {
-        e.preventDefault();
-        showToast('toastB', page.name + ' is locked');
-      }
-    });
-  }
+    const dragHandle = row.querySelector(`[data-drag="${idx}"]`);
+    if (dragHandle) {
+      dragHandle.addEventListener('pointerdown', (e) => onDragStart(e, idx));
+    }
+  } else {
+    const statusParts = [];
+    if (!page.active) statusParts.push('<span class="row-status-badge">Hidden</span>');
+    if (page.locked) statusParts.push('Locked');
+    const statusHtml = statusParts.length > 0
+      ? `<div class="row-status">${statusParts.join(' · ')}</div>`
+      : '';
 
-  const dragHandle = row.querySelector(`[data-drag="${idx}"]`);
-  if (dragHandle) {
-    dragHandle.addEventListener('pointerdown', (e) => onDragStart(e, idx));
+    const editBtnHtml = isConfigurable
+      ? '<div class="row-edit-btn" data-edit="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'
+      : '';
+
+    row.innerHTML = `
+      <div class="layout-row-icon">${pageIcons[page.id]}</div>
+      <div class="layout-row-text">
+        <div class="row-name">${page.name}${page.locked ? '<span class="lock-icon">' + lockIcon + '</span>' : ''}</div>
+        ${statusHtml}
+      </div>
+      <div class="row-right-actions">
+        ${editBtnHtml}
+      </div>
+    `;
+
+    const editBtn = row.querySelector('[data-edit]');
+    if (editBtn) {
+      editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToScreenC();
+      });
+    }
   }
 
   return row;
