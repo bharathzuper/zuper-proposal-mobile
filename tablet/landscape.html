@@ -371,9 +371,14 @@ img { display: block; }
 .sc-photos-action { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: var(--blue-normal); }
 .sc-count-badge { font-size: 12px; font-weight: 500; color: var(--ink-lighter); }
 
-.sc-images-strip { padding: 10px 0 0; display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.sc-images-strip::-webkit-scrollbar { display: none; }
-.sc-images-strip img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.sc-images-preview { padding: 10px 0 0; display: grid; gap: 6px; }
+.sc-images-preview.layout-standard { grid-template-columns: repeat(3, 1fr); }
+.sc-images-preview.layout-wide { grid-template-columns: repeat(2, 1fr); }
+.sc-images-preview.layout-fullwidth { grid-template-columns: 1fr; }
+.sc-images-preview img { width: 100%; border-radius: 6px; object-fit: cover; display: block; }
+.sc-images-preview.layout-standard img { aspect-ratio: 1; }
+.sc-images-preview.layout-wide img { aspect-ratio: 16/10; }
+.sc-images-preview.layout-fullwidth img { aspect-ratio: 16/9; }
 
 /* Side-by-Side pairs */
 .sbs-pair-card {
@@ -632,7 +637,7 @@ img { display: block; }
                     </span>
                   </div>
                   <div id="selectedStripWrap" style="display:none;">
-                    <div id="selectedStrip" class="sc-images-strip"></div>
+                    <div id="selectedStrip" class="sc-images-preview layout-standard"></div>
                   </div>
                 </div>
 
@@ -933,7 +938,12 @@ function updateImageSectionMode() {
   var sbs = state.selectedLayoutStyle === 'Side-by-Side';
   document.getElementById('standardImagePicker').style.display = sbs ? 'none' : '';
   document.getElementById('pairedImagePicker').style.display = sbs ? '' : 'none';
-  if (sbs) renderPairs();
+  if (sbs) { renderPairs(); } else { updateSelectedStrip(); }
+}
+function getLayoutClass() {
+  var key = state.selectedLayoutStyle.toLowerCase().replace(/\s+/g, '');
+  var map = { standardgrid: 'layout-standard', wideformat: 'layout-wide', fullwidth: 'layout-fullwidth' };
+  return map[key] || 'layout-standard';
 }
 
 function renderPairs() {
@@ -1008,7 +1018,8 @@ function confirmImageSelection() { closeImagePicker(); updateSelectedStrip(); }
 function updateSelectedStrip() {
   var s = document.getElementById('selectedStrip'), w = document.getElementById('selectedStripWrap'), b = document.getElementById('photoCountBadge');
   if (state.selectedImages.size === 0) { w.style.display = 'none'; s.innerHTML = ''; b.textContent = ''; return; }
-  w.style.display = 'block'; b.textContent = state.selectedImages.size + ' selected'; s.innerHTML = '';
+  w.style.display = 'block'; b.textContent = state.selectedImages.size + ' selected';
+  s.className = 'sc-images-preview ' + getLayoutClass(); s.innerHTML = '';
   state.selectedImages.forEach(function(idx) { var img = document.createElement('img'); img.src = state.jobImages[idx]; s.appendChild(img); });
 }
 function saveGallery() { showToast('toastDetail', 'Changes saved successfully'); }
