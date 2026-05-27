@@ -483,7 +483,34 @@ img { display: block; }
   font-weight: 500;
   color: #000;
   line-height: 1.4;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
+.recommended-star {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: #F59E0B;
+}
+.recommended-star svg { width: 14px; height: 14px; display: block; }
+.option-kebab {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: -4px;
+  margin-right: -4px;
+  color: var(--ink-light);
+  background: transparent;
+}
+.option-kebab:active { background: var(--cloud-light); }
 .option-info .desc {
   font-size: 12px;
   font-weight: 400;
@@ -1520,6 +1547,1419 @@ img { display: block; }
 }
 
 /* ============================================================
+   MULTI-TRADE OPTIONS (display only — FE setup view)
+   ============================================================ */
+.trade-card { overflow: hidden; }
+.trade-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 12px;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+}
+.trade-header-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.trade-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.trade-meta {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-lighter);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+}
+.trade-chevron {
+  flex-shrink: 0;
+  color: var(--ink-light);
+  transition: transform 0.22s ease;
+  transform: rotate(180deg);
+}
+.trade-card[data-collapsed="true"] .trade-chevron { transform: rotate(0deg); }
+.trade-card[data-collapsed="true"] .trade-body { display: none; }
+.trade-body { display: block; }
+
+/* Description clamp + See more */
+.desc-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 4px; }
+.desc-wrap .desc { margin-top: 0; }
+.desc.desc--clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+.desc-toggle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  padding: 0;
+  background: transparent;
+}
+.desc-toggle:active { opacity: 0.7; }
+
+/* Product list row (single icon + comma-separated products) */
+.option-products {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px 6px;
+}
+.option-products-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--blue-normal);
+}
+.option-products-icon svg { width: 14px; height: 14px; }
+.option-products-text {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+  padding-top: 4px;
+}
+
+/* Show more / less for trades with >3 options */
+.trade-card:not([data-options-expanded="true"]) .option-card-item[data-hidden="true"],
+.trade-card:not([data-options-expanded="true"]) .separator[data-hidden="true"] {
+  display: none;
+}
+.show-more-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.show-more-options:active { background: var(--cloud-light); }
+.show-more-options .chev {
+  transition: transform 0.22s ease;
+}
+.trade-card[data-options-expanded="true"] .show-more-options .chev {
+  transform: rotate(180deg);
+}
+
+
+/* ============================================================
+   EDIT PROPOSAL (screenE)
+   ============================================================ */
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 14px 16px 12px;
+  background: var(--surface-light);
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  background: transparent;
+  padding: 0;
+}
+.stepper-node {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  flex-shrink: 0;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.stepper-node--done {
+  background: var(--blue-normal);
+  color: #fff;
+  border: 1.5px solid var(--blue-normal);
+}
+.stepper-node--current {
+  background: var(--blue-light);
+  color: var(--blue-normal);
+  border: 1.5px solid var(--blue-normal);
+}
+.stepper-node--pending {
+  background: var(--surface-light);
+  color: var(--ink-lighter);
+  border: 1.5px solid var(--cloud-dark);
+}
+.stepper-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-lighter);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+}
+.stepper-step--current .stepper-label {
+  color: var(--ink-normal);
+  font-weight: 600;
+}
+.stepper-step--done .stepper-label {
+  color: var(--ink-light);
+}
+.stepper-line {
+  flex: 1 1 auto;
+  height: 1.5px;
+  background: var(--cloud-dark);
+  margin: 11px 8px 0;
+  align-self: flex-start;
+}
+.stepper-line--done {
+  background: var(--blue-normal);
+}
+
+.section-heading {
+  padding: 16px 16px 4px;
+}
+.section-heading h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  margin: 0;
+}
+.section-heading p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+
+.pricelist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  margin: 12px 16px 0;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card);
+  width: calc(100% - 32px);
+}
+.pricelist-row:active { background: var(--cloud-light); }
+.pricelist-row-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--ink-light);
+}
+.pricelist-row-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-light);
+  text-align: left;
+  letter-spacing: 0.2px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pricelist-row[data-selected="true"] .pricelist-row-label {
+  color: var(--ink-normal);
+  font-weight: 500;
+}
+.pricelist-row-chev {
+  width: 18px;
+  height: 18px;
+  color: var(--ink-light);
+  flex-shrink: 0;
+}
+
+.add-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 24px);
+  margin: 8px 12px 12px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1.5px dashed var(--cloud-dark);
+  border-radius: var(--radius-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.add-option-row:active { background: var(--cloud-light); }
+.add-option-row svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.add-trade-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  background: var(--blue-light);
+  border-radius: var(--radius-button);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+}
+.add-trade-btn:active { opacity: 0.85; }
+.add-trade-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.edit-footer {
+  flex-shrink: 0;
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
+  background: var(--surface-light);
+  border-top: 1px solid var(--cloud-dark);
+  box-shadow: 0 -4px 14px rgba(28,59,84,0.04);
+}
+.edit-footer .btn-secondary,
+.edit-footer .btn-primary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.edit-footer .btn-secondary {
+  background: var(--cloud-normal);
+  color: var(--ink-normal);
+}
+
+/* Trade header action buttons (edit mode) */
+.trade-header-add,
+.trade-header-kebab {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+  color: var(--ink-light);
+  background: transparent;
+}
+.trade-header-add:active,
+.trade-header-kebab:active { background: var(--cloud-light); }
+.trade-header-add { color: var(--ink-normal); }
+.trade-header .trade-header-main { pointer-events: auto; }
+
+/* ----- Reorder options bottom sheet (full-screen) ----- */
+#reorderOptionsSheet {
+  max-height: 100%;
+  height: 100%;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+#reorderOptionsSheet .bs-header {
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.reorder-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  overflow-y: auto;
+  background: var(--content-bg);
+}
+.reorder-list::-webkit-scrollbar { display: none; }
+#reorderOptionsSheet .bs-form-actions {
+  flex-shrink: 0;
+  border-top: 1px solid var(--cloud-dark);
+  background: var(--surface-light);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
+}
+.reorder-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.reorder-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card);
+  background: var(--surface-light);
+  user-select: none;
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+.reorder-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.reorder-item.dragging {
+  opacity: 0.5;
+}
+.reorder-item.drop-target {
+  border-color: var(--blue-normal);
+  box-shadow: 0 0 0 2px var(--blue-light);
+}
+.reorder-chip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cloud-normal);
+  color: var(--ink-light);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  margin-top: 14px;
+}
+.reorder-body {
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.reorder-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.reorder-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.reorder-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.3;
+}
+.reorder-sub-alt {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+}
+.reorder-counts {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+}
+.reorder-price {
+  background: var(--cloud-light);
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+}
+.reorder-grip {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-lighter);
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.reorder-grip:active { cursor: grabbing; }
+.reorder-item.dragging .reorder-grip { cursor: grabbing; }
+
+/* ----- Edit-mode option card (v7 style) ----- */
+.option-edit {
+  background: var(--surface-light);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-inner-card);
+  margin: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.option-edit-hero {
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.18) 100%), var(--hero-bg, var(--cloud-normal));
+  position: relative;
+}
+.option-edit-hero-kebab {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(6px);
+  color: var(--ink-normal);
+}
+.option-edit-hero-kebab:active { background: rgba(255,255,255,1); }
+.option-edit-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.option-edit-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.option-edit-name .recommended-star { flex-shrink: 0; }
+.option-edit-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+}
+.option-edit-divider {
+  height: 1px;
+  background: var(--cloud-dark);
+  margin: 6px -14px 8px;
+}
+.line-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.line-item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.line-item-price {
+  font-weight: 500;
+  color: var(--ink-normal);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.line-item--hidden { display: none; }
+.option-edit[data-items-expanded="true"] .line-item--hidden { display: flex; }
+.more-items-link {
+  align-self: flex-start;
+  background: transparent;
+  padding: 6px 0;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+}
+.more-items-link:active { opacity: 0.7; }
+.option-edit-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--cloud-dark);
+}
+.option-edit-total .total-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.option-edit-total .total-label .small {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-lighter);
+  font-weight: 400;
+}
+.option-edit-total .total-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Separator between option-edit cards inside a trade body */
+.trade-body > .option-edit + .option-edit { margin-top: 12px; }
+
+/* Horizontal carousel of option cards (edit mode) */
+.option-carousel {
+  display: flex;
+  gap: 10px;
+  padding: 12px 12px 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-left: 12px;
+  scroll-padding-right: 12px;
+}
+.option-carousel::-webkit-scrollbar { display: none; }
+.option-carousel > .option-edit,
+.option-carousel > .option-add-tile {
+  flex: 0 0 86%;
+  margin: 0;
+  scroll-snap-align: start;
+}
+.option-carousel > .option-edit:last-of-type:not(:first-of-type),
+.option-carousel > .option-add-tile { scroll-snap-align: end; }
+
+/* "+ Add option" tile (last item in the carousel) */
+.option-add-tile {
+  border: 1.5px dashed var(--cloud-dark);
+  border-radius: var(--radius-card);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 240px;
+  color: var(--blue-normal);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 12px;
+}
+.option-add-tile:active { background: var(--cloud-light); }
+.option-add-tile .icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-normal);
+}
+.option-add-tile svg { width: 22px; height: 22px; }
+.option-add-tile .sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-lighter);
+  letter-spacing: 0.2px;
+}
+
+/* Page indicator dots under each carousel */
+.carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px 10px;
+}
+.carousel-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cloud-dark);
+  transition: width 0.2s ease, background 0.2s ease;
+}
+.carousel-dots .dot.active {
+  width: 20px;
+  background: var(--blue-normal);
+}
+
+/* Empty trade state */
+.trade-empty {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+
+/* Bottom sheet form inputs (for add-option) */
+.bs-form-field {
+  padding: 6px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bs-form-field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+.bs-form-field input,
+.bs-form-field textarea {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink-normal);
+  padding: 10px 12px;
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card);
+  background: var(--surface-light);
+  outline: none;
+  letter-spacing: 0.2px;
+  width: 100%;
+}
+.bs-form-field textarea { resize: none; min-height: 60px; }
+.bs-form-field input:focus,
+.bs-form-field textarea:focus {
+  border-color: var(--blue-normal);
+}
+.bs-form-actions {
+  padding: 10px 16px 16px;
+  display: flex;
+  gap: 8px;
+}
+.bs-form-actions button { flex: 1; }
+.bs-recommend-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-normal);
+}
+.bs-toggle-track {
+  width: 36px;
+  height: 22px;
+  border-radius: 100px;
+  background: var(--cloud-dark);
+  position: relative;
+  transition: background 0.18s ease;
+}
+.bs-toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.18s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.bs-recommend-toggle[data-on="true"] .bs-toggle-track { background: var(--blue-normal); }
+.bs-recommend-toggle[data-on="true"] .bs-toggle-track::after { transform: translateX(14px); }
+
+/* Trade-type picker grid */
+.bs-trade-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px 16px 16px;
+}
+.bs-trade-grid button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card);
+  background: var(--surface-light);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  text-align: left;
+  letter-spacing: 0.2px;
+}
+.bs-trade-grid button:active { background: var(--cloud-light); }
+.bs-trade-grid button svg { width: 18px; height: 18px; color: var(--ink-light); flex-shrink: 0; }
+
+/* Pricelist item rows in sheet */
+.bs-radio-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+}
+.bs-radio-item:active { background: var(--cloud-light); }
+.bs-radio-item .radio-vis {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--cloud-dark);
+  flex-shrink: 0;
+  position: relative;
+}
+.bs-radio-item[data-selected="true"] .radio-vis { border-color: var(--blue-normal); }
+.bs-radio-item[data-selected="true"] .radio-vis::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--blue-normal);
+}
+.bs-radio-item .label-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.bs-radio-item .sublabel {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+}
+
+/* ============================================================
+   QUOTE DETAILS (screenF)
+   ============================================================ */
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.status-badge--approved {
+  background: #EBF4EC;
+  border-color: #D7EAD9;
+  color: #2B7336;
+}
+.status-badge--pending {
+  background: #FDF0E3;
+  border-color: #FAE2C7;
+  color: #AE5700;
+}
+.status-badge--rejected {
+  background: #FAEAEA;
+  border-color: #F0D0D0;
+  color: #970C0C;
+}
+
+/* Quote status card */
+.quote-status-card {
+  padding: 0;
+}
+.quote-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+.quote-status-row .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+.quote-status-row .status-badge {
+  margin-left: auto;
+}
+.quote-status-row svg.chev {
+  color: var(--ink-light);
+}
+.quote-dates {
+  display: flex;
+  padding: 8px 0;
+}
+.quote-dates .quote-date-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
+  padding: 0 8px;
+}
+.quote-dates .quote-date-col .label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+.quote-dates .quote-date-col .value {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+}
+.quote-dates .col-divider {
+  width: 1px;
+  background: var(--cloud-dark);
+  margin: 4px 0;
+}
+.quote-total-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+}
+.quote-total-area .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+.quote-total-area .total-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+}
+.quote-cta-wrap { padding: 0 12px 12px; }
+
+/* Associated → Proposal options list */
+.assoc-options-list {
+  padding: 4px 0 8px;
+}
+.assoc-option-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.assoc-option-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #DCE5F0, #C8D5E5);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9AAEC6;
+}
+.assoc-option-thumb svg { display: block; }
+.assoc-option-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.assoc-option-trade {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+.assoc-option-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-dark);
+  line-height: 1.3;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.assoc-option-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-normal, #0172CB);
+  letter-spacing: 0.1px;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.assoc-option-badge { flex-shrink: 0; }
+
+/* Line items grouped by trade */
+.line-item-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 10px;
+}
+.line-item-card-top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.line-item-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: var(--cloud-normal);
+  flex-shrink: 0;
+}
+.line-item-info { flex: 1; min-width: 0; }
+.line-item-info .li-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.line-item-info .li-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+}
+.line-item-info .li-sku {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  margin-top: 2px;
+}
+.line-item-info .li-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.line-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.line-item-meta .li-qty {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+}
+.line-item-meta .li-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.line-item-meta .li-price .strike {
+  color: var(--ink-lighter);
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-right: 6px;
+}
+
+/* Trade group subheader inside Line Items */
+.trade-group-head {
+  padding: 12px 12px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-lighter);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* Collapsible quote trade card — prominent "category" header (no icons/images) */
+.quote-trade-card {
+  display: block;
+  position: relative;
+}
+.quote-trade-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px 16px 18px;
+  background: var(--quote-trade-tint, var(--cloud-light));
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+}
+.quote-trade-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--quote-trade-accent, var(--blue-normal));
+}
+.quote-trade-header:active { filter: brightness(0.97); }
+.quote-trade-title-stack {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.quote-trade-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.25;
+}
+.quote-trade-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+}
+.quote-trade-chevron {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--ink-light);
+  transition: transform 0.22s ease;
+  transform: rotate(180deg);
+}
+.quote-trade-card[data-collapsed="true"] .quote-trade-chevron { transform: rotate(0deg); }
+.quote-trade-card[data-collapsed="true"] .quote-trade-body { display: none; }
+
+/* Sub-section header inside a trade */
+.quote-section {
+  display: block;
+}
+.quote-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-top: 1px solid var(--cloud-dark);
+}
+.quote-section-head:active { background: var(--cloud-light); }
+.quote-section-head-chev {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--ink-light);
+  transition: transform 0.22s ease;
+  transform: rotate(180deg);
+}
+.quote-section[data-section-collapsed="true"] .quote-section-head-chev { transform: rotate(0deg); }
+.quote-section[data-section-collapsed="true"] .quote-section-body { display: none; }
+.quote-section-head-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+}
+.quote-section-head-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-lighter);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.quote-section .line-item-meta {
+  padding: 4px 12px;
+}
+.quote-section .line-item-meta.line-item--hidden { display: none; }
+.quote-section[data-section-expanded="true"] .line-item-meta.line-item--hidden { display: flex; }
+
+/* Rich line-item card inside a section */
+.qli-item {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--cloud-dark);
+}
+.qli-item.line-item--hidden { display: none; }
+.quote-section[data-section-expanded="true"] .qli-item.line-item--hidden { display: flex; }
+.qli-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+.qli-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.qli-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.qli-headline {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.qli-name-stack {
+  flex: 1;
+  min-width: 0;
+}
+.qli-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+.qli-sku {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-lighter);
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+.qli-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.qli-meta-line svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--blue-normal);
+}
+.qli-meta-line .text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.qli-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 6px;
+}
+.qli-qty {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+.qli-price-block { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.qli-price-strike {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-lighter);
+  letter-spacing: 0.2px;
+  text-decoration: line-through;
+}
+.qli-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+.qli-badge {
+  flex-shrink: 0;
+}
+
+.section-more-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 12px 8px;
+  padding: 4px 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+}
+.section-more-link:active { opacity: 0.7; }
+.section-more-link svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.22s ease;
+}
+.quote-section[data-section-expanded="true"] .section-more-link svg { transform: rotate(180deg); }
+
+/* Totals block */
+.totals-block {
+  padding: 0;
+}
+.totals-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.totals-row .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+.totals-row .value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-normal);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.totals-row--grand .label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-normal);
+}
+.totals-row--grand .value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue-normal);
+}
+.totals-row--deposit {
+  background: var(--cloud-light);
+}
+.totals-row--deposit .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.totals-row--deposit .label::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: var(--green-normal);
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+  background-size: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.totals-row--deposit .label-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-normal);
+}
+
+/* Attachment item */
+.attachment-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+.attachment-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-normal);
+  flex-shrink: 0;
+}
+.attachment-meta { flex: 1; min-width: 0; }
+.attachment-meta .name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.attachment-meta .sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+  margin-top: 2px;
+}
+
+/* ============================================================
    UTILITY
    ============================================================ */
 .flex-center { display: flex; align-items: center; justify-content: center; }
@@ -1602,75 +3042,272 @@ img { display: block; }
             </div>
             <div class="separator"></div>
             <div class="buttons-col">
-              <button class="btn-primary">Send to customer</button>
+              <button class="btn-primary" type="button" onclick="goToQuoteDetails()">Send to customer</button>
               <button class="btn-primary-subtle">Present Proposal</button>
             </div>
           </div>
 
-          <!-- Options Card -->
-          <div class="card">
-            <div class="card-section-header">
-              <span class="title">Options (3)</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="separator"></div>
+          <!-- Multi-Trade Options (display only) -->
+          <!-- Trade 1: Roofing -->
+          <div class="card trade-card" data-trade-id="roofing">
+            <button class="trade-header" type="button" data-toggle-trade>
+              <div class="trade-header-main">
+                <span class="trade-name">Roofing</span>
+                <span class="trade-meta">5 options</span>
+              </div>
+              <svg class="trade-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="trade-body">
+              <div class="separator"></div>
 
-            <!-- Option 1 -->
-            <div class="option-card-item">
-              <div class="option-top">
-                <div class="option-thumb" style="background:#6B8E7B;"></div>
-                <div class="option-info">
-                  <div class="name">3-Tab Shingle Reroof</div>
-                  <div class="desc">Complete tear-off of existing roof, new felt underlayment, 3-tab asphalt shingles, and standard flashing replacement.</div>
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#6B8E7B;"></div>
+                  <div class="option-info">
+                    <div class="name">3-Tab Shingle Reroof</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Complete tear-off of existing roof, new felt underlayment, 3-tab asphalt shingles, and standard flashing replacement.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Tear-Off (24 sq), Shingle Install (24 sq)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 6,840.00</span>
                 </div>
               </div>
-              <div class="option-badges">
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Tear-Off (24 sq), Shingle Install (24 sq)</span></div>
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Financing Available - Powered by wisetack</span></div>
-              </div>
-              <div class="option-total">
-                <span class="total-label">Total amount (Taxes included)</span>
-                <span class="total-value">USD 6,840.00</span>
-              </div>
-            </div>
-            <div class="separator"></div>
+              <div class="separator"></div>
 
-            <!-- Option 2 -->
-            <div class="option-card-item">
-              <div class="option-top">
-                <div class="option-thumb" style="background:#7B6B4A;"></div>
-                <div class="option-info">
-                  <div class="name">Architectural Shingle Reroof</div>
-                  <div class="desc">Full tear-off, synthetic underlayment, GAF Timberline HDZ architectural shingles, ice &amp; water shield at eaves and valleys.</div>
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#7B6B4A;"></div>
+                  <div class="option-info">
+                    <div class="name">Architectural Shingle Reroof<span class="recommended-star" aria-label="Recommended" title="Recommended"><svg width="16" height="16" viewBox="0 0 24 24" fill="#F5B544" stroke="#F5B544" stroke-width="1" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Full tear-off, synthetic underlayment, GAF Timberline HDZ architectural shingles, ice &amp; water shield at eaves and valleys.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Tear-Off (24 sq), Architectural Install (24 sq)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 8,150.00</span>
                 </div>
               </div>
-              <div class="option-badges">
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Tear-Off (24 sq), Architectural Install (24 sq)</span></div>
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Financing Available - Powered by wisetack</span></div>
-              </div>
-              <div class="option-total">
-                <span class="total-label">Total amount (Taxes included)</span>
-                <span class="total-value">USD 8,150.00</span>
-              </div>
-            </div>
-            <div class="separator"></div>
+              <div class="separator"></div>
 
-            <!-- Option 3 -->
-            <div class="option-card-item">
-              <div class="option-top">
-                <div class="option-thumb" style="background:#4A5568;"></div>
-                <div class="option-info">
-                  <div class="name">Standing Seam Metal Roof</div>
-                  <div class="desc">Premium standing seam metal roof with concealed fasteners, custom ridge cap, and 50-year warranty.</div>
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#4A5568;"></div>
+                  <div class="option-info">
+                    <div class="name">Standing Seam Metal Roof</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Premium standing seam metal roof with concealed fasteners, custom ridge cap, and 50-year warranty.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Tear-Off (24 sq), Metal Panel Install (24 sq)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 18,720.00</span>
                 </div>
               </div>
-              <div class="option-badges">
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Tear-Off (24 sq), Metal Panel Install (24 sq)</span></div>
-                <div class="badge-list-item"><span class="badge-dot"><svg width="10" height="10" fill="none"><circle cx="5" cy="5" r="3" fill="#0172CB" opacity="0.3"/></svg></span><span class="badge-list-text">Financing Available - Powered by wisetack</span></div>
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#9C3328;"></div>
+                  <div class="option-info">
+                    <div class="name">Clay Tile Roof Replacement</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Spanish-style clay tile roof with new underlayment, ridge tiles, and matching trim. Adds significant curb appeal and longevity.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Tear-Off (24 sq), Clay Tile Install (24 sq), Ridge Cap</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 22,400.00</span>
+                </div>
               </div>
-              <div class="option-total">
-                <span class="total-label">Total amount (Taxes included)</span>
-                <span class="total-value">USD 18,720.00</span>
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#2D3748;"></div>
+                  <div class="option-info">
+                    <div class="name">TPO Flat Roof Membrane</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Single-ply TPO thermoplastic membrane for low-slope roof sections. Energy-efficient, reflective white surface.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">TPO Membrane (12 sq), Insulation Board (12 sq)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 5,400.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trade 2: Gutters -->
+          <div class="card trade-card" data-trade-id="gutters">
+            <button class="trade-header" type="button" data-toggle-trade>
+              <div class="trade-header-main">
+                <span class="trade-name">Gutters</span>
+                <span class="trade-meta">2 options</span>
+              </div>
+              <svg class="trade-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="trade-body">
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#A0AEC0;"></div>
+                  <div class="option-info">
+                    <div class="name">Seamless Aluminum Gutters<span class="recommended-star" aria-label="Recommended" title="Recommended"><svg width="16" height="16" viewBox="0 0 24 24" fill="#F5B544" stroke="#F5B544" stroke-width="1" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">5" K-style seamless aluminum gutters with hidden hangers, downspouts, and color-matched finish.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Gutter Install (140 lf), Downspouts (4)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 1,820.00</span>
+                </div>
+              </div>
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#B7791F;"></div>
+                  <div class="option-info">
+                    <div class="name">Half-Round Copper Gutters</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Premium half-round copper gutters with copper downspouts and decorative end caps. Develops natural patina.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Copper Gutter Install (140 lf)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 4,640.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trade 3: Siding -->
+          <div class="card trade-card" data-trade-id="siding">
+            <button class="trade-header" type="button" data-toggle-trade>
+              <div class="trade-header-main">
+                <span class="trade-name">Siding</span>
+                <span class="trade-meta">2 options</span>
+              </div>
+              <svg class="trade-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="trade-body">
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#CBD5E0;"></div>
+                  <div class="option-info">
+                    <div class="name">Insulated Vinyl Siding<span class="recommended-star" aria-label="Recommended" title="Recommended"><svg width="16" height="16" viewBox="0 0 24 24" fill="#F5B544" stroke="#F5B544" stroke-width="1" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">Energy-efficient insulated vinyl siding with foam backing, fade-resistant finish, and matching trim.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">Siding Install (1,800 sq ft), Trim & J-channel</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 9,450.00</span>
+                </div>
+              </div>
+              <div class="separator"></div>
+
+              <div class="option-card-item">
+                <div class="option-top">
+                  <div class="option-thumb" style="background:#8B7355;"></div>
+                  <div class="option-info">
+                    <div class="name">Fiber Cement Siding (HardiePlank)</div>
+                    <div class="desc-wrap">
+                      <div class="desc desc--clamped">James Hardie ColorPlus fiber cement lap siding with factory-applied finish and 30-year warranty.</div>
+                      <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+                    </div>
+                  </div>
+                  <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="option-products">
+                  <span class="option-products-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <span class="option-products-text">HardiePlank Install (1,800 sq ft)</span>
+                </div>
+                <div class="option-total">
+                  <span class="total-label">Total amount (Taxes included)</span>
+                  <span class="total-value">USD 14,200.00</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1733,7 +3370,7 @@ img { display: block; }
           </button>
           <span class="bs-header-title">More options</span>
         </div>
-        <button class="bs-item" onclick="closeMoreSheet()">
+        <button class="bs-item" onclick="goToEditProposal()">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Edit proposal
         </button>
@@ -1933,6 +3570,429 @@ img { display: block; }
       <div class="home-indicator"><div class="home-indicator-bar"></div></div>
     </div>
 
+    <!-- ============ SCREEN E: Edit Proposal (Step 2 - Proposal Details) ============ -->
+    <div class="screen right" id="screenE">
+      <div class="status-bar">
+        <span class="status-bar-time">9:41</span>
+        <div class="status-bar-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="3" width="3" height="8" rx="1" fill="#252A31"/><rect x="4.5" y="2" width="3" height="9" rx="1" fill="#252A31"/><rect x="9" y="1" width="3" height="10" rx="1" fill="#252A31"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#252A31"/></svg>
+          <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M7.5 3.2C9.5 3.2 11.3 4 12.6 5.3L14.1 3.8C12.4 2.1 10.1 1 7.5 1C4.9 1 2.6 2.1.9 3.8L2.4 5.3C3.7 4 5.5 3.2 7.5 3.2Z" fill="#252A31"/><path d="M7.5 6.5C8.7 6.5 9.8 7 10.6 7.8L12.1 6.3C10.9 5.2 9.3 4.5 7.5 4.5C5.7 4.5 4.1 5.2 2.9 6.3L4.4 7.8C5.2 7 6.3 6.5 7.5 6.5Z" fill="#252A31"/><circle cx="7.5" cy="10.5" r="1.5" fill="#252A31"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#252A31" stroke-opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#252A31"/><path d="M23 4.5V7.5C23.8 7.2 24 6.5 24 6C24 5.5 23.8 4.8 23 4.5Z" fill="#252A31" fill-opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="nav-back icon-btn" onclick="goBackFromEdit()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="nav-title">Edit Proposal</span>
+        <div style="width:40px;"></div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="stepper-step stepper-step--done">
+          <div class="stepper-node stepper-node--done">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="stepper-label">Customer</span>
+        </div>
+        <div class="stepper-line stepper-line--done"></div>
+        <div class="stepper-step stepper-step--current">
+          <div class="stepper-node stepper-node--current">2</div>
+          <span class="stepper-label">Proposal details</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-step">
+          <div class="stepper-node stepper-node--pending">3</div>
+          <span class="stepper-label">Summary</span>
+        </div>
+      </div>
+
+      <div class="scroll-content" id="screenEScroll">
+        <div class="section-heading">
+          <h2>Proposal details</h2>
+          <p>Manage trades, options &amp; line items</p>
+        </div>
+
+        <button class="pricelist-row" id="pricelistRow" type="button" onclick="openPricelistSheet()">
+          <svg class="pricelist-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          <span class="pricelist-row-label" id="pricelistRowLabel">Select pricelist</span>
+          <svg class="pricelist-row-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <div class="content-pad" id="screenETrades">
+          <!-- Trade cards rendered here by renderEditStateIntoScreenE() -->
+        </div>
+
+        <div style="padding: 0 16px 12px;">
+          <button class="add-trade-btn" type="button" onclick="openAddTradeSheet()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add trade
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="edit-footer">
+        <button class="btn-secondary" type="button" onclick="goBackFromEdit()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Previous
+        </button>
+        <button class="btn-primary" type="button" onclick="commitAndExit()">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Pricelist sheet -->
+      <div class="overlay" id="pricelistOverlay" onclick="closePricelistSheet()"></div>
+      <div class="bottom-sheet" id="pricelistSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closePricelistSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title">Select pricelist</div>
+        </div>
+        <div id="pricelistOptions"><!-- options injected --></div>
+        <div style="height:16px;"></div>
+      </div>
+
+      <!-- Trade action sheet -->
+      <div class="overlay" id="tradeActionOverlay" onclick="closeTradeActionSheet()"></div>
+      <div class="bottom-sheet" id="tradeActionSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeTradeActionSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title" id="tradeActionTitle">Trade actions</div>
+        </div>
+        <button class="bs-item" onclick="renameTrade()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Rename trade
+        </button>
+        <button class="bs-item" onclick="openReorderOptionsSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+          Reorder options
+        </button>
+        <button class="bs-item destructive" onclick="deleteTradeFromSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Delete trade
+        </button>
+        <div style="height:16px;"></div>
+      </div>
+
+      <!-- Option action sheet -->
+      <div class="overlay" id="optionActionOverlay" onclick="closeOptionActionSheet()"></div>
+      <div class="bottom-sheet" id="optionActionSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeOptionActionSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title" id="optionActionTitle">Option actions</div>
+        </div>
+        <button class="bs-item" onclick="editOptionFromSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit details
+        </button>
+        <button class="bs-item" onclick="duplicateOptionFromSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Duplicate option
+        </button>
+        <button class="bs-item" onclick="toggleRecommendedFromSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="optionRecommendLabel">Mark as recommended</span>
+        </button>
+        <button class="bs-item destructive" onclick="deleteOptionFromSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Delete option
+        </button>
+        <div style="height:16px;"></div>
+      </div>
+
+      <!-- Add option sheet -->
+      <div class="overlay" id="addOptionOverlay" onclick="closeAddOptionSheet()"></div>
+      <div class="bottom-sheet" id="addOptionSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeAddOptionSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title" id="addOptionTitle">Add option</div>
+        </div>
+        <div class="bs-form-field">
+          <label for="addOptName">Option name</label>
+          <input type="text" id="addOptName" placeholder="e.g. Standing Seam Metal Roof" autocomplete="off">
+        </div>
+        <div class="bs-form-field">
+          <label for="addOptDesc">Description</label>
+          <textarea id="addOptDesc" rows="2" placeholder="Short description of scope and materials"></textarea>
+        </div>
+        <div class="bs-form-field">
+          <label for="addOptProducts">Products / line items (comma-separated)</label>
+          <input type="text" id="addOptProducts" placeholder="e.g. Tear-Off (24 sq), Shingle Install (24 sq)" autocomplete="off">
+        </div>
+        <div class="bs-form-field">
+          <label for="addOptPrice">Total amount (USD)</label>
+          <input type="number" id="addOptPrice" placeholder="0.00" min="0" step="0.01">
+        </div>
+        <button class="bs-recommend-toggle" type="button" id="addOptRecommended" data-on="false" onclick="toggleAddOptRecommended()">
+          Mark as recommended
+          <span class="bs-toggle-track"></span>
+        </button>
+        <div class="bs-form-actions">
+          <button class="btn-secondary" type="button" onclick="closeAddOptionSheet()">Cancel</button>
+          <button class="btn-primary" type="button" onclick="submitNewOption()">Add option</button>
+        </div>
+      </div>
+
+      <!-- Add trade sheet -->
+      <div class="overlay" id="addTradeOverlay" onclick="closeAddTradeSheet()"></div>
+      <div class="bottom-sheet" id="addTradeSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeAddTradeSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title">Add trade</div>
+        </div>
+        <div class="bs-trade-grid" id="addTradeGrid"><!-- buttons injected --></div>
+      </div>
+
+      <!-- Reorder options sheet -->
+      <div class="overlay" id="reorderOptionsOverlay" onclick="closeReorderOptionsSheet()"></div>
+      <div class="bottom-sheet" id="reorderOptionsSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeReorderOptionsSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="bs-header-title" id="reorderOptionsTitle">Reorder options</div>
+        </div>
+        <div class="reorder-list" id="reorderList"><!-- items injected --></div>
+        <div class="bs-form-actions">
+          <button class="btn-secondary" type="button" onclick="closeReorderOptionsSheet()">Cancel</button>
+          <button class="btn-primary" type="button" onclick="saveReorderOptions()">Save</button>
+        </div>
+      </div>
+
+      <div class="home-indicator"><div class="home-indicator-bar"></div></div>
+    </div>
+
+    <!-- ============ SCREEN F: Quote Details ============ -->
+    <div class="screen right" id="screenF">
+      <div class="status-bar">
+        <span class="status-bar-time">9:41</span>
+        <div class="status-bar-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="3" width="3" height="8" rx="1" fill="#252A31"/><rect x="4.5" y="2" width="3" height="9" rx="1" fill="#252A31"/><rect x="9" y="1" width="3" height="10" rx="1" fill="#252A31"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#252A31"/></svg>
+          <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M7.5 3.2C9.5 3.2 11.3 4 12.6 5.3L14.1 3.8C12.4 2.1 10.1 1 7.5 1C4.9 1 2.6 2.1.9 3.8L2.4 5.3C3.7 4 5.5 3.2 7.5 3.2Z" fill="#252A31"/><path d="M7.5 6.5C8.7 6.5 9.8 7 10.6 7.8L12.1 6.3C10.9 5.2 9.3 4.5 7.5 4.5C5.7 4.5 4.1 5.2 2.9 6.3L4.4 7.8C5.2 7 6.3 6.5 7.5 6.5Z" fill="#252A31"/><circle cx="7.5" cy="10.5" r="1.5" fill="#252A31"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#252A31" stroke-opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#252A31"/><path d="M23 4.5V7.5C23.8 7.2 24 6.5 24 6C24 5.5 23.8 4.8 23 4.5Z" fill="#252A31" fill-opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="nav-back icon-btn" onclick="goBackFromQuote()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="nav-title">Back</span>
+        <button class="icon-btn" type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="#252A31"/><circle cx="12" cy="12" r="1.5" fill="#252A31"/><circle cx="12" cy="19" r="1.5" fill="#252A31"/></svg>
+        </button>
+      </div>
+
+      <div class="scroll-content">
+        <div class="content-pad">
+
+          <!-- Quote header -->
+          <div class="proposal-header">
+            <h1>#2024 - 0847</h1>
+            <p>Created by <a href="#">Mike Sullivan</a></p>
+          </div>
+
+          <!-- Financing alert -->
+          <div class="financing-alert">
+            <div class="financing-alert-content">
+              <div class="financing-alert-title">Financing Option Available</div>
+              <div class="financing-alert-sub">Powered by <span class="financing-brand">wisetack</span></div>
+            </div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <!-- Tabs (visual only) -->
+          <div class="tabs-row">
+            <button class="tab-item active">Details</button>
+            <button class="tab-item">Associated</button>
+            <button class="tab-item">Notes</button>
+            <button class="tab-item">Activity</button>
+          </div>
+
+          <!-- Quote Status -->
+          <div class="card quote-status-card">
+            <div class="quote-status-row">
+              <span class="label">Quote Status</span>
+              <span class="status-badge status-badge--pending">Draft</span>
+              <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="separator"></div>
+            <div class="quote-dates">
+              <div class="quote-date-col">
+                <span class="label">Quote Date</span>
+                <span class="value">25/11/2022</span>
+              </div>
+              <div class="col-divider"></div>
+              <div class="quote-date-col">
+                <span class="label">Expiry Date</span>
+                <span class="value">29/11/2022</span>
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="quote-total-area">
+              <span class="label">Total Amount</span>
+              <span class="total-value" id="quoteTotalAmount">USD 0</span>
+            </div>
+            <div class="quote-cta-wrap">
+              <button class="btn-primary" type="button" onclick="sendQuoteFromQuote()">Send to customer</button>
+            </div>
+          </div>
+
+          <!-- Proposal options (Associated tab preview) -->
+          <div class="card">
+            <div class="card-section-header">
+              <span class="title">Proposal options (3)</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="separator"></div>
+            <div class="assoc-options-list">
+              <div class="assoc-option-row">
+                <div class="assoc-option-thumb">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="assoc-option-main">
+                  <span class="assoc-option-trade">Roofing</span>
+                  <span class="assoc-option-name">Architectural Shingle Reroof</span>
+                  <span class="assoc-option-price">USD 8,150.00</span>
+                </div>
+                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+              </div>
+              <div class="separator"></div>
+              <div class="assoc-option-row">
+                <div class="assoc-option-thumb">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="assoc-option-main">
+                  <span class="assoc-option-trade">Gutters</span>
+                  <span class="assoc-option-name">Seamless Aluminum Gutters</span>
+                  <span class="assoc-option-price">USD 1,820.00</span>
+                </div>
+                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+              </div>
+              <div class="separator"></div>
+              <div class="assoc-option-row">
+                <div class="assoc-option-thumb">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="assoc-option-main">
+                  <span class="assoc-option-trade">Siding</span>
+                  <span class="assoc-option-name">Insulated Vinyl Siding</span>
+                  <span class="assoc-option-price">USD 9,450.00</span>
+                </div>
+                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service & Billing Address -->
+          <div class="card">
+            <div class="card-section-header">
+              <span class="title">Service &amp; Billing Address</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="separator"></div>
+            <div class="customer-card" style="margin:0;">
+              <div class="customer-info-row">
+                <div class="avatar">D</div>
+                <div class="customer-details">
+                  <div class="cust-name">David Peterson</div>
+                  <div class="cust-email">1842 Oakridge Dr<br>Houston, Texas (TX), 77062</div>
+                </div>
+                <div class="customer-actions">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0122 16.92z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Line Items (grouped by trade) -->
+          <div class="card">
+            <div class="card-section-header">
+              <span class="title" id="lineItemsTitle">Line Items</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="separator"></div>
+            <div id="quoteLineItems"><!-- groups injected by JS --></div>
+            <div class="totals-block" id="quoteTotalsBlock"><!-- subtotal/tax/total/deposit --></div>
+          </div>
+
+          <!-- Tags -->
+          <div class="card">
+            <div class="card-section-header">
+              <span class="title">Tags</span>
+            </div>
+            <div class="separator"></div>
+            <div style="padding:12px;">
+              <div class="tags-row">
+                <span class="tag-pill">Roofing</span>
+                <span class="tag-pill">Residential</span>
+                <span class="tag-pill">Insurance Claim</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remarks / Reference -->
+          <div class="card">
+            <div class="kv-single">
+              <span class="kv-key">Remarks</span>
+              <span class="kv-val">Storm damage — hail impact on north-facing slope. Adjuster approved full replacement.</span>
+            </div>
+            <div class="separator"></div>
+            <div class="kv-single">
+              <span class="kv-key">Reference Number</span>
+              <span class="kv-val">CLM-2026-004718</span>
+            </div>
+          </div>
+
+          <!-- Attachments -->
+          <div class="card">
+            <div class="card-section-header">
+              <span class="title">Attachments (2)</span>
+              <button class="icon-btn" type="button" aria-label="Add attachment">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+            <div class="separator"></div>
+            <div class="attachment-row">
+              <div class="attachment-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="attachment-meta">
+                <div class="name">renovation_agreement.pdf</div>
+                <div class="sub">Uploaded by James on 18/11/2021</div>
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="attachment-row">
+              <div class="attachment-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="attachment-meta">
+                <div class="name">main_hall_interior.pdf</div>
+                <div class="sub">Uploaded by James on 18/11/2021</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="home-indicator"><div class="home-indicator-bar"></div></div>
+    </div>
+
   </div>
 </div>
 
@@ -1983,11 +4043,15 @@ const pageIcons = {
 /* ================================================================
    NAVIGATION
    ================================================================ */
-function setScreenClasses(a, b, c, d) {
+function setScreenClasses(a, b, c, d, e, f) {
   document.getElementById('screenA').className = 'screen ' + a;
   document.getElementById('screenB').className = 'screen ' + b;
   document.getElementById('screenC').className = 'screen ' + c;
   document.getElementById('screenD').className = 'screen ' + (d || 'right');
+  const eEl = document.getElementById('screenE');
+  if (eEl) eEl.className = 'screen ' + (e || 'right');
+  const fEl = document.getElementById('screenF');
+  if (fEl) fEl.className = 'screen ' + (f || 'right');
 }
 
 function openMoreSheet() {
@@ -2635,9 +4699,1235 @@ function showToast(id, msg) {
 }
 
 /* ================================================================
+   MULTI-TRADE INIT (extracted so we can re-run after a commit)
+   ================================================================ */
+function initTradesIn(rootEl) {
+  // Accordion toggle
+  rootEl.querySelectorAll('.trade-card [data-toggle-trade]').forEach((header) => {
+    if (header.dataset.bound === 'true') return;
+    header.dataset.bound = 'true';
+    header.addEventListener('click', () => {
+      const tradeEl = header.closest('.trade-card');
+      if (!tradeEl) return;
+      const collapsed = tradeEl.dataset.collapsed === 'true';
+      tradeEl.dataset.collapsed = collapsed ? 'false' : 'true';
+    });
+  });
+
+  // Show more / less
+  rootEl.querySelectorAll('.trade-card').forEach((tradeEl) => {
+    // Remove any prior button so re-init is clean
+    tradeEl.querySelectorAll(':scope > .trade-body > .show-more-options').forEach((b) => b.remove());
+    const body = tradeEl.querySelector('.trade-body');
+    if (!body) return;
+    const items = Array.from(body.querySelectorAll(':scope > .option-card-item'));
+    items.forEach((it) => { delete it.dataset.hidden; });
+    body.querySelectorAll(':scope > .separator[data-hidden]').forEach((s) => { delete s.dataset.hidden; });
+    if (items.length <= 3) return;
+
+    const extras = items.slice(3);
+    extras.forEach((item) => {
+      item.dataset.hidden = 'true';
+      const sep = item.previousElementSibling;
+      if (sep && sep.classList.contains('separator')) sep.dataset.hidden = 'true';
+    });
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'show-more-options';
+    const labelEl = document.createElement('span');
+    const updateLabel = () => {
+      const expanded = tradeEl.dataset.optionsExpanded === 'true';
+      labelEl.textContent = expanded ? 'Show less' : `Show ${extras.length} more options`;
+    };
+    btn.appendChild(labelEl);
+    const chev = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    chev.setAttribute('class', 'chev');
+    chev.setAttribute('width', '16');
+    chev.setAttribute('height', '16');
+    chev.setAttribute('viewBox', '0 0 24 24');
+    chev.setAttribute('fill', 'none');
+    chev.setAttribute('stroke', 'currentColor');
+    chev.setAttribute('stroke-width', '2');
+    chev.setAttribute('stroke-linecap', 'round');
+    chev.setAttribute('stroke-linejoin', 'round');
+    chev.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+    btn.appendChild(chev);
+
+    const third = items[2];
+    const afterThird = third.nextElementSibling;
+    if (afterThird && afterThird.classList.contains('separator')) {
+      afterThird.after(btn);
+    } else {
+      third.after(btn);
+    }
+    updateLabel();
+    btn.addEventListener('click', () => {
+      const expanded = tradeEl.dataset.optionsExpanded === 'true';
+      tradeEl.dataset.optionsExpanded = expanded ? 'false' : 'true';
+      updateLabel();
+    });
+  });
+
+  // See more for desc
+  rootEl.querySelectorAll('.desc-wrap').forEach((wrap) => {
+    if (wrap.dataset.bound === 'true') return;
+    wrap.dataset.bound = 'true';
+    const desc = wrap.querySelector('.desc');
+    const btn = wrap.querySelector('[data-desc-toggle]');
+    if (!desc || !btn) return;
+    desc.classList.add('desc--clamped');
+    const isOverflowing = desc.scrollHeight > desc.clientHeight + 1;
+    if (!isOverflowing) return;
+    btn.hidden = false;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = !desc.classList.contains('desc--clamped');
+      if (expanded) {
+        desc.classList.add('desc--clamped');
+        btn.textContent = 'See more';
+      } else {
+        desc.classList.remove('desc--clamped');
+        btn.textContent = 'See less';
+      }
+    });
+  });
+}
+
+/* ================================================================
+   EDIT PROPOSAL FLOW (screenE)
+   ================================================================ */
+
+// In-memory state for the edit session
+let editState = null;
+let editContext = { tradeId: null, optionId: null }; // for sheet handlers
+
+const PRICELISTS = [
+  { id: 'standard', name: 'Standard Pricelist', sub: '$ Default markup, 142 items' },
+  { id: 'premium',  name: 'Premium Pricelist',  sub: 'Tier-1 customers, 89 items' },
+  { id: 'wholesale', name: 'Wholesale',          sub: 'B2B, 210 items' },
+  { id: 'storm',     name: 'Storm Restoration',  sub: 'Insurance-claim rates' },
+];
+
+const TRADE_TYPES = [
+  { name: 'Windows',    color: '#5B9BD5' },
+  { name: 'HVAC',       color: '#7B6B4A' },
+  { name: 'Plumbing',   color: '#6B8E7B' },
+  { name: 'Electrical', color: '#E2A33B' },
+  { name: 'Insulation', color: '#A0AEC0' },
+  { name: 'Painting',   color: '#9C3328' },
+];
+
+function snapshotProposalToEditState() {
+  // Build editState from screenA's current DOM
+  const trades = [];
+  document.querySelectorAll('#screenA .trade-card').forEach((tEl) => {
+    const tradeId = tEl.dataset.tradeId;
+    const name = tEl.querySelector('.trade-name')?.textContent.trim() || '';
+    const options = [];
+    tEl.querySelectorAll(':scope > .trade-body > .option-card-item').forEach((oEl) => {
+      const thumb = oEl.querySelector('.option-thumb');
+      const thumbColor = (thumb?.getAttribute('style') || '').match(/background:\s*(#[0-9A-Fa-f]+)/)?.[1] || '#A0AEC0';
+      const nameEl = oEl.querySelector('.option-info .name');
+      // Strip the star span out of the name text
+      const nameClone = nameEl.cloneNode(true);
+      nameClone.querySelectorAll('.recommended-star').forEach((s) => s.remove());
+      const optName = nameClone.textContent.trim();
+      const recommended = !!oEl.querySelector('.recommended-star');
+      const desc = oEl.querySelector('.desc')?.textContent.trim() || '';
+      const products = oEl.querySelector('.option-products-text')?.textContent.trim() || '';
+      const totalText = oEl.querySelector('.total-value')?.textContent.trim() || 'USD 0.00';
+      const priceMatch = totalText.replace(/[^0-9.]/g, '');
+      const price = parseFloat(priceMatch) || 0;
+      options.push({
+        id: `o-${Math.random().toString(36).slice(2,8)}`,
+        name: optName,
+        thumbColor,
+        recommended,
+        desc,
+        products,
+        price,
+      });
+    });
+    trades.push({
+      id: tradeId || `t-${Math.random().toString(36).slice(2,8)}`,
+      name,
+      options,
+    });
+  });
+  editState = { trades, pricelistId: null, dirty: false };
+}
+
+function fmtUsdLong(n) {
+  return `USD ${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+const BOX_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
+const STAR_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#F5B544" stroke="#F5B544" stroke-width="1" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+const KEBAB_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>';
+const CHEV_DOWN_SVG = '<svg class="trade-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function parseProducts(productsString) {
+  if (!productsString) return [];
+  // Split on commas that are NOT inside parentheses
+  const segments = [];
+  let depth = 0;
+  let cur = '';
+  for (const ch of productsString) {
+    if (ch === '(') depth++;
+    else if (ch === ')') depth = Math.max(0, depth - 1);
+    if (ch === ',' && depth === 0) {
+      segments.push(cur);
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  if (cur.trim()) segments.push(cur);
+  return segments.map((raw) => {
+    const seg = raw.trim();
+    if (!seg) return null;
+    const m = seg.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+    if (m) return { name: m[1].trim(), qty: m[2].trim() };
+    return { name: seg, qty: '1' };
+  }).filter(Boolean);
+}
+
+function distributeItemPrices(items, total) {
+  if (items.length === 0) return [];
+  // Allocate weights based on rough qty heuristic, fall back to equal split.
+  const weights = items.map((it) => {
+    const n = parseFloat((it.qty || '').replace(/[^0-9.]/g, ''));
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  });
+  const sum = weights.reduce((a, b) => a + b, 0) || items.length;
+  // Spread total; round each to 2dp; fix rounding drift on the last item.
+  const raw = weights.map((w) => (total * w) / sum);
+  const rounded = raw.map((v) => Math.round(v * 100) / 100);
+  const drift = Math.round((total - rounded.reduce((a, b) => a + b, 0)) * 100) / 100;
+  if (rounded.length) rounded[rounded.length - 1] = Math.round((rounded[rounded.length - 1] + drift) * 100) / 100;
+  return rounded;
+}
+
+function buildOptionEditHTML(opt) {
+  const star = opt.recommended ? `<span class="recommended-star" aria-label="Recommended" title="Recommended">${STAR_SVG}</span>` : '';
+  const items = parseProducts(opt.products);
+  const prices = distributeItemPrices(items, opt.price);
+  const VISIBLE = 2;
+  const visible = items.slice(0, VISIBLE);
+  const hidden = items.slice(VISIBLE);
+  const lineItemRow = (it, p, isHidden) => `
+    <div class="line-item${isHidden ? ' line-item--hidden' : ''}">
+      <span class="line-item-name">${escapeHtml(it.name)} X ${escapeHtml(it.qty)}</span>
+      <span class="line-item-price">${fmtUsdLong(p)}</span>
+    </div>`;
+  const visibleRows = visible.map((it, i) => lineItemRow(it, prices[i], false)).join('');
+  const hiddenRows = hidden.map((it, i) => lineItemRow(it, prices[i + VISIBLE], true)).join('');
+  const moreLink = hidden.length > 0
+    ? `<button class="more-items-link" type="button" data-more-items>+ ${hidden.length} more item${hidden.length === 1 ? '' : 's'}</button>`
+    : '';
+  const emptyItems = items.length === 0
+    ? `<div class="line-item"><span class="line-item-name" style="color:var(--ink-lighter);">No line items yet</span></div>`
+    : '';
+
+  return `
+    <div class="option-edit" data-option-id="${opt.id}" style="--hero-bg:${opt.thumbColor};">
+      <div class="option-edit-hero">
+        <button class="option-edit-hero-kebab" type="button" aria-label="Option actions" onclick="openOptionActionSheet('${opt.tradeId}','${opt.id}')">
+          ${KEBAB_SVG}
+        </button>
+      </div>
+      <div class="option-edit-body">
+        <div class="option-edit-name">${escapeHtml(opt.name)}${star}</div>
+        ${opt.desc ? `<div class="option-edit-desc">${escapeHtml(opt.desc)}</div>` : ''}
+        <div class="option-edit-divider"></div>
+        <div class="line-items">
+          ${visibleRows}${hiddenRows}
+          ${emptyItems}
+        </div>
+        ${moreLink}
+        <div class="option-edit-total">
+          <span class="total-label">Total amount<span class="small">(Taxes included)</span></span>
+          <span class="total-value">${fmtUsdLong(opt.price)}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildOptionHTML(opt, opts = {}) {
+  if (opts.editMode) return buildOptionEditHTML(opt);
+  const star = opt.recommended ? `<span class="recommended-star" aria-label="Recommended" title="Recommended">${STAR_SVG}</span>` : '';
+  return `
+    <div class="option-card-item" data-option-id="${opt.id}">
+      <div class="option-top">
+        <div class="option-thumb" style="background:${opt.thumbColor};"></div>
+        <div class="option-info">
+          <div class="name">${escapeHtml(opt.name)}${star}</div>
+          <div class="desc-wrap">
+            <div class="desc desc--clamped">${escapeHtml(opt.desc)}</div>
+            <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+          </div>
+        </div>
+        <button class="option-kebab icon-btn" type="button" aria-label="Option actions">
+          ${KEBAB_SVG}
+        </button>
+      </div>
+      <div class="option-products">
+        <span class="option-products-icon">${BOX_SVG}</span>
+        <span class="option-products-text">${escapeHtml(opt.products)}</span>
+      </div>
+      <div class="option-total">
+        <span class="total-label">Total amount (Taxes included)</span>
+        <span class="total-value">${fmtUsdLong(opt.price)}</span>
+      </div>
+    </div>`;
+}
+
+function buildTradeHTML(trade, opts = {}) {
+  const editMode = !!opts.editMode;
+  const addBtn = editMode
+    ? `<button class="trade-header-add" type="button" aria-label="Add option" onclick="event.stopPropagation(); openAddOptionSheet('${trade.id}')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>`
+    : '';
+  const kebab = editMode
+    ? `<button class="trade-header-kebab" type="button" aria-label="Trade actions" onclick="event.stopPropagation(); openTradeActionSheet('${trade.id}')">${KEBAB_SVG}</button>`
+    : '';
+
+  let bodyHtml;
+  if (editMode) {
+    // Horizontal carousel layout
+    const tiles = trade.options.map((opt) => buildOptionHTML({ ...opt, tradeId: trade.id }, opts)).join('');
+    const addTile = `
+      <button class="option-add-tile" type="button" onclick="openAddOptionSheet('${trade.id}')">
+        <span class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+        Add option
+        <span class="sub">to ${escapeHtml(trade.name)}</span>
+      </button>`;
+    const dotsCount = trade.options.length; // dots only for real options, not the add tile
+    const dots = dotsCount > 1
+      ? `<div class="carousel-dots" data-trade-dots>${Array.from({length: dotsCount}).map((_,i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>`
+      : '';
+    bodyHtml = `
+      <div class="separator"></div>
+      <div class="option-carousel" data-trade-carousel>
+        ${tiles}
+        ${addTile}
+      </div>
+      ${dots}`;
+  } else {
+    // Read-only stacked layout
+    const optionsHtml = trade.options.length
+      ? trade.options.map((opt, idx) => {
+          const sep = idx === 0 ? '' : '<div class="separator"></div>';
+          return sep + buildOptionHTML({ ...opt, tradeId: trade.id }, opts);
+        }).join('')
+      : `<div class="trade-empty">No options yet.</div>`;
+    bodyHtml = `
+      <div class="separator"></div>
+      ${optionsHtml}`;
+  }
+
+  const headerTag = editMode ? 'div' : 'button';
+  const headerAttrs = editMode ? 'role="button" tabindex="0"' : 'type="button"';
+  return `
+    <div class="card trade-card" data-trade-id="${trade.id}">
+      <${headerTag} class="trade-header" ${headerAttrs} data-toggle-trade>
+        <div class="trade-header-main">
+          <span class="trade-name">${escapeHtml(trade.name)}</span>
+          <span class="trade-meta">${trade.options.length} option${trade.options.length === 1 ? '' : 's'}</span>
+        </div>
+        ${CHEV_DOWN_SVG}
+        ${addBtn}
+        ${kebab}
+      </${headerTag}>
+      <div class="trade-body">
+        ${bodyHtml}
+      </div>
+    </div>`;
+}
+
+function renderEditStateIntoScreenE() {
+  if (!editState) return;
+  const container = document.getElementById('screenETrades');
+  container.innerHTML = editState.trades.map((t) => buildTradeHTML(t, { editMode: true })).join('');
+  initTradesIn(container);
+  // Wire "+ N more items" expanders inside option-edit cards
+  container.querySelectorAll('[data-more-items]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.option-edit');
+      if (!card) return;
+      const expanded = card.dataset.itemsExpanded === 'true';
+      card.dataset.itemsExpanded = expanded ? 'false' : 'true';
+      const hidden = card.querySelectorAll('.line-item--hidden').length;
+      btn.textContent = expanded
+        ? `+ ${hidden} more item${hidden === 1 ? '' : 's'}`
+        : 'Show fewer items';
+    });
+  });
+
+  // Sync carousel dots to scroll position per trade
+  container.querySelectorAll('[data-trade-carousel]').forEach((carousel) => {
+    const trade = carousel.closest('.trade-card');
+    if (!trade) return;
+    const dots = trade.querySelector('[data-trade-dots]');
+    if (!dots) return;
+    const realOptions = carousel.querySelectorAll('.option-edit');
+    const sync = () => {
+      const cards = Array.from(realOptions);
+      if (!cards.length) return;
+      const cl = carousel.getBoundingClientRect();
+      // Find the card whose left edge is closest to the carousel's left + scroll padding (12)
+      const ref = cl.left + 12;
+      let best = 0;
+      let bestDist = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs(c.getBoundingClientRect().left - ref);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      dots.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === best));
+    };
+    carousel.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+    // Initial sync
+    sync();
+  });
+
+  // Pricelist row label
+  const labelEl = document.getElementById('pricelistRowLabel');
+  const row = document.getElementById('pricelistRow');
+  if (editState.pricelistId) {
+    const p = PRICELISTS.find((x) => x.id === editState.pricelistId);
+    labelEl.textContent = p ? p.name : 'Select pricelist';
+    row.dataset.selected = 'true';
+  } else {
+    labelEl.textContent = 'Select pricelist';
+    row.dataset.selected = 'false';
+  }
+}
+
+function applyEditStateToScreenA() {
+  if (!editState) return;
+  // Find the parent of trade-cards in screenA
+  const first = document.querySelector('#screenA .trade-card');
+  if (!first) return;
+  const parent = first.parentElement;
+  // Remove existing trade cards
+  parent.querySelectorAll(':scope > .trade-card').forEach((tc) => tc.remove());
+  // Build & insert new ones at the same position
+  const tmp = document.createElement('div');
+  tmp.innerHTML = editState.trades.map((t) => buildTradeHTML(t, { editMode: false })).join('');
+  // Insert in same relative spot — after the existing Status Card (just append at end since we removed all cards)
+  Array.from(tmp.children).forEach((c) => parent.appendChild(c));
+  // Re-init handlers on new cards
+  initTradesIn(parent);
+}
+
+/* ---- navigation ---- */
+function goToEditProposal() {
+  closeMoreSheet();
+  setTimeout(() => {
+    snapshotProposalToEditState();
+    renderEditStateIntoScreenE();
+    state.currentScreen = 'E';
+    setScreenClasses('left', 'right', 'right', 'right', 'active');
+  }, 220);
+}
+
+function goBackFromEdit() {
+  if (editState && editState.dirty) {
+    const ok = window.confirm('Discard your changes?');
+    if (!ok) return;
+  }
+  editState = null;
+  state.currentScreen = 'A';
+  setScreenClasses('active', 'right', 'right', 'right', 'right');
+}
+
+function commitAndExit() {
+  if (!editState) {
+    setScreenClasses('active', 'right', 'right', 'right', 'right');
+    return;
+  }
+  applyEditStateToScreenA();
+  editState = null;
+  state.currentScreen = 'A';
+  setScreenClasses('active', 'right', 'right', 'right', 'right');
+  setTimeout(() => showToast('toastB', 'Saved as draft'), 250);
+}
+
+/* ---- pricelist sheet ---- */
+function openPricelistSheet() {
+  const wrap = document.getElementById('pricelistOptions');
+  wrap.innerHTML = PRICELISTS.map((p) => `
+    <button class="bs-radio-item" data-selected="${editState?.pricelistId === p.id}" onclick="selectPricelist('${p.id}')">
+      <span class="radio-vis"></span>
+      <span class="label-stack">
+        <span>${escapeHtml(p.name)}</span>
+        <span class="sublabel">${escapeHtml(p.sub)}</span>
+      </span>
+    </button>
+  `).join('');
+  document.getElementById('pricelistOverlay').classList.add('visible');
+  document.getElementById('pricelistSheet').classList.add('visible');
+}
+function closePricelistSheet() {
+  document.getElementById('pricelistOverlay').classList.remove('visible');
+  document.getElementById('pricelistSheet').classList.remove('visible');
+}
+function selectPricelist(id) {
+  if (!editState) return;
+  editState.pricelistId = id;
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closePricelistSheet();
+}
+
+/* ---- trade action sheet ---- */
+function openTradeActionSheet(tradeId) {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === tradeId);
+  if (!trade) return;
+  editContext.tradeId = tradeId;
+  document.getElementById('tradeActionTitle').textContent = `${trade.name} actions`;
+  document.getElementById('tradeActionOverlay').classList.add('visible');
+  document.getElementById('tradeActionSheet').classList.add('visible');
+}
+function closeTradeActionSheet() {
+  document.getElementById('tradeActionOverlay').classList.remove('visible');
+  document.getElementById('tradeActionSheet').classList.remove('visible');
+}
+function renameTrade() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  if (!trade) return closeTradeActionSheet();
+  const newName = window.prompt('Rename trade', trade.name);
+  if (newName && newName.trim()) {
+    trade.name = newName.trim();
+    editState.dirty = true;
+    renderEditStateIntoScreenE();
+  }
+  closeTradeActionSheet();
+}
+// ---- Reorder options sheet ----
+let _reorderDraftOrder = []; // array of option ids in the new order
+
+function openReorderOptionsSheet() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  if (!trade) return closeTradeActionSheet();
+  closeTradeActionSheet();
+  setTimeout(() => {
+    _reorderDraftOrder = trade.options.map((o) => o.id);
+    document.getElementById('reorderOptionsTitle').textContent = `Reorder options · ${trade.name}`;
+    renderReorderList(trade);
+    document.getElementById('reorderOptionsOverlay').classList.add('visible');
+    document.getElementById('reorderOptionsSheet').classList.add('visible');
+  }, 200);
+}
+
+function closeReorderOptionsSheet() {
+  document.getElementById('reorderOptionsOverlay').classList.remove('visible');
+  document.getElementById('reorderOptionsSheet').classList.remove('visible');
+}
+
+function countPartsServices(option) {
+  const items = parseProducts(option.products || '');
+  let parts = 0, services = 0;
+  items.forEach((it) => {
+    if (/install|labor|service|tear-off|cleanup|removal|prep|haul|repair/i.test(it.name)) {
+      services += 1;
+    } else {
+      parts += 1;
+    }
+  });
+  return { parts, services };
+}
+
+function partsServicesLabel(option) {
+  const { parts, services } = countPartsServices(option);
+  const bits = [];
+  if (parts) bits.push(`${parts} Part${parts === 1 ? '' : 's'}`);
+  if (services) bits.push(`${services} Service${services === 1 ? '' : 's'}`);
+  return bits.join(', ') || '—';
+}
+
+function renderReorderList(trade) {
+  const list = document.getElementById('reorderList');
+  const byId = Object.fromEntries(trade.options.map((o) => [o.id, o]));
+  list.innerHTML = _reorderDraftOrder.map((id, i) => {
+    const opt = byId[id];
+    if (!opt) return '';
+    const counts = partsServicesLabel(opt);
+    return `
+      <div class="reorder-row" draggable="true" data-id="${escapeHtml(id)}">
+        <span class="reorder-chip" data-chip>${i + 1}</span>
+        <div class="reorder-item">
+          <div class="reorder-body">
+            <div class="reorder-thumb" style="background:${opt.thumbColor};"></div>
+            <div class="reorder-info">
+              <div class="reorder-name">${escapeHtml(opt.name)}${opt.recommended ? ' ★' : ''}</div>
+              <div class="reorder-counts">${counts}</div>
+            </div>
+            <span class="reorder-grip" aria-label="Drag to reorder">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+            </span>
+          </div>
+          <div class="reorder-price">${fmtUsdLong(opt.price)}</div>
+        </div>
+      </div>`;
+  }).join('');
+  bindReorderDnd(list);
+}
+
+function bindReorderDnd(listEl) {
+  const rebuildChips = () => {
+    _reorderDraftOrder = Array.from(listEl.querySelectorAll('.reorder-row')).map((x) => x.dataset.id);
+    listEl.querySelectorAll('[data-chip]').forEach((c, i) => { c.textContent = i + 1; });
+  };
+
+  let dragged = null;
+  listEl.querySelectorAll('.reorder-row').forEach((el) => {
+    el.addEventListener('dragstart', (e) => {
+      dragged = el;
+      el.querySelector('.reorder-item')?.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', el.dataset.id);
+    });
+    el.addEventListener('dragend', () => {
+      listEl.querySelectorAll('.reorder-item.dragging').forEach((x) => x.classList.remove('dragging'));
+      listEl.querySelectorAll('.reorder-item.drop-target').forEach((x) => x.classList.remove('drop-target'));
+      dragged = null;
+      rebuildChips();
+    });
+    el.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (!dragged || dragged === el) return;
+      const rect = el.getBoundingClientRect();
+      const after = (e.clientY - rect.top) > rect.height / 2;
+      listEl.querySelectorAll('.reorder-item.drop-target').forEach((x) => x.classList.remove('drop-target'));
+      el.querySelector('.reorder-item')?.classList.add('drop-target');
+      if (after) {
+        if (el.nextSibling !== dragged) listEl.insertBefore(dragged, el.nextSibling);
+      } else {
+        if (el.previousSibling !== dragged) listEl.insertBefore(dragged, el);
+      }
+    });
+    el.addEventListener('dragleave', () => {
+      el.querySelector('.reorder-item')?.classList.remove('drop-target');
+    });
+  });
+
+  // Touch support — drag from grip with pointer events
+  let touchDragging = null;
+  listEl.querySelectorAll('.reorder-grip').forEach((grip) => {
+    grip.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'touch') return;
+      const row = grip.closest('.reorder-row');
+      if (!row) return;
+      touchDragging = row;
+      row.querySelector('.reorder-item')?.classList.add('dragging');
+      grip.setPointerCapture(e.pointerId);
+    });
+    grip.addEventListener('pointermove', (e) => {
+      if (!touchDragging) return;
+      const rows = Array.from(listEl.querySelectorAll('.reorder-row'));
+      const myIdx = rows.indexOf(touchDragging);
+      const target = document.elementFromPoint(e.clientX, e.clientY)?.closest('.reorder-row');
+      if (!target || target === touchDragging) return;
+      const tIdx = rows.indexOf(target);
+      if (tIdx < 0) return;
+      if (tIdx < myIdx) listEl.insertBefore(touchDragging, target);
+      else listEl.insertBefore(touchDragging, target.nextSibling);
+    });
+    const endTouch = (e) => {
+      if (!touchDragging) return;
+      touchDragging.querySelector('.reorder-item')?.classList.remove('dragging');
+      try { grip.releasePointerCapture(e.pointerId); } catch (_) {}
+      touchDragging = null;
+      rebuildChips();
+    };
+    grip.addEventListener('pointerup', endTouch);
+    grip.addEventListener('pointercancel', endTouch);
+  });
+}
+
+function saveReorderOptions() {
+  if (!editState) return closeReorderOptionsSheet();
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  if (!trade) return closeReorderOptionsSheet();
+  const byId = Object.fromEntries(trade.options.map((o) => [o.id, o]));
+  trade.options = _reorderDraftOrder.map((id) => byId[id]).filter(Boolean);
+  editState.dirty = true;
+  closeReorderOptionsSheet();
+  renderEditStateIntoScreenE();
+  showToast('toastB', 'Options reordered');
+}
+function deleteTradeFromSheet() {
+  if (!editState) return;
+  const idx = editState.trades.findIndex((t) => t.id === editContext.tradeId);
+  if (idx < 0) return closeTradeActionSheet();
+  if (!window.confirm(`Delete the ${editState.trades[idx].name} trade and all its options?`)) {
+    return closeTradeActionSheet();
+  }
+  editState.trades.splice(idx, 1);
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closeTradeActionSheet();
+}
+
+/* ---- option action sheet ---- */
+function openOptionActionSheet(tradeId, optionId) {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === tradeId);
+  const option = trade?.options.find((o) => o.id === optionId);
+  if (!option) return;
+  editContext = { tradeId, optionId };
+  document.getElementById('optionActionTitle').textContent = option.name;
+  document.getElementById('optionRecommendLabel').textContent = option.recommended ? 'Unmark as recommended' : 'Mark as recommended';
+  document.getElementById('optionActionOverlay').classList.add('visible');
+  document.getElementById('optionActionSheet').classList.add('visible');
+}
+function closeOptionActionSheet() {
+  document.getElementById('optionActionOverlay').classList.remove('visible');
+  document.getElementById('optionActionSheet').classList.remove('visible');
+}
+function editOptionFromSheet() {
+  closeOptionActionSheet();
+  setTimeout(() => {
+    const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+    const option = trade?.options.find((o) => o.id === editContext.optionId);
+    if (!option) return;
+    openAddOptionSheet(editContext.tradeId, option);
+  }, 200);
+}
+function duplicateOptionFromSheet() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  const idx = trade?.options.findIndex((o) => o.id === editContext.optionId);
+  if (idx == null || idx < 0) return closeOptionActionSheet();
+  const original = trade.options[idx];
+  const copy = { ...original, id: `o-${Math.random().toString(36).slice(2,8)}`, name: original.name + ' (copy)', recommended: false };
+  trade.options.splice(idx + 1, 0, copy);
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closeOptionActionSheet();
+}
+function toggleRecommendedFromSheet() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  const option = trade?.options.find((o) => o.id === editContext.optionId);
+  if (!option) return closeOptionActionSheet();
+  const wasOn = option.recommended;
+  trade.options.forEach((o) => { o.recommended = false; });
+  option.recommended = !wasOn;
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closeOptionActionSheet();
+}
+function deleteOptionFromSheet() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  const idx = trade?.options.findIndex((o) => o.id === editContext.optionId);
+  if (idx == null || idx < 0) return closeOptionActionSheet();
+  if (!window.confirm(`Delete "${trade.options[idx].name}"?`)) return closeOptionActionSheet();
+  trade.options.splice(idx, 1);
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closeOptionActionSheet();
+}
+
+/* ---- add option sheet (also used for edit) ---- */
+let _editingOptionId = null;
+function openAddOptionSheet(tradeId, existingOption) {
+  editContext.tradeId = tradeId;
+  _editingOptionId = existingOption ? existingOption.id : null;
+  const trade = editState.trades.find((t) => t.id === tradeId);
+  document.getElementById('addOptionTitle').textContent = existingOption
+    ? `Edit option · ${trade?.name || ''}`
+    : `Add option to ${trade?.name || ''}`;
+  document.getElementById('addOptName').value = existingOption?.name || '';
+  document.getElementById('addOptDesc').value = existingOption?.desc || '';
+  document.getElementById('addOptProducts').value = existingOption?.products || '';
+  document.getElementById('addOptPrice').value = existingOption?.price ?? '';
+  const t = document.getElementById('addOptRecommended');
+  t.dataset.on = existingOption?.recommended ? 'true' : 'false';
+  document.getElementById('addOptionOverlay').classList.add('visible');
+  document.getElementById('addOptionSheet').classList.add('visible');
+}
+function closeAddOptionSheet() {
+  document.getElementById('addOptionOverlay').classList.remove('visible');
+  document.getElementById('addOptionSheet').classList.remove('visible');
+}
+function toggleAddOptRecommended() {
+  const t = document.getElementById('addOptRecommended');
+  t.dataset.on = t.dataset.on === 'true' ? 'false' : 'true';
+}
+function submitNewOption() {
+  if (!editState) return;
+  const trade = editState.trades.find((t) => t.id === editContext.tradeId);
+  if (!trade) return closeAddOptionSheet();
+  const name = document.getElementById('addOptName').value.trim();
+  const desc = document.getElementById('addOptDesc').value.trim();
+  const products = document.getElementById('addOptProducts').value.trim();
+  const price = parseFloat(document.getElementById('addOptPrice').value) || 0;
+  const recommended = document.getElementById('addOptRecommended').dataset.on === 'true';
+  if (!name) {
+    showToast('toastB', 'Option name is required');
+    return;
+  }
+  if (recommended) {
+    trade.options.forEach((o) => { o.recommended = false; });
+  }
+  if (_editingOptionId) {
+    const opt = trade.options.find((o) => o.id === _editingOptionId);
+    if (opt) {
+      opt.name = name; opt.desc = desc; opt.products = products; opt.price = price; opt.recommended = recommended;
+    }
+  } else {
+    const palette = ['#6B8E7B','#7B6B4A','#4A5568','#9C3328','#A0AEC0','#B7791F','#CBD5E0','#8B7355','#5B9BD5','#E2A33B'];
+    trade.options.push({
+      id: `o-${Math.random().toString(36).slice(2,8)}`,
+      name, desc, products, price, recommended,
+      thumbColor: palette[trade.options.length % palette.length],
+    });
+  }
+  editState.dirty = true;
+  _editingOptionId = null;
+  renderEditStateIntoScreenE();
+  closeAddOptionSheet();
+}
+
+/* ---- add trade sheet ---- */
+function openAddTradeSheet() {
+  const grid = document.getElementById('addTradeGrid');
+  grid.innerHTML = TRADE_TYPES.map((t) => `
+    <button type="button" onclick="submitNewTrade('${escapeHtml(t.name)}','${t.color}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      ${escapeHtml(t.name)}
+    </button>
+  `).join('');
+  document.getElementById('addTradeOverlay').classList.add('visible');
+  document.getElementById('addTradeSheet').classList.add('visible');
+}
+function closeAddTradeSheet() {
+  document.getElementById('addTradeOverlay').classList.remove('visible');
+  document.getElementById('addTradeSheet').classList.remove('visible');
+}
+function submitNewTrade(name) {
+  if (!editState) return;
+  editState.trades.push({
+    id: `t-${Math.random().toString(36).slice(2,8)}`,
+    name,
+    options: [],
+  });
+  editState.dirty = true;
+  renderEditStateIntoScreenE();
+  closeAddTradeSheet();
+  // Scroll to the new trade
+  setTimeout(() => {
+    const scroll = document.getElementById('screenEScroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  }, 50);
+}
+
+/* ================================================================
+   QUOTE DETAILS FLOW (screenF)
+   ================================================================ */
+
+// Snapshot of selected (recommended) options when proposal converts to quote
+let quoteState = null;
+
+// Status assignment for the demo: keyed by index in the trade list (0=Roofing, 1=Gutters, 2=Siding, etc.)
+const QUOTE_STATUS_PATTERN = ['approved', 'approved', 'pending'];
+
+// Hand-authored demo sections per trade-id (Materials / Labor / Permits).
+// Real product would deliver this from the backend per-trade.
+const QUOTE_DEMO_SECTIONS = {
+  roofing: [
+    {
+      header: 'Materials',
+      items: [
+        { name: 'Architectural shingles', qty: '24 sq', price: 2400, desc: 'GAF Timberline HDZ, 30-year warranty', location: 'Genese Street Warehouse' },
+        { name: 'Synthetic underlayment', qty: '24 sq', price: 800 },
+        { name: 'Drip edge', qty: '80 lf', price: 320 },
+        { name: 'Step flashing', qty: '1 lot', price: 180 },
+        { name: 'Ice & water shield', qty: '6 sq', price: 375, location: 'Job site delivery' },
+        { name: 'Ridge cap shingles', qty: '50 lf', price: 295 },
+      ],
+    },
+    {
+      header: 'Labor',
+      items: [
+        { name: 'Tear-Off', qty: '24 sq', price: 2000, desc: 'Removal of existing roof system to deck' },
+        { name: 'Architectural Install', qty: '24 sq', price: 1205 },
+        { name: 'Cleanup & haul-away', qty: '1 lot', price: 575 },
+      ],
+    },
+  ],
+  gutters: [
+    {
+      header: 'Materials',
+      items: [
+        { name: '5" K-style aluminum gutters', qty: '140 lf', price: 980, desc: 'Seamless, color-matched', location: 'Genese Street Warehouse' },
+        { name: 'Downspouts', qty: '4', price: 240 },
+        { name: 'Hidden hangers', qty: '50', price: 90 },
+      ],
+    },
+    {
+      header: 'Labor',
+      items: [
+        { name: 'Gutter installation', qty: '140 lf', price: 410 },
+        { name: 'Old gutter removal', qty: '140 lf', price: 100 },
+      ],
+    },
+  ],
+  siding: [
+    {
+      header: 'Materials',
+      items: [
+        { name: 'Insulated vinyl siding', qty: '1,800 sq ft', price: 5400, desc: 'Foam-backed, fade-resistant finish', location: 'Genese Street Warehouse' },
+        { name: 'J-channel trim', qty: '320 lf', price: 480 },
+        { name: 'Starter strip', qty: '180 lf', price: 220 },
+        { name: 'Inside / outside corners', qty: '14', price: 196 },
+        { name: 'House wrap', qty: '1,800 sq ft', price: 540 },
+        { name: 'Fasteners & sealant', qty: '1 lot', price: 84 },
+      ],
+    },
+    {
+      header: 'Labor',
+      items: [
+        { name: 'Siding install', qty: '1,800 sq ft', price: 1800, desc: 'Includes flashing & weatherproofing' },
+        { name: 'Trim & detail work', qty: '1 lot', price: 580 },
+        { name: 'Wrap & prep', qty: '1 lot', price: 150 },
+      ],
+    },
+  ],
+};
+
+function buildQuoteStateFromScreenA() {
+  // Read screenA DOM and pick the recommended (★) option per trade as the customer's selection.
+  const trades = [];
+  document.querySelectorAll('#screenA .trade-card').forEach((tEl, tradeIdx) => {
+    const tradeId = tEl.dataset.tradeId || '';
+    const name = tEl.querySelector('.trade-name')?.textContent.trim() || 'Trade';
+    const options = Array.from(tEl.querySelectorAll(':scope > .trade-body > .option-card-item'));
+    if (!options.length) return;
+    // Recommended option = one with .recommended-star; fallback to first
+    let selectedEl = options.find((o) => o.querySelector('.recommended-star')) || options[0];
+    const thumb = selectedEl.querySelector('.option-thumb');
+    const thumbColor = (thumb?.getAttribute('style') || '').match(/background:\s*(#[0-9A-Fa-f]+)/)?.[1] || '#A0AEC0';
+    const nameEl = selectedEl.querySelector('.option-info .name');
+    const nameClone = nameEl.cloneNode(true);
+    nameClone.querySelectorAll('.recommended-star').forEach((s) => s.remove());
+    const optName = nameClone.textContent.trim();
+    const products = selectedEl.querySelector('.option-products-text')?.textContent.trim() || '';
+    const totalText = selectedEl.querySelector('.total-value')?.textContent.trim() || 'USD 0.00';
+    const optionPrice = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
+    const sku = (optName.match(/[A-Z][A-Za-z]/g) || []).slice(0, 3).join('').toUpperCase() || 'OPT';
+    const status = QUOTE_STATUS_PATTERN[tradeIdx % QUOTE_STATUS_PATTERN.length];
+
+    // Attach sections: prefer demo seed; fall back to a single "Items" section parsed from products.
+    let sections;
+    if (QUOTE_DEMO_SECTIONS[tradeId]) {
+      sections = QUOTE_DEMO_SECTIONS[tradeId].map((s) => ({
+        header: s.header,
+        items: s.items.map((it) => ({ ...it })),
+      }));
+    } else {
+      const parsed = parseProducts(products);
+      const prices = distributeItemPrices(parsed, optionPrice);
+      sections = parsed.length
+        ? [{
+            header: 'Items',
+            items: parsed.map((it, i) => ({ name: it.name, qty: it.qty, price: prices[i] || 0 })),
+          }]
+        : [];
+    }
+    const total = sections.reduce((sum, s) => sum + s.items.reduce((a, b) => a + (b.price || 0), 0), 0);
+    const itemCount = sections.reduce((sum, s) => sum + s.items.length, 0);
+    trades.push({
+      tradeId,
+      tradeName: name,
+      optionName: optName,
+      thumbColor,
+      sku,
+      sections,
+      total,
+      itemCount,
+      status,
+    });
+  });
+  return { trades };
+}
+
+function statusBadgeHTML(status) {
+  if (status === 'approved') return `<span class="status-badge status-badge--approved">Approved</span>`;
+  if (status === 'rejected') return `<span class="status-badge status-badge--rejected">Rejected</span>`;
+  return `<span class="status-badge status-badge--pending">Pending</span>`;
+}
+
+const SECTION_VISIBLE_CAP = 5;
+const QUOTE_CHEV_SVG = '<svg class="quote-trade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+const SECTION_CHEV_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+const ITEM_INFO_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+const ITEM_PIN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+// Per-item palette for thumbs (cycle through subtle colors).
+const QLI_THUMB_PALETTE = ['#A0AEC0', '#B7791F', '#7B6B4A', '#CBD5E0', '#6B8E7B', '#4A5568', '#9C3328', '#5B9BD5'];
+
+// Trade-type visual identity for the prominent trade header.
+const TRADE_ICONS = {
+  roofing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 12v8h14v-8"/><path d="M9 20v-5h6v5"/></svg>',
+  gutters: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z"/><path d="M8 13v5"/><path d="M16 13v8"/><path d="M16 21h-3"/></svg>',
+  siding:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>',
+  windows: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+  hvac:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>',
+  plumbing:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6M9 9h6V3"/><path d="M9 9v6a3 3 0 0 0 3 3h3"/><path d="M19 18h-4v-3"/></svg>',
+  electrical:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  insulation:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/><path d="M4 12c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/><path d="M4 18c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/></svg>',
+  painting:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="6" rx="1"/><path d="M5 9v4h14V9"/><path d="M12 13v8"/></svg>',
+};
+const TRADE_TINTS = {
+  roofing: { bg: '#FDF0E3', fg: '#AE5700' },
+  gutters: { bg: '#E8F4FD', fg: '#0172CB' },
+  siding:  { bg: '#E7F5EE', fg: '#0A8754' },
+  windows: { bg: '#E8F4FD', fg: '#0172CB' },
+  hvac:    { bg: '#FAEAEA', fg: '#970C0C' },
+  plumbing:{ bg: '#E8F4FD', fg: '#0172CB' },
+  electrical:{ bg: '#FDF0E3', fg: '#AE5700' },
+  insulation:{ bg: '#E7F5EE', fg: '#0A8754' },
+  painting:{ bg: '#FAEAEA', fg: '#970C0C' },
+};
+const DEFAULT_TRADE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>';
+const DEFAULT_TRADE_TINT = { bg: 'var(--cloud-normal)', fg: 'var(--ink-light)' };
+
+// Photo URLs per trade — used in the trade-header tile. Fallback to the SVG icon on load error.
+const TRADE_IMAGES = {
+  roofing: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=144&h=144&fit=crop&auto=format&q=80',
+  gutters: 'https://images.unsplash.com/photo-1448630360428-65456885c650?w=144&h=144&fit=crop&auto=format&q=80',
+  siding:  'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=144&h=144&fit=crop&auto=format&q=80',
+  windows: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=144&h=144&fit=crop&auto=format&q=80',
+};
+
+function tradeIdToKey(tradeId, tradeName) {
+  return (tradeId || (tradeName || '').toLowerCase()).split(/[\s\-_]+/)[0];
+}
+
+function deriveItemSku(name) {
+  const tokens = (name || '').split(/[\s\-/]+/).filter(Boolean);
+  if (!tokens.length) return 'ITM';
+  return tokens.slice(0, 2).map((t) => t.slice(0, 3).toUpperCase()).join('');
+}
+function computeUnitPrice(qtyStr, total) {
+  const qtyNum = parseFloat(String(qtyStr).replace(/[^0-9.]/g, ''));
+  if (!Number.isFinite(qtyNum) || qtyNum <= 0) return total || 0;
+  return Math.round((total / qtyNum) * 100) / 100;
+}
+
+function buildItemCardHTML(it, idx) {
+  const sku = it.sku || deriveItemSku(it.name);
+  const unit = computeUnitPrice(it.qty, it.price);
+  const thumbColor = it.thumbColor || QLI_THUMB_PALETTE[idx % QLI_THUMB_PALETTE.length];
+  const desc = it.desc && it.desc.trim()
+    ? `<div class="qli-meta-line">${ITEM_INFO_SVG}<span class="text">${escapeHtml(it.desc)}</span></div>`
+    : '';
+  const loc = it.location && it.location.trim()
+    ? `<div class="qli-meta-line">${ITEM_PIN_SVG}<span class="text">${escapeHtml(it.location)}</span></div>`
+    : '';
+  const strike = it.originalPrice && it.originalPrice > it.price
+    ? `<span class="qli-price-strike">${fmtUsdLong(it.originalPrice)}</span>`
+    : '';
+  const hidden = idx >= SECTION_VISIBLE_CAP ? ' line-item--hidden' : '';
+  return `
+    <div class="qli-item${hidden}">
+      <div class="qli-thumb" style="background:${thumbColor};"></div>
+      <div class="qli-body">
+        <div class="qli-headline">
+          <div class="qli-name-stack">
+            <div class="qli-name">${escapeHtml(it.name)}</div>
+            <div class="qli-sku">${escapeHtml(sku)}</div>
+          </div>
+        </div>
+        ${desc}
+        ${loc}
+        <div class="qli-price-row">
+          <span class="qli-qty">${escapeHtml(it.qty)} × ${fmtUsdLong(unit)}</span>
+          <span class="qli-price-block">
+            ${strike}
+            <span class="qli-price">${fmtUsdLong(it.price)}</span>
+          </span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildSectionHTML(section) {
+  if (!section.items.length) return '';
+  const showHeader = section.header && section.header.trim();
+  const cardsHtml = section.items.map((it, i) => buildItemCardHTML(it, i)).join('');
+  const hiddenCount = Math.max(0, section.items.length - SECTION_VISIBLE_CAP);
+  const moreLink = hiddenCount > 0
+    ? `<button class="section-more-link" type="button" data-section-more>
+        <span data-section-more-label>+ ${hiddenCount} more item${hiddenCount === 1 ? '' : 's'}</span>
+        ${SECTION_CHEV_SVG}
+      </button>`
+    : '';
+  const headerBtn = showHeader
+    ? `<button class="quote-section-head" type="button" data-section-toggle>
+        <svg class="quote-section-head-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <span class="quote-section-head-label">${escapeHtml(section.header)}</span>
+        <span class="quote-section-head-count">${section.items.length} item${section.items.length === 1 ? '' : 's'}</span>
+      </button>`
+    : '';
+  return `
+    <div class="quote-section">
+      ${headerBtn}
+      <div class="quote-section-body">
+        ${cardsHtml}
+        ${moreLink}
+      </div>
+    </div>`;
+}
+
+function buildQuoteLineItemsHTML(state) {
+  if (!state || !state.trades.length) {
+    return `<div class="trade-empty">No selected options yet.</div>`;
+  }
+  return state.trades.map((t, idx) => {
+    const sectionsHtml = t.sections.length
+      ? t.sections.map(buildSectionHTML).join('')
+      : `<div class="line-item-meta" style="padding:8px 12px;"><span class="li-qty" style="color:var(--ink-lighter);">No line items</span></div>`;
+    const key = tradeIdToKey(t.tradeId, t.tradeName);
+    const tint = TRADE_TINTS[key] || DEFAULT_TRADE_TINT;
+    const headerStyle = `--quote-trade-tint:${tint.bg};--quote-trade-accent:${tint.fg};`;
+    const sectionCount = t.sections.length;
+    const subLine = sectionCount
+      ? `${t.itemCount} item${t.itemCount === 1 ? '' : 's'} · ${sectionCount} section${sectionCount === 1 ? '' : 's'}`
+      : `${t.itemCount} item${t.itemCount === 1 ? '' : 's'}`;
+    return `
+      <div class="quote-trade-card" data-trade-id="${escapeHtml(t.tradeId || '')}">
+        <button class="quote-trade-header" type="button" data-quote-toggle style="${headerStyle}">
+          <span class="quote-trade-title-stack">
+            <span class="quote-trade-title">${escapeHtml(t.tradeName)}</span>
+            <span class="quote-trade-sub">${subLine}</span>
+          </span>
+          ${QUOTE_CHEV_SVG}
+        </button>
+        <div class="quote-trade-body">
+          ${sectionsHtml}
+        </div>
+      </div>
+      ${idx < state.trades.length - 1 ? '<div class="separator"></div>' : ''}
+    `;
+  }).join('');
+}
+
+function buildQuoteTotalsHTML(state) {
+  const subtotal = state.trades.reduce((s, t) => s + t.total, 0);
+  const taxRate = 0.12;
+  const tax = Math.round(subtotal * taxRate * 100) / 100;
+  const total = Math.round((subtotal + tax) * 100) / 100;
+  const depositCollected = 0; // none initially; could be toggled
+  const depositRow = depositCollected > 0
+    ? `<div class="separator"></div>
+       <div class="totals-row totals-row--deposit">
+         <span class="label"><span class="label-text">Deposit Collected</span></span>
+         <span class="value">${fmtUsdLong(depositCollected)}</span>
+       </div>`
+    : '';
+  return `
+    <div class="separator"></div>
+    <div class="totals-row"><span class="label">Sub Total</span><span class="value">${fmtUsdLong(subtotal)}</span></div>
+    <div class="separator"></div>
+    <div class="totals-row"><span class="label">Exercise Tax (12%)</span><span class="value">${fmtUsdLong(tax)}</span></div>
+    <div class="separator"></div>
+    <div class="totals-row totals-row--grand"><span class="label">Total</span><span class="value">${fmtUsdLong(total)}</span></div>
+    ${depositRow}
+  `;
+}
+
+function renderQuoteDetails() {
+  quoteState = buildQuoteStateFromScreenA();
+  // Update line items header count
+  document.getElementById('lineItemsTitle').textContent = `Line Items (${quoteState.trades.length})`;
+  // Inject line items + totals
+  const lineItemsEl = document.getElementById('quoteLineItems');
+  lineItemsEl.innerHTML = buildQuoteLineItemsHTML(quoteState);
+  document.getElementById('quoteTotalsBlock').innerHTML = buildQuoteTotalsHTML(quoteState);
+  // Update header total amount
+  const subtotal = quoteState.trades.reduce((s, t) => s + t.total, 0);
+  const tax = Math.round(subtotal * 0.12 * 100) / 100;
+  const total = Math.round((subtotal + tax) * 100) / 100;
+  document.getElementById('quoteTotalAmount').textContent = fmtUsdLong(total);
+
+  // Wire collapse on trade headers
+  lineItemsEl.querySelectorAll('[data-quote-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.quote-trade-card');
+      if (!card) return;
+      const collapsed = card.dataset.collapsed === 'true';
+      card.dataset.collapsed = collapsed ? 'false' : 'true';
+    });
+  });
+
+  // Wire section header collapse/expand (Materials, Labor, ...)
+  lineItemsEl.querySelectorAll('[data-section-toggle]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const section = btn.closest('.quote-section');
+      if (!section) return;
+      const collapsed = section.dataset.sectionCollapsed === 'true';
+      section.dataset.sectionCollapsed = collapsed ? 'false' : 'true';
+    });
+  });
+
+  // Wire "+ N more items" expanders per section
+  lineItemsEl.querySelectorAll('[data-section-more]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const section = btn.closest('.quote-section');
+      if (!section) return;
+      const expanded = section.dataset.sectionExpanded === 'true';
+      section.dataset.sectionExpanded = expanded ? 'false' : 'true';
+      const hidden = section.querySelectorAll('.line-item-meta.line-item--hidden').length;
+      const label = btn.querySelector('[data-section-more-label]');
+      if (label) {
+        label.textContent = expanded
+          ? `+ ${hidden} more item${hidden === 1 ? '' : 's'}`
+          : 'Show fewer items';
+      }
+    });
+  });
+}
+
+function goToQuoteDetails() {
+  renderQuoteDetails();
+  state.currentScreen = 'F';
+  setScreenClasses('left', 'right', 'right', 'right', 'right', 'active');
+}
+
+function goBackFromQuote() {
+  state.currentScreen = 'A';
+  setScreenClasses('active', 'right', 'right', 'right', 'right', 'right');
+}
+
+function sendQuoteFromQuote() {
+  showToast('toastB', 'Quote sent to customer');
+}
+
+/* ================================================================
    INIT
    ================================================================ */
 renderLayoutRows();
+initTradesIn(document.getElementById('screenA'));
 </script>
 </body>
 </html>
