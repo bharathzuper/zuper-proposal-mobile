@@ -2533,6 +2533,16 @@ img { display: block; }
 }
 .assoc-option-badge { flex-shrink: 0; }
 
+/* Quote screen tab panes */
+.quote-tab-pane { display: none; }
+.quote-tab-pane.active { display: block; }
+.quote-tab-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--ink-light);
+  font-size: 13px;
+}
+
 /* Line items grouped by trade */
 .line-item-card {
   display: flex;
@@ -2627,40 +2637,30 @@ img { display: block; }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 14px 16px 18px;
-  background: var(--quote-trade-tint, var(--cloud-light));
+  padding: 14px 12px;
+  background: var(--cloud-light);
   width: 100%;
   text-align: left;
   cursor: pointer;
-  position: relative;
 }
-.quote-trade-header::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--quote-trade-accent, var(--blue-normal));
-}
-.quote-trade-header:active { filter: brightness(0.97); }
+.quote-trade-header:active { background: var(--cloud-normal); }
 .quote-trade-title-stack {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 .quote-trade-title {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink-normal);
   letter-spacing: 0.1px;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .quote-trade-sub {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--ink-light);
   letter-spacing: 0.2px;
   line-height: 1.3;
@@ -3813,13 +3813,16 @@ img { display: block; }
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
 
-          <!-- Tabs (visual only) -->
-          <div class="tabs-row">
-            <button class="tab-item active">Details</button>
-            <button class="tab-item">Associated</button>
-            <button class="tab-item">Notes</button>
-            <button class="tab-item">Activity</button>
+          <!-- Tabs -->
+          <div class="tabs-row" id="quoteTabsRow">
+            <button class="tab-item active" type="button" data-quote-tab="details" onclick="switchQuoteTab('details')">Details</button>
+            <button class="tab-item" type="button" data-quote-tab="associated" onclick="switchQuoteTab('associated')">Associated</button>
+            <button class="tab-item" type="button" data-quote-tab="notes" onclick="switchQuoteTab('notes')">Notes</button>
+            <button class="tab-item" type="button" data-quote-tab="activity" onclick="switchQuoteTab('activity')">Activity</button>
           </div>
+
+          <!-- Details pane -->
+          <div class="quote-tab-pane active" data-quote-pane="details">
 
           <!-- Quote Status -->
           <div class="card quote-status-card">
@@ -3847,52 +3850,6 @@ img { display: block; }
             </div>
             <div class="quote-cta-wrap">
               <button class="btn-primary" type="button" onclick="sendQuoteFromQuote()">Send to customer</button>
-            </div>
-          </div>
-
-          <!-- Proposal options (Associated tab preview) -->
-          <div class="card">
-            <div class="card-section-header">
-              <span class="title">Proposal options (3)</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="separator"></div>
-            <div class="assoc-options-list">
-              <div class="assoc-option-row">
-                <div class="assoc-option-thumb">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="assoc-option-main">
-                  <span class="assoc-option-trade">Roofing</span>
-                  <span class="assoc-option-name">Architectural Shingle Reroof</span>
-                  <span class="assoc-option-price">USD 8,150.00</span>
-                </div>
-                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
-              </div>
-              <div class="separator"></div>
-              <div class="assoc-option-row">
-                <div class="assoc-option-thumb">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="assoc-option-main">
-                  <span class="assoc-option-trade">Gutters</span>
-                  <span class="assoc-option-name">Seamless Aluminum Gutters</span>
-                  <span class="assoc-option-price">USD 1,820.00</span>
-                </div>
-                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
-              </div>
-              <div class="separator"></div>
-              <div class="assoc-option-row">
-                <div class="assoc-option-thumb">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="assoc-option-main">
-                  <span class="assoc-option-trade">Siding</span>
-                  <span class="assoc-option-name">Insulated Vinyl Siding</span>
-                  <span class="assoc-option-price">USD 9,450.00</span>
-                </div>
-                <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
-              </div>
             </div>
           </div>
 
@@ -3984,6 +3941,70 @@ img { display: block; }
                 <div class="name">main_hall_interior.pdf</div>
                 <div class="sub">Uploaded by James on 18/11/2021</div>
               </div>
+            </div>
+          </div>
+
+          </div><!-- /Details pane -->
+
+          <!-- Associated pane -->
+          <div class="quote-tab-pane" data-quote-pane="associated">
+            <div class="card">
+              <div class="card-section-header">
+                <span class="title">Proposal options (3)</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#252A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="separator"></div>
+              <div class="assoc-options-list">
+                <div class="assoc-option-row">
+                  <div class="assoc-option-thumb">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div class="assoc-option-main">
+                    <span class="assoc-option-trade">Roofing</span>
+                    <span class="assoc-option-name">Architectural Shingle Reroof</span>
+                    <span class="assoc-option-price">USD 8,150.00</span>
+                  </div>
+                  <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+                </div>
+                <div class="separator"></div>
+                <div class="assoc-option-row">
+                  <div class="assoc-option-thumb">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div class="assoc-option-main">
+                    <span class="assoc-option-trade">Gutters</span>
+                    <span class="assoc-option-name">Seamless Aluminum Gutters</span>
+                    <span class="assoc-option-price">USD 1,820.00</span>
+                  </div>
+                  <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+                </div>
+                <div class="separator"></div>
+                <div class="assoc-option-row">
+                  <div class="assoc-option-thumb">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div class="assoc-option-main">
+                    <span class="assoc-option-trade">Siding</span>
+                    <span class="assoc-option-name">Insulated Vinyl Siding</span>
+                    <span class="assoc-option-price">USD 9,450.00</span>
+                  </div>
+                  <span class="status-badge status-badge--approved assoc-option-badge">Accepted</span>
+                </div>
+              </div>
+            </div>
+          </div><!-- /Associated pane -->
+
+          <!-- Notes pane -->
+          <div class="quote-tab-pane" data-quote-pane="notes">
+            <div class="card">
+              <div class="quote-tab-empty">No notes yet.</div>
+            </div>
+          </div>
+
+          <!-- Activity pane -->
+          <div class="quote-tab-pane" data-quote-pane="activity">
+            <div class="card">
+              <div class="quote-tab-empty">No activity yet.</div>
             </div>
           </div>
 
@@ -5272,7 +5293,7 @@ function renderReorderList(trade) {
           <div class="reorder-body">
             <div class="reorder-thumb" style="background:${opt.thumbColor};"></div>
             <div class="reorder-info">
-              <div class="reorder-name">${escapeHtml(opt.name)}${opt.recommended ? ' ★' : ''}</div>
+              <div class="reorder-name">${escapeHtml(opt.name)}${opt.recommended ? ` <span class="recommended-star" aria-label="Recommended" title="Recommended">${STAR_SVG}</span>` : ''}</div>
               <div class="reorder-counts">${counts}</div>
             </div>
             <span class="reorder-grip" aria-label="Drag to reorder">
@@ -5805,16 +5826,13 @@ function buildQuoteLineItemsHTML(state) {
     const sectionsHtml = t.sections.length
       ? t.sections.map(buildSectionHTML).join('')
       : `<div class="line-item-meta" style="padding:8px 12px;"><span class="li-qty" style="color:var(--ink-lighter);">No line items</span></div>`;
-    const key = tradeIdToKey(t.tradeId, t.tradeName);
-    const tint = TRADE_TINTS[key] || DEFAULT_TRADE_TINT;
-    const headerStyle = `--quote-trade-tint:${tint.bg};--quote-trade-accent:${tint.fg};`;
     const sectionCount = t.sections.length;
     const subLine = sectionCount
       ? `${t.itemCount} item${t.itemCount === 1 ? '' : 's'} · ${sectionCount} section${sectionCount === 1 ? '' : 's'}`
       : `${t.itemCount} item${t.itemCount === 1 ? '' : 's'}`;
     return `
       <div class="quote-trade-card" data-trade-id="${escapeHtml(t.tradeId || '')}">
-        <button class="quote-trade-header" type="button" data-quote-toggle style="${headerStyle}">
+        <button class="quote-trade-header" type="button" data-quote-toggle>
           <span class="quote-trade-title-stack">
             <span class="quote-trade-title">${escapeHtml(t.tradeName)}</span>
             <span class="quote-trade-sub">${subLine}</span>
@@ -5921,6 +5939,17 @@ function goBackFromQuote() {
 
 function sendQuoteFromQuote() {
   showToast('toastB', 'Quote sent to customer');
+}
+
+function switchQuoteTab(name) {
+  const screen = document.getElementById('screenF');
+  if (!screen) return;
+  screen.querySelectorAll('.tabs-row [data-quote-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.quoteTab === name);
+  });
+  screen.querySelectorAll('.quote-tab-pane').forEach(pane => {
+    pane.classList.toggle('active', pane.dataset.quotePane === name);
+  });
 }
 
 /* ================================================================
