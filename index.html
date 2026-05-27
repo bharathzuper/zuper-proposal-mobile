@@ -6834,7 +6834,7 @@ function buildTradeChipsHTML(state, selectedId) {
     const active = !isAll && selectedId === t.tradeId;
     chips.push(`
       <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-quote-chip="${escapeHtml(t.tradeId)}">
-        ${escapeHtml(t.tradeName)}
+        ${escapeHtml(t.tradeName)} <span class="trade-chip-count">${t.itemCount || 0}</span>
       </button>
     `);
   });
@@ -7147,9 +7147,10 @@ function buildEditQuoteChipsHTML() {
   `);
   editQuoteState.trades.forEach((t) => {
     const active = !isAll && selectedId === t.tradeId;
+    const count = eqTradeItemCount(t);
     chips.push(`
       <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-eq-chip="${escapeHtml(t.tradeId)}">
-        ${escapeHtml(t.tradeName)}
+        ${escapeHtml(t.tradeName)} <span class="trade-chip-count">${count}</span>
       </button>
     `);
   });
