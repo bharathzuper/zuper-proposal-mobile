@@ -3261,33 +3261,36 @@ img { display: block; }
   font-weight: 600;
   opacity: 0.9;
 }
-.trade-chip-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cloud-dark);
-  flex-shrink: 0;
-}
-.trade-chip-dot--approved { background: #1FA956; }
-.trade-chip-dot--pending  { background: #F5B544; }
-.trade-chip-dot--rejected { background: #D7263D; }
-.trade-chip.is-active .trade-chip-dot--approved { background: #4ADE80; }
-.trade-chip.is-active .trade-chip-dot--pending  { background: #FCD34D; }
-.trade-chip.is-active .trade-chip-dot--rejected { background: #FCA5A5; }
 
-/* Flat section header (non-collapsible) used in chip-filtered views */
+/* Flat section header (collapsible) used in chip-filtered views */
 .li-flat-section { display: block; }
 .li-flat-section-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px 4px;
+  gap: 10px;
+  padding: 14px 14px 12px;
   border-top: 1px solid var(--cloud-dark);
+  width: 100%;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
 }
-.li-flat-section-head .label {
-  font-size: 13px;
-  font-weight: 500;
+.li-flat-section-head:active { background: var(--cloud-light); }
+.li-flat-section-chev {
+  width: 16px;
+  height: 16px;
   color: var(--ink-light);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.li-flat-section[data-collapsed="true"] .li-flat-section-chev { transform: rotate(-90deg); }
+.li-flat-section[data-collapsed="true"] .li-flat-section-body { display: none; }
+.li-flat-section[data-collapsed="true"] .li-flat-section-head { padding-bottom: 14px; }
+.li-flat-section-head .label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-dark);
   letter-spacing: 0.1px;
 }
 .li-flat-section-head .amount {
@@ -3297,7 +3300,7 @@ img { display: block; }
   letter-spacing: 0.1px;
   font-variant-numeric: tabular-nums;
 }
-.li-flat-section-body { display: block; }
+.li-flat-section-body { display: block; padding-bottom: 4px; }
 .li-flat-section:first-child .li-flat-section-head { border-top: none; }
 
 
@@ -6616,31 +6619,23 @@ const QUOTE_DEMO_SECTIONS = {
 };
 
 function buildQuoteStateFromScreenA() {
-  // Read screenA DOM and pick the recommended (★) option per trade as the customer's selection.
+  // Source from proposalState (single source of truth). Pick the recommended (★) option per trade,
+  // falling back to the first option if none flagged.
+  if (!proposalState) proposalState = _snapshotProposalDomToState();
   const trades = [];
-  document.querySelectorAll('#screenA .trade-card').forEach((tEl, tradeIdx) => {
-    const tradeId = tEl.dataset.tradeId || '';
-    const name = tEl.querySelector('.trade-name')?.textContent.trim() || 'Trade';
-    const options = Array.from(tEl.querySelectorAll(':scope > .trade-body > .option-card-item'));
-    if (!options.length) return;
-    // Recommended option = one with .recommended-star; fallback to first
-    let selectedEl = options.find((o) => o.querySelector('.recommended-star')) || options[0];
-    const thumb = selectedEl.querySelector('.option-thumb');
-    const thumbColor = (thumb?.getAttribute('style') || '').match(/background:\s*(#[0-9A-Fa-f]+)/)?.[1] || '#A0AEC0';
-    const nameEl = selectedEl.querySelector('.option-info .name');
-    const nameClone = nameEl.cloneNode(true);
-    nameClone.querySelectorAll('.recommended-star').forEach((s) => s.remove());
-    const optName = nameClone.textContent.trim();
-    const products = selectedEl.querySelector('.option-products-text')?.textContent.trim() || '';
-    const totalText = selectedEl.querySelector('.total-value')?.textContent.trim() || 'USD 0.00';
-    const optionPrice = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
+  proposalState.trades.forEach((t, tradeIdx) => {
+    if (!t.options.length) return;
+    const selected = t.options.find((o) => o.recommended) || t.options[0];
+    const optName = selected.name;
+    const products = selected.products || '';
+    const optionPrice = selected.price || 0;
     const sku = (optName.match(/[A-Z][A-Za-z]/g) || []).slice(0, 3).join('').toUpperCase() || 'OPT';
     const status = QUOTE_STATUS_PATTERN[tradeIdx % QUOTE_STATUS_PATTERN.length];
 
     // Attach sections: prefer demo seed; fall back to a single "Items" section parsed from products.
     let sections;
-    if (QUOTE_DEMO_SECTIONS[tradeId]) {
-      sections = QUOTE_DEMO_SECTIONS[tradeId].map((s) => ({
+    if (QUOTE_DEMO_SECTIONS[t.id]) {
+      sections = QUOTE_DEMO_SECTIONS[t.id].map((s) => ({
         header: s.header,
         items: s.items.map((it) => ({ ...it })),
       }));
@@ -6657,10 +6652,10 @@ function buildQuoteStateFromScreenA() {
     const total = sections.reduce((sum, s) => sum + s.items.reduce((a, b) => a + (b.price || 0), 0), 0);
     const itemCount = sections.reduce((sum, s) => sum + s.items.length, 0);
     trades.push({
-      tradeId,
-      tradeName: name,
+      tradeId: t.id,
+      tradeName: t.name,
       optionName: optName,
-      thumbColor,
+      thumbColor: selected.thumbColor,
       sku,
       sections,
       total,
@@ -6836,11 +6831,9 @@ function buildTradeChipsHTML(state, selectedId) {
     </button>
   `);
   state.trades.forEach((t) => {
-    const status = tradeStatusKey(t.status);
     const active = !isAll && selectedId === t.tradeId;
     chips.push(`
       <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-quote-chip="${escapeHtml(t.tradeId)}">
-        <span class="trade-chip-dot trade-chip-dot--${status}"></span>
         ${escapeHtml(t.tradeName)}
       </button>
     `);
@@ -6848,15 +6841,18 @@ function buildTradeChipsHTML(state, selectedId) {
   return `<div class="trade-chip-row" id="quoteChipRow">${chips.join('')}</div>`;
 }
 
+const LI_SECTION_CHEV = '<svg class="li-flat-section-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
 function buildFlatSectionHTML(section) {
   if (!section.items.length) return '';
   const cardsHtml = section.items.map((it, i) => buildItemCardHTML(it, i)).join('');
   return `
-    <div class="li-flat-section">
-      <div class="li-flat-section-head">
+    <div class="li-flat-section" data-collapsed="false">
+      <button class="li-flat-section-head" type="button" data-flat-section-toggle>
+        ${LI_SECTION_CHEV}
         <span class="label">${escapeHtml(section.header)}</span>
         <span class="amount">${fmtUsdLong(section.subtotal)}</span>
-      </div>
+      </button>
       <div class="li-flat-section-body">${cardsHtml}</div>
     </div>
   `;
@@ -6926,6 +6922,18 @@ function refreshQuoteLineItems() {
     btn.addEventListener('click', () => {
       quoteState.selectedTradeId = btn.dataset.quoteChip || 'all';
       refreshQuoteLineItems();
+    });
+  });
+  wireFlatSectionToggles(lineItemsEl);
+}
+
+function wireFlatSectionToggles(rootEl) {
+  if (!rootEl) return;
+  rootEl.querySelectorAll('[data-flat-section-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest('.li-flat-section');
+      if (!section) return;
+      section.dataset.collapsed = section.dataset.collapsed === 'true' ? 'false' : 'true';
     });
   });
 }
@@ -7116,11 +7124,12 @@ function buildEditQuoteItemHTML(item) {
 function buildEditQuoteFlatSectionHTML(section) {
   const items = section.items.map((it) => buildEditQuoteItemHTML(it)).join('');
   return `
-    <div class="li-flat-section">
-      <div class="li-flat-section-head">
+    <div class="li-flat-section" data-collapsed="false">
+      <button class="li-flat-section-head" type="button" data-flat-section-toggle>
+        ${LI_SECTION_CHEV}
         <span class="label">${escapeHtml(section.header)}</span>
         <span class="amount">${fmtUsdLong(section.subtotal)}</span>
-      </div>
+      </button>
       <div class="li-flat-section-body">${items}</div>
     </div>
   `;
@@ -7138,10 +7147,8 @@ function buildEditQuoteChipsHTML() {
   `);
   editQuoteState.trades.forEach((t) => {
     const active = !isAll && selectedId === t.tradeId;
-    const status = tradeStatusForId(t.tradeId);
     chips.push(`
       <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-eq-chip="${escapeHtml(t.tradeId)}">
-        <span class="trade-chip-dot trade-chip-dot--${status}"></span>
         ${escapeHtml(t.tradeName)}
       </button>
     `);
@@ -7302,6 +7309,7 @@ function refreshEditQuoteLineItems() {
       refreshEditQuoteLineItems();
     });
   });
+  wireFlatSectionToggles(tradesEl);
 }
 
 function renderEditQuoteTotals() {
@@ -7397,7 +7405,20 @@ function removeEditQuoteItem(sku, name) {
    INIT
    ================================================================ */
 renderLayoutRows();
-initTradesIn(document.getElementById('screenA'));
+
+// Replace screenA's static .trade-card stack with the shared chip-switcher,
+// using the static markup as the initial source of truth for proposalState.
+(function initProposalOptionsView() {
+  proposalState = _snapshotProposalDomToState();
+  const cards = Array.from(document.querySelectorAll('#screenA .trade-card'));
+  if (cards.length === 0) return;
+  const parent = cards[0].parentElement;
+  const container = document.createElement('div');
+  container.id = 'proposalOptionsCard';
+  parent.insertBefore(container, cards[0]);
+  cards.forEach((c) => c.remove());
+  renderProposalOptionsCard();
+})();
 </script>
 </body>
 </html>
