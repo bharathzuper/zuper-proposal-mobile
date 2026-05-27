@@ -1877,6 +1877,212 @@ img { display: block; }
 .trade-header-add { color: var(--ink-normal); }
 .trade-header .trade-header-main { pointer-events: auto; }
 
+/* ============================================================
+   OPTIONS CARD (Edit Proposal – chip-switcher layout)
+   ============================================================ */
+.options-card {
+  margin: 12px 16px 0;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+.options-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 14px 10px;
+}
+.options-card-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.3;
+}
+.options-card-title .count {
+  font-weight: 500;
+  color: var(--ink-lighter);
+  margin-left: 4px;
+}
+.options-card-head-action {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--cloud-dark);
+  color: var(--ink-light);
+  background: transparent;
+  flex-shrink: 0;
+}
+.options-card-head-action:active { background: var(--cloud-light); }
+.options-card-head-action svg { width: 16px; height: 16px; }
+
+.trade-chip-row {
+  display: flex;
+  gap: 8px;
+  padding: 4px 14px 14px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.trade-chip-row::-webkit-scrollbar { display: none; }
+.trade-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--cloud-dark);
+  border-radius: 999px;
+  background: var(--surface-light);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.trade-chip svg { width: 14px; height: 14px; color: currentColor; }
+.trade-chip[data-active="true"] {
+  background: var(--product-light);
+  border-color: var(--product-normal);
+  color: var(--product-normal);
+}
+.trade-chip[data-active="true"] svg { color: var(--product-normal); }
+.trade-chip .chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 0 5px;
+  height: 18px;
+  border-radius: 9px;
+  background: rgba(0,0,0,0.04);
+  color: var(--ink-light);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.trade-chip[data-active="true"] .chip-count {
+  background: rgba(228,74,25,0.18);
+  color: var(--product-normal);
+}
+.trade-chip-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px dashed var(--cloud-dark);
+  border-radius: 50%;
+  color: var(--blue-normal);
+  flex-shrink: 0;
+  background: transparent;
+}
+.trade-chip-add:active { background: var(--cloud-light); }
+
+.options-card-list {
+  border-top: 1px solid var(--cloud-dark);
+  display: flex;
+  flex-direction: column;
+}
+.option-row-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.option-row-card:last-child { border-bottom: none; }
+.option-row-card:active { background: var(--cloud-light); }
+.option-row-shield {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--option-tint, var(--cloud-normal));
+  color: var(--option-shield, var(--ink-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.option-row-shield svg { width: 22px; height: 22px; }
+.option-row-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.option-row-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.option-row-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.3;
+}
+.option-row-rec-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green-normal);
+  background: var(--green-light);
+  border-radius: 4px;
+  letter-spacing: 0.2px;
+}
+.option-row-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.option-row-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0.1px;
+  color: var(--ink-light);
+}
+.option-row-price {
+  font-weight: 700;
+  color: var(--ink-normal);
+  font-variant-numeric: tabular-nums;
+}
+.option-row-meta .dot { color: var(--ink-lighter); }
+.option-row-chev {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--ink-lighter);
+}
+.option-row-empty {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-light);
+}
+
 /* ----- Reorder options bottom sheet (full-screen) ----- */
 #reorderOptionsSheet {
   max-height: 100%;
@@ -2597,10 +2803,13 @@ img { display: block; }
 .eq-action-btn svg { display: block; }
 
 .eq-trades-wrap {
-  padding: 8px 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 0;
+  display: block;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card, 12px);
+  margin: 12px 16px 0;
+  overflow: hidden;
 }
 
 .eq-trade-card {
@@ -3011,6 +3220,86 @@ img { display: block; }
   font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
+
+/* ============================================================
+   TRADE FILTER CHIPS (shared by Quote Details & Edit Quote)
+   ============================================================ */
+.trade-chip-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 12px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.trade-chip-row::-webkit-scrollbar { display: none; }
+.trade-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--cloud-light);
+  border: 1px solid var(--cloud-dark);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  letter-spacing: 0.1px;
+  line-height: 1.3;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.trade-chip:active { opacity: 0.85; }
+.trade-chip.is-active {
+  background: #1A2330;
+  color: #fff;
+  border-color: transparent;
+}
+.trade-chip-count {
+  font-weight: 600;
+  opacity: 0.9;
+}
+.trade-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cloud-dark);
+  flex-shrink: 0;
+}
+.trade-chip-dot--approved { background: #1FA956; }
+.trade-chip-dot--pending  { background: #F5B544; }
+.trade-chip-dot--rejected { background: #D7263D; }
+.trade-chip.is-active .trade-chip-dot--approved { background: #4ADE80; }
+.trade-chip.is-active .trade-chip-dot--pending  { background: #FCD34D; }
+.trade-chip.is-active .trade-chip-dot--rejected { background: #FCA5A5; }
+
+/* Flat section header (non-collapsible) used in chip-filtered views */
+.li-flat-section { display: block; }
+.li-flat-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 4px;
+  border-top: 1px solid var(--cloud-dark);
+}
+.li-flat-section-head .label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.1px;
+}
+.li-flat-section-head .amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-dark);
+  letter-spacing: 0.1px;
+  font-variant-numeric: tabular-nums;
+}
+.li-flat-section-body { display: block; }
+.li-flat-section:first-child .li-flat-section-head { border-top: none; }
+
 
 
 /* Line items grouped by trade */
@@ -5432,8 +5721,12 @@ const TRADE_TYPES = [
   { name: 'Painting',   color: '#9C3328' },
 ];
 
-function snapshotProposalToEditState() {
-  // Build editState from screenA's current DOM
+// Source of truth for the read-only proposal view. Initialized once from screenA's
+// static markup on page load; mutated by Edit Proposal commits.
+let proposalState = null;
+
+function _snapshotProposalDomToState() {
+  // Read screenA's static `.trade-card` markup once and produce the initial proposalState.
   const trades = [];
   document.querySelectorAll('#screenA .trade-card').forEach((tEl) => {
     const tradeId = tEl.dataset.tradeId;
@@ -5443,7 +5736,6 @@ function snapshotProposalToEditState() {
       const thumb = oEl.querySelector('.option-thumb');
       const thumbColor = (thumb?.getAttribute('style') || '').match(/background:\s*(#[0-9A-Fa-f]+)/)?.[1] || '#A0AEC0';
       const nameEl = oEl.querySelector('.option-info .name');
-      // Strip the star span out of the name text
       const nameClone = nameEl.cloneNode(true);
       nameClone.querySelectorAll('.recommended-star').forEach((s) => s.remove());
       const optName = nameClone.textContent.trim();
@@ -5451,8 +5743,7 @@ function snapshotProposalToEditState() {
       const desc = oEl.querySelector('.desc')?.textContent.trim() || '';
       const products = oEl.querySelector('.option-products-text')?.textContent.trim() || '';
       const totalText = oEl.querySelector('.total-value')?.textContent.trim() || 'USD 0.00';
-      const priceMatch = totalText.replace(/[^0-9.]/g, '');
-      const price = parseFloat(priceMatch) || 0;
+      const price = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
       options.push({
         id: `o-${Math.random().toString(36).slice(2,8)}`,
         name: optName,
@@ -5469,7 +5760,14 @@ function snapshotProposalToEditState() {
       options,
     });
   });
-  editState = { trades, pricelistId: null, dirty: false };
+  return { trades, pricelistId: null, dirty: false };
+}
+
+function snapshotProposalToEditState() {
+  // Clone proposalState (the source of truth) into editState for in-memory editing.
+  if (!proposalState) proposalState = _snapshotProposalDomToState();
+  editState = JSON.parse(JSON.stringify(proposalState));
+  editState.dirty = false;
 }
 
 function fmtUsdLong(n) {
@@ -5667,51 +5965,45 @@ function buildTradeHTML(trade, opts = {}) {
     </div>`;
 }
 
+const SHIELD_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M12 2v20"/></svg>';
+
+function getActiveTradeId() {
+  if (!editState || !editState.trades.length) return null;
+  if (editContext.activeTradeId && editState.trades.find((t) => t.id === editContext.activeTradeId)) {
+    return editContext.activeTradeId;
+  }
+  editContext.activeTradeId = editState.trades[0].id;
+  return editContext.activeTradeId;
+}
+
+function partsServicesSummary(option) {
+  const items = parseProducts(option.products || '');
+  const total = items.length;
+  return total ? `${total} item${total === 1 ? '' : 's'}` : 'No items';
+}
+
+function buildOptionRowsHTML(trade, opts) {
+  if (!trade) return '';
+  const readOnly = !!(opts && opts.readOnly);
+  if (!trade.options.length) {
+    if (readOnly) return `<div class="option-row-empty">No options yet.</div>`;
+    return `
+      <div class="option-row-empty">
+        No options yet.<br/>
+        <button class="add-option-row" type="button" style="display:inline-flex;margin-top:10px;width:auto;" onclick="openAddOptionSheet('${trade.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add the first option
+        </button>
+      </div>`;
+  }
+  return trade.options.map((opt) => _buildOptionRowHTML(opt, trade.id, readOnly)).join('');
+}
+
 function renderEditStateIntoScreenE() {
   if (!editState) return;
   const container = document.getElementById('screenETrades');
-  container.innerHTML = editState.trades.map((t) => buildTradeHTML(t, { editMode: true })).join('');
-  initTradesIn(container);
-  // Wire "+ N more items" expanders inside option-edit cards
-  container.querySelectorAll('[data-more-items]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const card = btn.closest('.option-edit');
-      if (!card) return;
-      const expanded = card.dataset.itemsExpanded === 'true';
-      card.dataset.itemsExpanded = expanded ? 'false' : 'true';
-      const hidden = card.querySelectorAll('.line-item--hidden').length;
-      btn.textContent = expanded
-        ? `+ ${hidden} more item${hidden === 1 ? '' : 's'}`
-        : 'Show fewer items';
-    });
-  });
-
-  // Sync carousel dots to scroll position per trade
-  container.querySelectorAll('[data-trade-carousel]').forEach((carousel) => {
-    const trade = carousel.closest('.trade-card');
-    if (!trade) return;
-    const dots = trade.querySelector('[data-trade-dots]');
-    if (!dots) return;
-    const realOptions = carousel.querySelectorAll('.option-edit');
-    const sync = () => {
-      const cards = Array.from(realOptions);
-      if (!cards.length) return;
-      const cl = carousel.getBoundingClientRect();
-      // Find the card whose left edge is closest to the carousel's left + scroll padding (12)
-      const ref = cl.left + 12;
-      let best = 0;
-      let bestDist = Infinity;
-      cards.forEach((c, i) => {
-        const d = Math.abs(c.getBoundingClientRect().left - ref);
-        if (d < bestDist) { bestDist = d; best = i; }
-      });
-      dots.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === best));
-    };
-    carousel.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-    // Initial sync
-    sync();
-  });
+  container.innerHTML = buildOptionsCardHTML(editState, { readOnly: false });
+  wireOptionsCardHandlers(container, editState, { readOnly: false });
 
   // Pricelist row label
   const labelEl = document.getElementById('pricelistRowLabel');
@@ -5726,21 +6018,118 @@ function renderEditStateIntoScreenE() {
   }
 }
 
+function openActiveTradeActionSheet() {
+  if (!editState) return;
+  const activeId = getActiveTradeId();
+  if (!activeId) return;
+  editContext.tradeId = activeId;
+  openTradeActionSheet(activeId);
+}
+
 function applyEditStateToScreenA() {
   if (!editState) return;
-  // Find the parent of trade-cards in screenA
-  const first = document.querySelector('#screenA .trade-card');
-  if (!first) return;
-  const parent = first.parentElement;
-  // Remove existing trade cards
-  parent.querySelectorAll(':scope > .trade-card').forEach((tc) => tc.remove());
-  // Build & insert new ones at the same position
-  const tmp = document.createElement('div');
-  tmp.innerHTML = editState.trades.map((t) => buildTradeHTML(t, { editMode: false })).join('');
-  // Insert in same relative spot — after the existing Status Card (just append at end since we removed all cards)
-  Array.from(tmp.children).forEach((c) => parent.appendChild(c));
-  // Re-init handlers on new cards
-  initTradesIn(parent);
+  proposalState = JSON.parse(JSON.stringify(editState));
+  proposalState.dirty = false;
+  renderProposalOptionsCard();
+}
+
+function renderProposalOptionsCard() {
+  const container = document.getElementById('proposalOptionsCard');
+  if (!container || !proposalState) return;
+  container.innerHTML = buildOptionsCardHTML(proposalState, { readOnly: true });
+  wireOptionsCardHandlers(container, proposalState, { readOnly: true });
+}
+
+function _activeTradeIdFor(state, ctx) {
+  if (!state || !state.trades.length) return null;
+  if (ctx.activeTradeId && state.trades.find((t) => t.id === ctx.activeTradeId)) {
+    return ctx.activeTradeId;
+  }
+  ctx.activeTradeId = state.trades[0].id;
+  return ctx.activeTradeId;
+}
+
+// In-memory active-chip context per surface (separate from edit-mode editContext).
+const proposalCtx = { activeTradeId: null };
+
+function buildOptionsCardHTML(state, opts) {
+  const readOnly = !!opts.readOnly;
+  const ctx = readOnly ? proposalCtx : editContext;
+  const totalOptions = state.trades.reduce((s, t) => s + t.options.length, 0);
+  const activeId = _activeTradeIdFor(state, ctx);
+  const activeTrade = state.trades.find((t) => t.id === activeId);
+
+  if (state.trades.length === 0) {
+    return `<div class="options-card"><div class="option-row-empty">No trades yet.</div></div>`;
+  }
+
+  const chips = state.trades.map((t) => {
+    const isActive = t.id === activeId;
+    return `
+      <button class="trade-chip" type="button" data-active="${isActive}" data-trade-chip data-trade-id="${escapeHtml(t.id)}">
+        <span>${escapeHtml(t.name)}</span>
+        <span class="chip-count">${t.options.length}</span>
+      </button>`;
+  }).join('');
+
+  const headAction = readOnly
+    ? ''
+    : `<button class="options-card-head-action" type="button" aria-label="Trade actions" onclick="openActiveTradeActionSheet()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+      </button>`;
+
+  return `
+    <div class="options-card">
+      <div class="options-card-head">
+        <div class="options-card-title">Options<span class="count">· ${totalOptions}</span></div>
+        ${headAction}
+      </div>
+      <div class="trade-chip-row">
+        ${chips}
+      </div>
+      <div class="options-card-list" data-option-list>
+        ${buildOptionRowsHTML(activeTrade, opts)}
+      </div>
+    </div>`;
+}
+
+function _buildOptionRowHTML(opt, tradeId, readOnly) {
+  const recPill = opt.recommended
+    ? `<span class="option-row-rec-pill">Recommended</span>`
+    : '';
+  const desc = opt.desc ? `<div class="option-row-desc">${escapeHtml(opt.desc)}</div>` : '';
+  const onclick = readOnly
+    ? ''
+    : `onclick="openOptionActionSheet('${tradeId}','${opt.id}')"`;
+  return `
+    <button class="option-row-card" type="button" data-option-id="${opt.id}" ${onclick} style="--option-tint:${opt.thumbColor}25; --option-shield:${opt.thumbColor};">
+      <span class="option-row-shield">${SHIELD_SVG}</span>
+      <div class="option-row-body">
+        <div class="option-row-head">
+          <span class="option-row-name">${escapeHtml(opt.name)}</span>
+          ${recPill}
+        </div>
+        ${desc}
+        <div class="option-row-meta">
+          <span class="option-row-price">${fmtUsdLong(opt.price)}</span>
+          <span class="dot">·</span>
+          <span>${partsServicesSummary(opt)}</span>
+        </div>
+      </div>
+      <svg class="option-row-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`;
+}
+
+function wireOptionsCardHandlers(container, state, opts) {
+  const readOnly = !!opts.readOnly;
+  const ctx = readOnly ? proposalCtx : editContext;
+  container.querySelectorAll('[data-trade-chip]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      ctx.activeTradeId = chip.dataset.tradeId;
+      if (readOnly) renderProposalOptionsCard();
+      else renderEditStateIntoScreenE();
+    });
+  });
 }
 
 /* ---- navigation ---- */
@@ -6411,34 +6800,82 @@ function buildSectionHTML(section) {
     </div>`;
 }
 
+function combineSectionsAcrossTrades(trades) {
+  // Merge sections by header label across multiple trades; preserve insertion order.
+  const order = [];
+  const map = new Map();
+  trades.forEach((t) => {
+    (t.sections || []).forEach((s) => {
+      if (!map.has(s.header)) {
+        order.push(s.header);
+        map.set(s.header, []);
+      }
+      map.get(s.header).push(...s.items);
+    });
+  });
+  return order.map((header) => {
+    const items = map.get(header);
+    const subtotal = items.reduce((a, it) => a + (it.price || 0), 0);
+    return { header, items, subtotal };
+  });
+}
+
+function tradeStatusKey(status) {
+  if (status === 'approved') return 'approved';
+  if (status === 'rejected') return 'rejected';
+  return 'pending';
+}
+
+function buildTradeChipsHTML(state, selectedId) {
+  const totalItems = state.trades.reduce((sum, t) => sum + (t.itemCount || 0), 0);
+  const chips = [];
+  const isAll = selectedId === 'all' || !selectedId;
+  chips.push(`
+    <button type="button" class="trade-chip ${isAll ? 'is-active' : ''}" data-quote-chip="all">
+      All <span class="trade-chip-count">${totalItems}</span>
+    </button>
+  `);
+  state.trades.forEach((t) => {
+    const status = tradeStatusKey(t.status);
+    const active = !isAll && selectedId === t.tradeId;
+    chips.push(`
+      <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-quote-chip="${escapeHtml(t.tradeId)}">
+        <span class="trade-chip-dot trade-chip-dot--${status}"></span>
+        ${escapeHtml(t.tradeName)}
+      </button>
+    `);
+  });
+  return `<div class="trade-chip-row" id="quoteChipRow">${chips.join('')}</div>`;
+}
+
+function buildFlatSectionHTML(section) {
+  if (!section.items.length) return '';
+  const cardsHtml = section.items.map((it, i) => buildItemCardHTML(it, i)).join('');
+  return `
+    <div class="li-flat-section">
+      <div class="li-flat-section-head">
+        <span class="label">${escapeHtml(section.header)}</span>
+        <span class="amount">${fmtUsdLong(section.subtotal)}</span>
+      </div>
+      <div class="li-flat-section-body">${cardsHtml}</div>
+    </div>
+  `;
+}
+
 function buildQuoteLineItemsHTML(state) {
   if (!state || !state.trades.length) {
     return `<div class="trade-empty">No selected options yet.</div>`;
   }
-  return state.trades.map((t, idx) => {
-    const sectionsHtml = t.sections.length
-      ? t.sections.map(buildSectionHTML).join('')
-      : `<div class="line-item-meta" style="padding:8px 12px;"><span class="li-qty" style="color:var(--ink-lighter);">No line items</span></div>`;
-    const sectionCount = t.sections.length;
-    const subLine = sectionCount
-      ? `${t.itemCount} item${t.itemCount === 1 ? '' : 's'} · ${sectionCount} section${sectionCount === 1 ? '' : 's'}`
-      : `${t.itemCount} item${t.itemCount === 1 ? '' : 's'}`;
-    return `
-      <div class="quote-trade-card" data-trade-id="${escapeHtml(t.tradeId || '')}">
-        <button class="quote-trade-header" type="button" data-quote-toggle>
-          <span class="quote-trade-title-stack">
-            <span class="quote-trade-title">${escapeHtml(t.tradeName)}</span>
-            <span class="quote-trade-sub">${subLine}</span>
-          </span>
-          ${QUOTE_CHEV_SVG}
-        </button>
-        <div class="quote-trade-body">
-          ${sectionsHtml}
-        </div>
-      </div>
-      ${idx < state.trades.length - 1 ? '<div class="separator"></div>' : ''}
-    `;
-  }).join('');
+  const selectedId = state.selectedTradeId || 'all';
+  const filteredTrades = selectedId === 'all'
+    ? state.trades
+    : state.trades.filter((t) => t.tradeId === selectedId);
+  const sections = combineSectionsAcrossTrades(filteredTrades);
+  const chips = buildTradeChipsHTML(state, selectedId);
+  const sectionsHtml = sections.length
+    ? sections.map(buildFlatSectionHTML).join('')
+    : `<div class="line-item-meta" style="padding:14px;"><span class="li-qty" style="color:var(--ink-lighter);">No line items</span></div>`;
+  return `${chips}${sectionsHtml}`;
 }
 
 function buildQuoteTotalsHTML(state) {
@@ -6466,55 +6903,29 @@ function buildQuoteTotalsHTML(state) {
 }
 
 function renderQuoteDetails() {
+  const prevSelected = quoteState && quoteState.selectedTradeId;
   quoteState = buildQuoteStateFromScreenA();
-  // Update line items header count
-  document.getElementById('lineItemsTitle').textContent = `Line Items (${quoteState.trades.length})`;
-  // Inject line items + totals
-  const lineItemsEl = document.getElementById('quoteLineItems');
-  lineItemsEl.innerHTML = buildQuoteLineItemsHTML(quoteState);
+  quoteState.selectedTradeId = prevSelected || 'all';
+  refreshQuoteLineItems();
   document.getElementById('quoteTotalsBlock').innerHTML = buildQuoteTotalsHTML(quoteState);
   // Update header total amount
   const subtotal = quoteState.trades.reduce((s, t) => s + t.total, 0);
   const tax = Math.round(subtotal * 0.12 * 100) / 100;
   const total = Math.round((subtotal + tax) * 100) / 100;
   document.getElementById('quoteTotalAmount').textContent = fmtUsdLong(total);
+}
 
-  // Wire collapse on trade headers
-  lineItemsEl.querySelectorAll('[data-quote-toggle]').forEach((btn) => {
+function refreshQuoteLineItems() {
+  if (!quoteState) return;
+  const totalItems = quoteState.trades.reduce((sum, t) => sum + (t.itemCount || 0), 0);
+  document.getElementById('lineItemsTitle').textContent = `Line Items (${totalItems})`;
+  const lineItemsEl = document.getElementById('quoteLineItems');
+  lineItemsEl.innerHTML = buildQuoteLineItemsHTML(quoteState);
+  // Wire chip clicks
+  lineItemsEl.querySelectorAll('[data-quote-chip]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const card = btn.closest('.quote-trade-card');
-      if (!card) return;
-      const collapsed = card.dataset.collapsed === 'true';
-      card.dataset.collapsed = collapsed ? 'false' : 'true';
-    });
-  });
-
-  // Wire section header collapse/expand (Materials, Labor, ...)
-  lineItemsEl.querySelectorAll('[data-section-toggle]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const section = btn.closest('.quote-section');
-      if (!section) return;
-      const collapsed = section.dataset.sectionCollapsed === 'true';
-      section.dataset.sectionCollapsed = collapsed ? 'false' : 'true';
-    });
-  });
-
-  // Wire "+ N more items" expanders per section
-  lineItemsEl.querySelectorAll('[data-section-more]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const section = btn.closest('.quote-section');
-      if (!section) return;
-      const expanded = section.dataset.sectionExpanded === 'true';
-      section.dataset.sectionExpanded = expanded ? 'false' : 'true';
-      const hidden = section.querySelectorAll('.line-item-meta.line-item--hidden').length;
-      const label = btn.querySelector('[data-section-more-label]');
-      if (label) {
-        label.textContent = expanded
-          ? `+ ${hidden} more item${hidden === 1 ? '' : 's'}`
-          : 'Show fewer items';
-      }
+      quoteState.selectedTradeId = btn.dataset.quoteChip || 'all';
+      refreshQuoteLineItems();
     });
   });
 }
@@ -6570,6 +6981,7 @@ const DEFAULT_TAXES = [
 
 function snapshotQuoteToEditQuoteState() {
   if (!quoteState) quoteState = buildQuoteStateFromScreenA();
+  const prevSelected = editQuoteState && editQuoteState.selectedTradeId;
   const trades = quoteState.trades.map((t) => ({
     tradeId: t.tradeId,
     tradeName: t.tradeName,
@@ -6588,6 +7000,7 @@ function snapshotQuoteToEditQuoteState() {
   }));
   editQuoteState = {
     trades,
+    selectedTradeId: prevSelected || 'all',
     pricelistId: null,
     discount: 0,
     taxes: DEFAULT_TAXES.map((t) => ({ ...t })),
@@ -6612,14 +7025,14 @@ function goBackFromEditQuote() {
 }
 
 function commitEditQuoteAndExit() {
-  // Persist totals & line items back into quoteState
+  // Persist totals & line items back into quoteState. `price` is already the line total.
   if (editQuoteState && quoteState) {
     quoteState.trades = editQuoteState.trades.map((t) => {
       const sections = t.sections.map((s) => ({
         header: s.header,
         items: s.items.map((it) => ({ ...it })),
       }));
-      const total = sections.reduce((sum, s) => sum + s.items.reduce((a, b) => a + (b.price || 0) * (parseFloat(b.qty) || 1), 0), 0);
+      const total = sections.reduce((sum, s) => sum + s.items.reduce((a, b) => a + (b.price || 0), 0), 0);
       const itemCount = sections.reduce((sum, s) => sum + s.items.length, 0);
       return {
         ...t,
@@ -6643,23 +7056,32 @@ function eqTotalItemCount() {
 }
 
 function eqSubtotal() {
+  // Each item's `price` is the already-extended line total.
   return editQuoteState.trades.reduce((sum, t) =>
     sum + t.sections.reduce((a, s) =>
-      a + s.items.reduce((x, it) => x + (it.price || 0) * (parseFloat(it.qty) || 1), 0), 0), 0);
+      a + s.items.reduce((x, it) => x + (it.price || 0), 0), 0), 0);
 }
 
 function eqTradeTotal(trade) {
   return trade.sections.reduce((a, s) =>
-    a + s.items.reduce((x, it) => x + (it.price || 0) * (parseFloat(it.qty) || 1), 0), 0);
+    a + s.items.reduce((x, it) => x + (it.price || 0), 0), 0);
 }
 
 function eqTradeItemCount(trade) {
   return trade.sections.reduce((sum, s) => sum + s.items.length, 0);
 }
 
+function tradeStatusForId(tradeId) {
+  if (!quoteState) return 'pending';
+  const t = quoteState.trades.find((x) => x.tradeId === tradeId);
+  return tradeStatusKey(t && t.status);
+}
+
 function buildEditQuoteItemHTML(item) {
-  const lineTotal = (item.price || 0) * (parseFloat(item.qty) || 1);
-  const qtyDisplay = `${item.qty || 1} × ${fmtUsdLong(item.price || 0)}`;
+  const lineTotal = item.price || 0;
+  const qtyNum = parseFloat(item.qty) || 1;
+  const unit = qtyNum > 0 ? lineTotal / qtyNum : lineTotal;
+  const qtyDisplay = `${item.qty || 1} × ${fmtUsdLong(unit)}`;
   const descHTML = item.desc ? `
     <div class="eq-item-desc">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -6691,35 +7113,40 @@ function buildEditQuoteItemHTML(item) {
   `;
 }
 
-function buildEditQuoteSectionHTML(section) {
+function buildEditQuoteFlatSectionHTML(section) {
   const items = section.items.map((it) => buildEditQuoteItemHTML(it)).join('');
   return `
-    <div class="eq-section-head">
-      <span>${section.header}</span>
-      <span class="eq-section-count">${section.items.length} item${section.items.length !== 1 ? 's' : ''}</span>
+    <div class="li-flat-section">
+      <div class="li-flat-section-head">
+        <span class="label">${escapeHtml(section.header)}</span>
+        <span class="amount">${fmtUsdLong(section.subtotal)}</span>
+      </div>
+      <div class="li-flat-section-body">${items}</div>
     </div>
-    ${items}
   `;
 }
 
-function buildEditQuoteTradeHTML(trade) {
-  const key = tradeIdToKey(trade.tradeId, trade.tradeName);
-  const tint = TRADE_TINTS[key] || DEFAULT_TRADE_TINT;
-  const icon = TRADE_ICONS[key] || DEFAULT_TRADE_ICON;
-  const sections = trade.sections.map((s) => buildEditQuoteSectionHTML(s)).join('');
-  const total = eqTradeTotal(trade);
-  const count = eqTradeItemCount(trade);
-  return `
-    <div class="eq-trade-card" data-trade-id="${trade.tradeId}" data-collapsed="false">
-      <button class="eq-trade-header" type="button" data-eq-trade-toggle>
-        <span class="eq-trade-thumb" style="background:${tint.bg}; color:${tint.fg};">${icon}</span>
-        <span class="eq-trade-name">${trade.tradeName}</span>
-        <span class="eq-trade-meta">${count} · ${fmtUsdLong(total)}</span>
-        <svg class="eq-trade-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+function buildEditQuoteChipsHTML() {
+  const totalItems = eqTotalItemCount();
+  const selectedId = editQuoteState.selectedTradeId || 'all';
+  const isAll = selectedId === 'all';
+  const chips = [];
+  chips.push(`
+    <button type="button" class="trade-chip ${isAll ? 'is-active' : ''}" data-eq-chip="all">
+      All <span class="trade-chip-count">${totalItems}</span>
+    </button>
+  `);
+  editQuoteState.trades.forEach((t) => {
+    const active = !isAll && selectedId === t.tradeId;
+    const status = tradeStatusForId(t.tradeId);
+    chips.push(`
+      <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-eq-chip="${escapeHtml(t.tradeId)}">
+        <span class="trade-chip-dot trade-chip-dot--${status}"></span>
+        ${escapeHtml(t.tradeName)}
       </button>
-      <div class="eq-trade-body">${sections}</div>
-    </div>
-  `;
+    `);
+  });
+  return `<div class="trade-chip-row" id="eqChipRow">${chips.join('')}</div>`;
 }
 
 function buildEditQuoteTotalsHTML() {
@@ -6851,18 +7278,30 @@ function buildEditQuoteBreakdownHTML() {
 function renderEditQuoteIntoScreenG() {
   if (!editQuoteState) return;
   document.getElementById('eqCountLabel').textContent = `${eqTotalItemCount()} item(s)`;
+  refreshEditQuoteLineItems();
+  renderEditQuoteTotals();
+}
+
+function refreshEditQuoteLineItems() {
   const tradesEl = document.getElementById('eqTrades');
-  tradesEl.innerHTML = editQuoteState.trades.map((t) => buildEditQuoteTradeHTML(t)).join('');
-  // Wire trade-collapse toggles
-  tradesEl.querySelectorAll('[data-eq-trade-toggle]').forEach((btn) => {
+  if (!tradesEl) return;
+  const selectedId = editQuoteState.selectedTradeId || 'all';
+  const filtered = selectedId === 'all'
+    ? editQuoteState.trades
+    : editQuoteState.trades.filter((t) => t.tradeId === selectedId);
+  const sections = combineSectionsAcrossTrades(filtered);
+  const chips = buildEditQuoteChipsHTML();
+  const sectionsHTML = sections.length
+    ? sections.map(buildEditQuoteFlatSectionHTML).join('')
+    : `<div class="li-flat-section"><div class="li-flat-section-head"><span class="label">No line items</span></div></div>`;
+  tradesEl.innerHTML = `${chips}${sectionsHTML}`;
+  // Wire chip clicks
+  tradesEl.querySelectorAll('[data-eq-chip]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const card = btn.closest('.eq-trade-card');
-      if (!card) return;
-      const collapsed = card.dataset.collapsed === 'true';
-      card.dataset.collapsed = collapsed ? 'false' : 'true';
+      editQuoteState.selectedTradeId = btn.dataset.eqChip || 'all';
+      refreshEditQuoteLineItems();
     });
   });
-  renderEditQuoteTotals();
 }
 
 function renderEditQuoteTotals() {
