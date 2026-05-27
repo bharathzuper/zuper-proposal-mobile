@@ -2543,6 +2543,476 @@ img { display: block; }
   font-size: 13px;
 }
 
+/* ============================================================
+   EDIT QUOTE (Screen G)
+   ============================================================ */
+#screenG .stepper-step { pointer-events: none; }
+#screenG .stepper-step--current { pointer-events: auto; }
+
+.eq-section {
+  padding: 16px 16px 4px;
+}
+.eq-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  margin: 0;
+  letter-spacing: 0.1px;
+}
+.eq-section-sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+}
+.eq-count-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 12px;
+}
+.eq-count-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  letter-spacing: 0.2px;
+}
+.eq-action-icons {
+  display: flex;
+  gap: 4px;
+}
+.eq-action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ink-normal);
+  background: transparent;
+}
+.eq-action-btn:active { background: var(--cloud-light); }
+.eq-action-btn svg { display: block; }
+
+.eq-trades-wrap {
+  padding: 8px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eq-trade-card {
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card, 12px);
+  overflow: hidden;
+}
+.eq-trade-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.eq-trade-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.eq-trade-thumb svg { display: block; }
+.eq-trade-name {
+  flex: 1;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  letter-spacing: 0.1px;
+}
+.eq-trade-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  margin-right: 8px;
+}
+.eq-trade-chev {
+  color: var(--ink-light);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.eq-trade-card[data-collapsed="true"] .eq-trade-chev {
+  transform: rotate(-90deg);
+}
+.eq-trade-card[data-collapsed="true"] .eq-trade-body { display: none; }
+
+.eq-trade-body {
+  border-top: 1px solid var(--cloud-dark);
+}
+
+.eq-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
+  background: var(--cloud-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+.eq-section-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
+
+.eq-item-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--cloud-dark);
+  align-items: flex-start;
+}
+.eq-item-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #DCE5F0, #C8D5E5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9AAEC6;
+}
+.eq-item-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.eq-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  line-height: 1.3;
+  letter-spacing: 0.1px;
+}
+.eq-item-sku {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.3px;
+}
+.eq-item-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-light);
+  line-height: 1.4;
+  margin-top: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.eq-item-desc svg { flex-shrink: 0; margin-top: 2px; opacity: 0.8; }
+.eq-item-qty {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-normal);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.2px;
+}
+.eq-item-qty-value { color: var(--ink-light); }
+.eq-item-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-normal, #0172CB);
+  font-variant-numeric: tabular-nums;
+}
+.eq-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.eq-item-action-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: transparent;
+}
+.eq-item-action-btn:active { background: var(--cloud-light); }
+.eq-item-action-btn.edit { color: var(--blue-normal, #0172CB); }
+.eq-item-action-btn.delete { color: #D7263D; }
+
+/* Totals card */
+.eq-totals-card {
+  margin: 16px 16px 0;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card, 12px);
+  overflow: hidden;
+}
+.eq-totals-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.eq-totals-row:last-child { border-bottom: none; }
+.eq-totals-label {
+  color: var(--ink-normal);
+  font-weight: 500;
+}
+.eq-totals-label--muted { color: var(--ink-light); font-weight: 400; }
+.eq-totals-value {
+  color: var(--blue-normal, #0172CB);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.eq-totals-value--sub {
+  color: var(--blue-normal, #0172CB);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.eq-add-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  background: #E6F2FD;
+  color: var(--blue-normal, #0172CB);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+.eq-add-pill svg { width: 14px; height: 14px; }
+
+.eq-tax-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.eq-tax-remove {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #D0D7E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--surface-light);
+  flex-shrink: 0;
+}
+.eq-tax-remove svg { width: 10px; height: 10px; }
+.eq-tax-label {
+  flex: 1;
+  font-size: 14px;
+  color: var(--ink-light);
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}
+.eq-tax-value {
+  color: var(--blue-normal, #0172CB);
+  font-weight: 600;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Profit margin */
+.eq-margin-card {
+  margin: 12px 16px 0;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card, 12px);
+  padding: 16px 14px;
+}
+.eq-margin-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.eq-margin-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  letter-spacing: 0.1px;
+}
+.eq-margin-title svg { color: var(--blue-normal, #0172CB); flex-shrink: 0; }
+.eq-margin-sub {
+  margin: 2px 0 0 28px;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.2px;
+}
+.eq-margin-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--cloud-dark);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--cloud-light);
+}
+.eq-margin-input {
+  width: 50px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.eq-margin-input:focus { outline: none; }
+.eq-margin-percent {
+  color: var(--ink-light);
+  font-size: 14px;
+  font-weight: 600;
+}
+.eq-margin-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--cloud-dark);
+  outline: none;
+  margin: 0;
+}
+.eq-margin-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--blue-normal, #0172CB);
+  border: 3px solid var(--surface-light);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+.eq-margin-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--blue-normal, #0172CB);
+  border: 3px solid var(--surface-light);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+.eq-margin-track-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ink-light);
+  margin-top: 6px;
+  font-weight: 500;
+}
+.eq-margin-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #92400E;
+  line-height: 1.4;
+  letter-spacing: 0.1px;
+}
+.eq-margin-warning svg { color: #D97706; flex-shrink: 0; }
+
+/* Cost & Profit Breakdown */
+.eq-breakdown-card {
+  margin: 12px 16px 0;
+  background: var(--surface-light);
+  border: 1px solid var(--cloud-dark);
+  border-radius: var(--radius-card, 12px);
+  overflow: hidden;
+}
+.eq-breakdown-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+.eq-breakdown-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  letter-spacing: 0.1px;
+}
+.eq-breakdown-chev {
+  color: var(--ink-light);
+  transition: transform 0.2s ease;
+}
+.eq-breakdown-card[data-collapsed="true"] .eq-breakdown-chev {
+  transform: rotate(180deg);
+}
+.eq-breakdown-card[data-collapsed="true"] .eq-breakdown-body { display: none; }
+.eq-breakdown-body { border-top: 1px solid var(--cloud-dark); }
+.eq-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--cloud-dark);
+}
+.eq-breakdown-row:last-child { border-bottom: none; }
+.eq-breakdown-row-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-normal);
+}
+.eq-breakdown-row-label svg { color: var(--blue-normal, #0172CB); }
+.eq-breakdown-row-value {
+  color: var(--blue-normal, #0172CB);
+  font-weight: 600;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+
 /* Line items grouped by trade */
 .line-item-card {
   display: flex;
@@ -3790,7 +4260,7 @@ img { display: block; }
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <span class="nav-title">Back</span>
-        <button class="icon-btn" type="button">
+        <button class="icon-btn" type="button" onclick="openQuoteActionsSheet()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="#252A31"/><circle cx="12" cy="12" r="1.5" fill="#252A31"/><circle cx="12" cy="19" r="1.5" fill="#252A31"/></svg>
         </button>
       </div>
@@ -4011,6 +4481,127 @@ img { display: block; }
         </div>
       </div>
 
+      <!-- Quote Actions Bottom Sheet -->
+      <div class="overlay" id="quoteActionsOverlay" onclick="closeQuoteActionsSheet()"></div>
+      <div class="bottom-sheet" id="quoteActionsSheet">
+        <div class="bs-header">
+          <button class="bs-close" onclick="closeQuoteActionsSheet()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <span class="bs-header-title">Quote actions</span>
+        </div>
+        <button class="bs-item" onclick="goToEditQuote()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit Quote
+        </button>
+        <button class="bs-item" onclick="closeQuoteActionsSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Clone quote
+        </button>
+        <button class="bs-item" onclick="closeQuoteActionsSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share via email
+        </button>
+        <button class="bs-item destructive" onclick="closeQuoteActionsSheet()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          Delete quote
+        </button>
+        <div style="height:16px;"></div>
+      </div>
+
+      <div class="home-indicator"><div class="home-indicator-bar"></div></div>
+    </div>
+
+    <!-- ============ SCREEN G: Edit Quote ============ -->
+    <div class="screen right" id="screenG">
+      <div class="status-bar">
+        <span class="status-bar-time">9:41</span>
+        <div class="status-bar-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="3" width="3" height="8" rx="1" fill="#252A31"/><rect x="4.5" y="2" width="3" height="9" rx="1" fill="#252A31"/><rect x="9" y="1" width="3" height="10" rx="1" fill="#252A31"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#252A31"/></svg>
+          <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M7.5 3.2C9.5 3.2 11.3 4 12.6 5.3L14.1 3.8C12.4 2.1 10.1 1 7.5 1C4.9 1 2.6 2.1.9 3.8L2.4 5.3C3.7 4 5.5 3.2 7.5 3.2Z" fill="#252A31"/><path d="M7.5 6.5C8.7 6.5 9.8 7 10.6 7.8L12.1 6.3C10.9 5.2 9.3 4.5 7.5 4.5C5.7 4.5 4.1 5.2 2.9 6.3L4.4 7.8C5.2 7 6.3 6.5 7.5 6.5Z" fill="#252A31"/><circle cx="7.5" cy="10.5" r="1.5" fill="#252A31"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#252A31" stroke-opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#252A31"/><path d="M23 4.5V7.5C23.8 7.2 24 6.5 24 6C24 5.5 23.8 4.8 23 4.5Z" fill="#252A31" fill-opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="nav-back icon-btn" onclick="goBackFromEditQuote()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="nav-title">Edit Quote</span>
+        <div style="width:40px;"></div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="stepper-step stepper-step--done">
+          <div class="stepper-node stepper-node--done">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="stepper-label">Customer</span>
+        </div>
+        <div class="stepper-line stepper-line--done"></div>
+        <div class="stepper-step stepper-step--current">
+          <div class="stepper-node stepper-node--current">2</div>
+          <span class="stepper-label">Primary Details</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-step">
+          <div class="stepper-node stepper-node--pending">3</div>
+          <span class="stepper-label">Summary</span>
+        </div>
+      </div>
+
+      <div class="scroll-content" id="screenGScroll">
+        <div class="eq-section">
+          <h2 class="eq-section-title">Line items</h2>
+          <p class="eq-section-sub">Add line items to be billed in this quote</p>
+        </div>
+
+        <div class="eq-count-row">
+          <span class="eq-count-label" id="eqCountLabel">0 item(s)</span>
+          <div class="eq-action-icons">
+            <button class="eq-action-btn" type="button" aria-label="Multi-select">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/></svg>
+            </button>
+            <button class="eq-action-btn" type="button" aria-label="Add item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button class="eq-action-btn" type="button" aria-label="Sort">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 3 3 7 7 11"/><line x1="3" y1="7" x2="13" y2="7"/><polyline points="17 21 21 17 17 13"/><line x1="21" y1="17" x2="11" y2="17"/></svg>
+            </button>
+            <button class="eq-action-btn" type="button" aria-label="Settings">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="pricelist-row" id="eqPricelistRow" type="button">
+          <svg class="pricelist-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          <span class="pricelist-row-label">Select pricelist</span>
+          <svg class="pricelist-row-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <div id="eqTrades" class="eq-trades-wrap">
+          <!-- Trade cards injected by renderEditQuoteIntoScreenG() -->
+        </div>
+
+        <div class="eq-totals-card" id="eqTotalsCard">
+          <!-- Totals injected by renderEditQuoteTotals() -->
+        </div>
+        <!-- margin + breakdown cards inserted dynamically after totals card -->
+      </div>
+
+      <!-- Footer -->
+      <div class="edit-footer">
+        <button class="btn-secondary" type="button" onclick="goBackFromEditQuote()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Previous
+        </button>
+        <button class="btn-primary" type="button" onclick="commitEditQuoteAndExit()">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
       <div class="home-indicator"><div class="home-indicator-bar"></div></div>
     </div>
 
@@ -4064,7 +4655,7 @@ const pageIcons = {
 /* ================================================================
    NAVIGATION
    ================================================================ */
-function setScreenClasses(a, b, c, d, e, f) {
+function setScreenClasses(a, b, c, d, e, f, g) {
   document.getElementById('screenA').className = 'screen ' + a;
   document.getElementById('screenB').className = 'screen ' + b;
   document.getElementById('screenC').className = 'screen ' + c;
@@ -4073,6 +4664,8 @@ function setScreenClasses(a, b, c, d, e, f) {
   if (eEl) eEl.className = 'screen ' + (e || 'right');
   const fEl = document.getElementById('screenF');
   if (fEl) fEl.className = 'screen ' + (f || 'right');
+  const gEl = document.getElementById('screenG');
+  if (gEl) gEl.className = 'screen ' + (g || 'right');
 }
 
 function openMoreSheet() {
@@ -5950,6 +6543,415 @@ function switchQuoteTab(name) {
   screen.querySelectorAll('.quote-tab-pane').forEach(pane => {
     pane.classList.toggle('active', pane.dataset.quotePane === name);
   });
+}
+
+/* ================================================================
+   QUOTE ACTIONS SHEET (kebab on Screen F)
+   ================================================================ */
+function openQuoteActionsSheet() {
+  document.getElementById('quoteActionsOverlay').classList.add('visible');
+  document.getElementById('quoteActionsSheet').classList.add('visible');
+}
+function closeQuoteActionsSheet() {
+  document.getElementById('quoteActionsOverlay').classList.remove('visible');
+  document.getElementById('quoteActionsSheet').classList.remove('visible');
+}
+
+/* ================================================================
+   EDIT QUOTE (Screen G)
+   ================================================================ */
+let editQuoteState = null;
+
+const DEFAULT_TAXES = [
+  { id: 'cgst',    name: 'CGST as',  rate: 24 },
+  { id: 'elite',   name: 'Elite Tax', rate: 27 },
+  { id: 'mmm',     name: 'MMM',       rate: 2  },
+];
+
+function snapshotQuoteToEditQuoteState() {
+  if (!quoteState) quoteState = buildQuoteStateFromScreenA();
+  const trades = quoteState.trades.map((t) => ({
+    tradeId: t.tradeId,
+    tradeName: t.tradeName,
+    optionName: t.optionName,
+    thumbColor: t.thumbColor,
+    sections: t.sections.map((s) => ({
+      header: s.header,
+      items: s.items.map((it) => ({
+        name: it.name,
+        sku: it.sku || deriveItemSku(it.name),
+        qty: it.qty || 1,
+        price: it.price || 0,
+        desc: it.desc || '',
+      })),
+    })),
+  }));
+  editQuoteState = {
+    trades,
+    pricelistId: null,
+    discount: 0,
+    taxes: DEFAULT_TAXES.map((t) => ({ ...t })),
+    fee: 0,
+    profitMargin: 80.20,
+    breakdownCollapsed: false,
+    dirty: false,
+  };
+}
+
+function goToEditQuote() {
+  closeQuoteActionsSheet();
+  snapshotQuoteToEditQuoteState();
+  renderEditQuoteIntoScreenG();
+  state.currentScreen = 'G';
+  setScreenClasses('left', 'right', 'right', 'right', 'right', 'left', 'active');
+}
+
+function goBackFromEditQuote() {
+  state.currentScreen = 'F';
+  setScreenClasses('left', 'right', 'right', 'right', 'right', 'active', 'right');
+}
+
+function commitEditQuoteAndExit() {
+  // Persist totals & line items back into quoteState
+  if (editQuoteState && quoteState) {
+    quoteState.trades = editQuoteState.trades.map((t) => {
+      const sections = t.sections.map((s) => ({
+        header: s.header,
+        items: s.items.map((it) => ({ ...it })),
+      }));
+      const total = sections.reduce((sum, s) => sum + s.items.reduce((a, b) => a + (b.price || 0) * (parseFloat(b.qty) || 1), 0), 0);
+      const itemCount = sections.reduce((sum, s) => sum + s.items.length, 0);
+      return {
+        ...t,
+        sections,
+        total,
+        itemCount,
+      };
+    });
+    renderQuoteDetails();
+  }
+  state.currentScreen = 'F';
+  setScreenClasses('left', 'right', 'right', 'right', 'right', 'active', 'right');
+  showToast('toastB', 'Quote updated');
+}
+
+function eqTotalItemCount() {
+  return editQuoteState.trades.reduce(
+    (sum, t) => sum + t.sections.reduce((a, s) => a + s.items.length, 0),
+    0
+  );
+}
+
+function eqSubtotal() {
+  return editQuoteState.trades.reduce((sum, t) =>
+    sum + t.sections.reduce((a, s) =>
+      a + s.items.reduce((x, it) => x + (it.price || 0) * (parseFloat(it.qty) || 1), 0), 0), 0);
+}
+
+function eqTradeTotal(trade) {
+  return trade.sections.reduce((a, s) =>
+    a + s.items.reduce((x, it) => x + (it.price || 0) * (parseFloat(it.qty) || 1), 0), 0);
+}
+
+function eqTradeItemCount(trade) {
+  return trade.sections.reduce((sum, s) => sum + s.items.length, 0);
+}
+
+function buildEditQuoteItemHTML(item) {
+  const lineTotal = (item.price || 0) * (parseFloat(item.qty) || 1);
+  const qtyDisplay = `${item.qty || 1} × ${fmtUsdLong(item.price || 0)}`;
+  const descHTML = item.desc ? `
+    <div class="eq-item-desc">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>${item.desc}</span>
+    </div>` : '';
+  return `
+    <div class="eq-item-row">
+      <div class="eq-item-thumb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <div class="eq-item-main">
+        <span class="eq-item-name">${item.name}</span>
+        <span class="eq-item-sku">${item.sku || ''}</span>
+        ${descHTML}
+        <div class="eq-item-qty">
+          <span class="eq-item-qty-value">Qty: ${qtyDisplay}</span>
+          <span class="eq-item-price">${fmtUsdLong(lineTotal)}</span>
+        </div>
+      </div>
+      <div class="eq-item-actions">
+        <button class="eq-item-action-btn edit" type="button" aria-label="Edit item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="eq-item-action-btn delete" type="button" aria-label="Delete item" onclick="removeEditQuoteItem('${item.sku || ''}', '${(item.name || '').replace(/'/g, "\\'")}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function buildEditQuoteSectionHTML(section) {
+  const items = section.items.map((it) => buildEditQuoteItemHTML(it)).join('');
+  return `
+    <div class="eq-section-head">
+      <span>${section.header}</span>
+      <span class="eq-section-count">${section.items.length} item${section.items.length !== 1 ? 's' : ''}</span>
+    </div>
+    ${items}
+  `;
+}
+
+function buildEditQuoteTradeHTML(trade) {
+  const key = tradeIdToKey(trade.tradeId, trade.tradeName);
+  const tint = TRADE_TINTS[key] || DEFAULT_TRADE_TINT;
+  const icon = TRADE_ICONS[key] || DEFAULT_TRADE_ICON;
+  const sections = trade.sections.map((s) => buildEditQuoteSectionHTML(s)).join('');
+  const total = eqTradeTotal(trade);
+  const count = eqTradeItemCount(trade);
+  return `
+    <div class="eq-trade-card" data-trade-id="${trade.tradeId}" data-collapsed="false">
+      <button class="eq-trade-header" type="button" data-eq-trade-toggle>
+        <span class="eq-trade-thumb" style="background:${tint.bg}; color:${tint.fg};">${icon}</span>
+        <span class="eq-trade-name">${trade.tradeName}</span>
+        <span class="eq-trade-meta">${count} · ${fmtUsdLong(total)}</span>
+        <svg class="eq-trade-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="eq-trade-body">${sections}</div>
+    </div>
+  `;
+}
+
+function buildEditQuoteTotalsHTML() {
+  const subtotal = eqSubtotal();
+  const taxRows = editQuoteState.taxes.map((t) => {
+    const amt = subtotal * (t.rate / 100);
+    return `
+      <div class="eq-tax-row">
+        <button class="eq-tax-remove" type="button" onclick="removeEditQuoteTax('${t.id}')" aria-label="Remove ${t.name}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <span class="eq-tax-label">${t.name} (${t.rate.toFixed(2)}%)</span>
+        <span class="eq-tax-value">${fmtUsdLong(amt)}</span>
+      </div>
+    `;
+  }).join('');
+
+  const discountValue = editQuoteState.discount > 0
+    ? `<span class="eq-totals-value">${fmtUsdLong(editQuoteState.discount)}</span>`
+    : `<button class="eq-add-pill" type="button" onclick="addEditQuoteDiscount()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>`;
+  const feeValue = editQuoteState.fee > 0
+    ? `<span class="eq-totals-value">${fmtUsdLong(editQuoteState.fee)}</span>`
+    : `<button class="eq-add-pill" type="button" onclick="addEditQuoteFee()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>`;
+
+  return `
+    <div class="eq-totals-row">
+      <span class="eq-totals-label">Sub Total</span>
+      <span class="eq-totals-value eq-totals-value--sub">${fmtUsdLong(subtotal)}</span>
+    </div>
+    <div class="eq-totals-row">
+      <span class="eq-totals-label eq-totals-label--muted">Discount</span>
+      ${discountValue}
+    </div>
+    ${taxRows}
+    <div class="eq-totals-row">
+      <span class="eq-totals-label eq-totals-label--muted">Fee</span>
+      ${feeValue}
+    </div>
+  `;
+}
+
+function buildEditQuoteMarginHTML() {
+  const margin = editQuoteState.profitMargin;
+  const inRange = margin >= 20 && margin <= 80;
+  const warning = !inRange ? `
+    <div class="eq-margin-warning">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Profit margin must range from 20% and 80%</span>
+    </div>
+  ` : '';
+  return `
+    <div class="eq-margin-head">
+      <div>
+        <div class="eq-margin-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Profit Margin
+        </div>
+        <div class="eq-margin-sub">Excluding discount</div>
+      </div>
+      <div class="eq-margin-input-wrap">
+        <input class="eq-margin-input" id="eqMarginInput" type="number" min="0" max="99" step="0.01" value="${margin.toFixed(2)}" onchange="setEditQuoteMarginFromInput(this.value)"/>
+        <span class="eq-margin-percent">%</span>
+      </div>
+    </div>
+    <input class="eq-margin-slider" id="eqMarginSlider" type="range" min="0" max="99" step="0.1" value="${margin}" oninput="setEditQuoteMargin(this.value)"/>
+    <div class="eq-margin-track-labels">
+      <span>0%</span>
+      <span>99%</span>
+    </div>
+    ${warning}
+  `;
+}
+
+function buildEditQuoteBreakdownHTML() {
+  const subtotal = eqSubtotal();
+  const material = subtotal * 0.42;
+  const labor = subtotal * 0.31;
+  const overhead = subtotal * 0.05;
+  const profit = subtotal - material - labor - overhead;
+  const actualMargin = subtotal > 0 ? (profit / subtotal) * 100 : 0;
+  const collapsed = editQuoteState.breakdownCollapsed ? 'true' : 'false';
+  return `
+    <div class="eq-breakdown-card" data-collapsed="${collapsed}">
+      <button class="eq-breakdown-head" type="button" onclick="toggleEditQuoteBreakdown()">
+        <span class="eq-breakdown-title">Cost &amp; Profit Breakdown</span>
+        <svg class="eq-breakdown-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="eq-breakdown-body">
+        <div class="eq-breakdown-row">
+          <span class="eq-breakdown-row-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Actual Profit Margin
+          </span>
+          <span class="eq-breakdown-row-value">${actualMargin.toFixed(1)}%</span>
+        </div>
+        <div class="eq-breakdown-row">
+          <span class="eq-breakdown-row-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            Material
+          </span>
+          <span class="eq-breakdown-row-value">${fmtUsdLong(material)}</span>
+        </div>
+        <div class="eq-breakdown-row">
+          <span class="eq-breakdown-row-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Labor
+          </span>
+          <span class="eq-breakdown-row-value">${fmtUsdLong(labor)}</span>
+        </div>
+        <div class="eq-breakdown-row">
+          <span class="eq-breakdown-row-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Overhead
+          </span>
+          <span class="eq-breakdown-row-value">${fmtUsdLong(overhead)}</span>
+        </div>
+        <div class="eq-breakdown-row">
+          <span class="eq-breakdown-row-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            Profit
+          </span>
+          <span class="eq-breakdown-row-value">${fmtUsdLong(profit)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderEditQuoteIntoScreenG() {
+  if (!editQuoteState) return;
+  document.getElementById('eqCountLabel').textContent = `${eqTotalItemCount()} item(s)`;
+  const tradesEl = document.getElementById('eqTrades');
+  tradesEl.innerHTML = editQuoteState.trades.map((t) => buildEditQuoteTradeHTML(t)).join('');
+  // Wire trade-collapse toggles
+  tradesEl.querySelectorAll('[data-eq-trade-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.eq-trade-card');
+      if (!card) return;
+      const collapsed = card.dataset.collapsed === 'true';
+      card.dataset.collapsed = collapsed ? 'false' : 'true';
+    });
+  });
+  renderEditQuoteTotals();
+}
+
+function renderEditQuoteTotals() {
+  const totalsEl = document.getElementById('eqTotalsCard');
+  totalsEl.innerHTML = buildEditQuoteTotalsHTML();
+  // Margin + breakdown live below the totals card (inserted as siblings).
+  // Remove old siblings and re-append fresh.
+  const scroll = document.getElementById('screenGScroll');
+  ['eqMarginCard', 'eqBreakdownCard'].forEach((id) => {
+    const old = document.getElementById(id);
+    if (old) old.remove();
+  });
+  const marginCard = document.createElement('div');
+  marginCard.id = 'eqMarginCard';
+  marginCard.className = 'eq-margin-card';
+  marginCard.innerHTML = buildEditQuoteMarginHTML();
+  scroll.appendChild(marginCard);
+  const breakdownWrap = document.createElement('div');
+  breakdownWrap.id = 'eqBreakdownCard';
+  breakdownWrap.innerHTML = buildEditQuoteBreakdownHTML();
+  scroll.appendChild(breakdownWrap);
+  // bottom spacer (re-add safely)
+  if (!scroll.querySelector('.eq-bottom-spacer')) {
+    const sp = document.createElement('div');
+    sp.className = 'eq-bottom-spacer';
+    sp.style.height = '24px';
+    scroll.appendChild(sp);
+  }
+}
+
+function removeEditQuoteTax(id) {
+  editQuoteState.taxes = editQuoteState.taxes.filter((t) => t.id !== id);
+  editQuoteState.dirty = true;
+  renderEditQuoteTotals();
+}
+
+function addEditQuoteDiscount() {
+  const v = parseFloat(prompt('Enter discount amount (USD):', '0') || '0');
+  if (!isNaN(v) && v > 0) {
+    editQuoteState.discount = v;
+    editQuoteState.dirty = true;
+    renderEditQuoteTotals();
+  }
+}
+
+function addEditQuoteFee() {
+  const v = parseFloat(prompt('Enter fee amount (USD):', '0') || '0');
+  if (!isNaN(v) && v > 0) {
+    editQuoteState.fee = v;
+    editQuoteState.dirty = true;
+    renderEditQuoteTotals();
+  }
+}
+
+function setEditQuoteMargin(value) {
+  const v = parseFloat(value);
+  if (isNaN(v)) return;
+  editQuoteState.profitMargin = v;
+  editQuoteState.dirty = true;
+  // Quick in-place updates without rerendering everything
+  const input = document.getElementById('eqMarginInput');
+  if (input) input.value = v.toFixed(2);
+  // Re-render only the margin + breakdown blocks for warning state
+  const marginCard = document.getElementById('eqMarginCard');
+  if (marginCard) marginCard.innerHTML = buildEditQuoteMarginHTML();
+  const breakdownWrap = document.getElementById('eqBreakdownCard');
+  if (breakdownWrap) breakdownWrap.innerHTML = buildEditQuoteBreakdownHTML();
+}
+
+function setEditQuoteMarginFromInput(value) {
+  setEditQuoteMargin(value);
+}
+
+function toggleEditQuoteBreakdown() {
+  editQuoteState.breakdownCollapsed = !editQuoteState.breakdownCollapsed;
+  const card = document.querySelector('#eqBreakdownCard .eq-breakdown-card');
+  if (card) card.dataset.collapsed = editQuoteState.breakdownCollapsed ? 'true' : 'false';
+}
+
+function removeEditQuoteItem(sku, name) {
+  editQuoteState.trades.forEach((t) => {
+    t.sections.forEach((s) => {
+      s.items = s.items.filter((it) => !((it.sku || '') === sku && it.name === name));
+    });
+    t.sections = t.sections.filter((s) => s.items.length);
+  });
+  editQuoteState.trades = editQuoteState.trades.filter((t) => t.sections.length);
+  editQuoteState.dirty = true;
+  renderEditQuoteIntoScreenG();
 }
 
 /* ================================================================
