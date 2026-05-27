@@ -1990,6 +1990,9 @@ img { display: block; }
   display: flex;
   flex-direction: column;
 }
+.options-card-list > .option-card-item + .option-card-item {
+  border-top: 1px solid var(--cloud-dark);
+}
 .option-row-card {
   display: flex;
   align-items: flex-start;
@@ -2059,7 +2062,9 @@ img { display: block; }
 .option-row-meta {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 2px;
   font-size: 13px;
   letter-spacing: 0.1px;
   color: var(--ink-light);
@@ -2068,7 +2073,9 @@ img { display: block; }
   font-weight: 700;
   color: var(--ink-normal);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
+.option-row-meta .meta-rest { white-space: nowrap; }
 .option-row-meta .dot { color: var(--ink-lighter); }
 .option-row-chev {
   width: 18px;
@@ -3225,46 +3232,8 @@ img { display: block; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ============================================================
-   TRADE FILTER CHIPS (shared by Quote Details & Edit Quote)
-   ============================================================ */
-.trade-chip-row {
-  display: flex;
-  gap: 8px;
-  padding: 12px 12px 10px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.trade-chip-row::-webkit-scrollbar { display: none; }
-.trade-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--cloud-light);
-  border: 1px solid var(--cloud-dark);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-normal);
-  letter-spacing: 0.1px;
-  line-height: 1.3;
-  white-space: nowrap;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-.trade-chip:active { opacity: 0.85; }
-.trade-chip.is-active {
-  background: #1A2330;
-  color: #fff;
-  border-color: transparent;
-}
-.trade-chip-count {
-  font-weight: 600;
-  opacity: 0.9;
-}
+/* Quote Details & Edit Quote reuse the .trade-chip / .trade-chip-row
+   visual system defined under "OPTIONS CARD (Edit Proposal — chip-switcher layout)". */
 
 /* Flat section header (collapsible) used in chip-filtered views */
 .li-flat-section { display: block; }
@@ -6000,7 +5969,7 @@ function itemsAndAddOnsLabel(option) {
   const adds = optionAddOnsCount(option);
   const bits = [];
   bits.push(`${items} item${items === 1 ? '' : 's'}`);
-  if (adds > 0) bits.push(`${adds} add on${adds === 1 ? '' : 's'}`);
+  if (adds > 0) bits.push(`${adds} add-on${adds === 1 ? '' : 's'}`);
   return bits.join(', ');
 }
 
@@ -6077,9 +6046,9 @@ const proposalCtx = { activeTradeId: null };
 function buildOptionsCardHTML(state, opts) {
   const readOnly = !!opts.readOnly;
   const ctx = readOnly ? proposalCtx : editContext;
-  const totalOptions = state.trades.reduce((s, t) => s + t.options.length, 0);
   const activeId = _activeTradeIdFor(state, ctx);
   const activeTrade = state.trades.find((t) => t.id === activeId);
+  const activeCount = activeTrade ? activeTrade.options.length : 0;
 
   if (state.trades.length === 0) {
     return `<div class="options-card"><div class="option-row-empty">No trades yet.</div></div>`;
@@ -6100,46 +6069,82 @@ function buildOptionsCardHTML(state, opts) {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
       </button>`;
 
+  // Body: read-only = vertical list; edit = horizontal v7 hero carousel + add tile + dots
+  let bodyHTML;
+  if (readOnly) {
+    bodyHTML = `
+      <div class="options-card-list" data-option-list>
+        ${buildOptionRowsHTML(activeTrade, opts)}
+      </div>`;
+  } else {
+    const tradeId = activeTrade ? activeTrade.id : '';
+    const tiles = activeTrade && activeTrade.options.length
+      ? activeTrade.options.map((opt) => buildOptionEditHTML({ ...opt, tradeId })).join('')
+      : '';
+    const addTile = `
+      <button class="option-add-tile" type="button" onclick="openAddOptionSheet('${tradeId}')">
+        <span class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+        Add option
+        <span class="sub">to ${escapeHtml(activeTrade ? activeTrade.name : '')}</span>
+      </button>`;
+    const dotsCount = activeTrade ? activeTrade.options.length : 0;
+    const dots = dotsCount > 1
+      ? `<div class="carousel-dots" data-trade-dots>${Array.from({length: dotsCount}).map((_,i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>`
+      : '';
+    bodyHTML = `
+      <div class="option-carousel" data-trade-carousel data-trade-id="${escapeHtml(tradeId)}">
+        ${tiles}
+        ${addTile}
+      </div>
+      ${dots}`;
+  }
+
   return `
     <div class="options-card">
       <div class="options-card-head">
-        <div class="options-card-title">Options<span class="count">· ${totalOptions}</span></div>
+        <div class="options-card-title">Options<span class="count">· ${activeCount}</span></div>
         ${headAction}
       </div>
       <div class="trade-chip-row">
         ${chips}
       </div>
-      <div class="options-card-list" data-option-list>
-        ${buildOptionRowsHTML(activeTrade, opts)}
-      </div>
+      ${bodyHTML}
     </div>`;
 }
 
 function _buildOptionRowHTML(opt, tradeId, readOnly) {
-  const recPill = opt.recommended
-    ? `<span class="option-row-rec-pill">Recommended</span>`
+  const star = opt.recommended
+    ? `<span class="recommended-star" aria-label="Recommended" title="Recommended">${STAR_SVG}</span>`
     : '';
-  const desc = opt.desc ? `<div class="option-row-desc">${escapeHtml(opt.desc)}</div>` : '';
-  const onclick = readOnly
+  const kebab = readOnly
     ? ''
-    : `onclick="openOptionActionSheet('${tradeId}','${opt.id}')"`;
+    : `<button class="option-kebab icon-btn" type="button" aria-label="Option actions" onclick="openOptionActionSheet('${tradeId}','${opt.id}')">${KEBAB_SVG}</button>`;
+  const desc = opt.desc || '';
+  const products = opt.products || '';
   return `
-    <button class="option-row-card" type="button" data-option-id="${opt.id}" ${onclick} style="--option-tint:${opt.thumbColor}25; --option-shield:${opt.thumbColor};">
-      <span class="option-row-shield">${SHIELD_SVG}</span>
-      <div class="option-row-body">
-        <div class="option-row-head">
-          <span class="option-row-name">${escapeHtml(opt.name)}</span>
-          ${recPill}
+    <div class="option-card-item" data-option-id="${opt.id}">
+      <div class="option-top">
+        <div class="option-thumb" style="background:${opt.thumbColor};"></div>
+        <div class="option-info">
+          <div class="name">${escapeHtml(opt.name)}${star}</div>
+          <div class="desc-wrap">
+            <div class="desc desc--clamped">${escapeHtml(desc)}</div>
+            <button class="desc-toggle" type="button" data-desc-toggle hidden>See more</button>
+          </div>
         </div>
-        ${desc}
-        <div class="option-row-meta">
-          <span class="option-row-price">${fmtUsdLong(opt.price)}</span>
-          <span class="dot">·</span>
-          <span>${itemsAndAddOnsLabel(opt)}</span>
-        </div>
+        ${kebab}
       </div>
-      <svg class="option-row-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>`;
+      <div class="option-products">
+        <span class="option-products-icon">${BOX_SVG}</span>
+        <span class="option-products-text">${escapeHtml(products)}</span>
+      </div>
+      <div class="option-total">
+        <span class="total-label">Total amount (Taxes included)</span>
+        <span class="total-value">${fmtUsdLong(opt.price)}</span>
+      </div>
+    </div>`;
 }
 
 function wireOptionsCardHandlers(container, state, opts) {
@@ -6152,6 +6157,63 @@ function wireOptionsCardHandlers(container, state, opts) {
       else renderEditStateIntoScreenE();
     });
   });
+
+  // "See more" toggle on each option's description (only show if it actually overflows)
+  container.querySelectorAll('.desc-wrap').forEach((wrap) => {
+    if (wrap.dataset.bound === 'true') return;
+    wrap.dataset.bound = 'true';
+    const desc = wrap.querySelector('.desc');
+    const btn = wrap.querySelector('[data-desc-toggle]');
+    if (!desc || !btn) return;
+    desc.classList.add('desc--clamped');
+    const isOverflowing = desc.scrollHeight > desc.clientHeight + 1;
+    if (!isOverflowing) return;
+    btn.hidden = false;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = !desc.classList.contains('desc--clamped');
+      if (expanded) { desc.classList.add('desc--clamped'); btn.textContent = 'See more'; }
+      else { desc.classList.remove('desc--clamped'); btn.textContent = 'See less'; }
+    });
+  });
+
+  if (!readOnly) {
+    // Edit-mode carousel: "+ N more items" expanders inside option-edit cards
+    container.querySelectorAll('[data-more-items]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.option-edit');
+        if (!card) return;
+        const expanded = card.dataset.itemsExpanded === 'true';
+        card.dataset.itemsExpanded = expanded ? 'false' : 'true';
+        const hidden = card.querySelectorAll('.line-item--hidden').length;
+        btn.textContent = expanded
+          ? `+ ${hidden} more item${hidden === 1 ? '' : 's'}`
+          : 'Show fewer items';
+      });
+    });
+
+    // Edit-mode carousel: sync dots to scroll position
+    const carousel = container.querySelector('[data-trade-carousel]');
+    const dotsEl = container.querySelector('[data-trade-dots]');
+    if (carousel && dotsEl) {
+      const cards = Array.from(carousel.querySelectorAll('.option-edit'));
+      const sync = () => {
+        if (!cards.length) return;
+        const cl = carousel.getBoundingClientRect();
+        const ref = cl.left + 12;
+        let best = 0;
+        let bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const d = Math.abs(c.getBoundingClientRect().left - ref);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === best));
+      };
+      carousel.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+      sync();
+    }
+  }
 }
 
 /* ---- navigation ---- */
@@ -6845,15 +6907,15 @@ function buildTradeChipsHTML(state, selectedId) {
   const chips = [];
   const isAll = selectedId === 'all' || !selectedId;
   chips.push(`
-    <button type="button" class="trade-chip ${isAll ? 'is-active' : ''}" data-quote-chip="all">
-      All <span class="trade-chip-count">${totalItems}</span>
+    <button type="button" class="trade-chip" data-active="${isAll}" data-quote-chip="all">
+      All <span class="chip-count">${totalItems}</span>
     </button>
   `);
   state.trades.forEach((t) => {
     const active = !isAll && selectedId === t.tradeId;
     chips.push(`
-      <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-quote-chip="${escapeHtml(t.tradeId)}">
-        ${escapeHtml(t.tradeName)} <span class="trade-chip-count">${t.itemCount || 0}</span>
+      <button type="button" class="trade-chip" data-active="${active}" data-quote-chip="${escapeHtml(t.tradeId)}">
+        ${escapeHtml(t.tradeName)} <span class="chip-count">${t.itemCount || 0}</span>
       </button>
     `);
   });
@@ -7160,16 +7222,16 @@ function buildEditQuoteChipsHTML() {
   const isAll = selectedId === 'all';
   const chips = [];
   chips.push(`
-    <button type="button" class="trade-chip ${isAll ? 'is-active' : ''}" data-eq-chip="all">
-      All <span class="trade-chip-count">${totalItems}</span>
+    <button type="button" class="trade-chip" data-active="${isAll}" data-eq-chip="all">
+      All <span class="chip-count">${totalItems}</span>
     </button>
   `);
   editQuoteState.trades.forEach((t) => {
     const active = !isAll && selectedId === t.tradeId;
     const count = eqTradeItemCount(t);
     chips.push(`
-      <button type="button" class="trade-chip ${active ? 'is-active' : ''}" data-eq-chip="${escapeHtml(t.tradeId)}">
-        ${escapeHtml(t.tradeName)} <span class="trade-chip-count">${count}</span>
+      <button type="button" class="trade-chip" data-active="${active}" data-eq-chip="${escapeHtml(t.tradeId)}">
+        ${escapeHtml(t.tradeName)} <span class="chip-count">${count}</span>
       </button>
     `);
   });
